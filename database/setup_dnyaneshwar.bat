@@ -1,6 +1,6 @@
 @echo off
 set "username=root"
-set "password=root"
+set "password=govind"
 set "db=erozgaar"
 
 (
