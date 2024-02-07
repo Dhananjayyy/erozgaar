@@ -23,14 +23,6 @@ CREATE TABLE address (
     CONSTRAINT pk_address PRIMARY KEY(AddressID)
 );
 
-CREATE TABLE SevaKendra (
-    SevaKendraID INT AUTO_INCREMENT,
-    SevaKendraName VARCHAR(50) NOT NULL,
-    AddressID INT NOT NULL,
-    CONSTRAINT fk_sevakendra_address FOREIGN KEY(AddressID) REFERENCES address(AddressID) ON DELETE CASCADE,
-    CONSTRAINT pk_sevakendra PRIMARY KEY(SevaKendraID)
-);
-
 CREATE TABLE VLC (
     VlcID INT AUTO_INCREMENT,
     FirstName VARCHAR(50) NOT NULL,
@@ -40,7 +32,6 @@ CREATE TABLE VLC (
     AddressID INT NOT NULL,
     SevaKendraID INT NOT NULL,
     CONSTRAINT fk_vlc_address FOREIGN KEY(AddressID) REFERENCES address(AddressID) ON DELETE CASCADE,
-    CONSTRAINT fk_vlc_sevakendra FOREIGN KEY(SevaKendraID) REFERENCES SevaKendra(SevaKendraID) ON DELETE CASCADE,
     CONSTRAINT pk_vlc PRIMARY KEY(VlcID)
 );
 
