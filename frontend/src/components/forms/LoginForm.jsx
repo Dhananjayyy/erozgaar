@@ -1,6 +1,6 @@
 
 
-export default function LoginForm(props) {
+export default function LoginForm() {
   
  
 
