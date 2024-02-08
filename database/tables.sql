@@ -54,6 +54,7 @@ CREATE TABLE Workers (
     Education VARCHAR(50) NOT NULL,
     AddressID INT NOT NULL,
     DateOfBirth DATE NOT NULL,
+    Relocation BOOLEAN NOT NULL DEFAULT FALSE,
     CONSTRAINT fk_worker_address FOREIGN KEY(AddressID) REFERENCES Addresses(AddressID) ON DELETE CASCADE,
     CONSTRAINT pk_worker PRIMARY KEY(WorkerID)
 );
@@ -73,7 +74,8 @@ CREATE TABLE Roles (
 CREATE TABLE Users (
     UserID INT AUTO_INCREMENT,
     UserName VARCHAR(50) NOT NULL,
-    Password VARCHAR(50) NOT NULL,
+    Password VARCHAR(255) NOT NULL,
+    PhoneNumber VARCHAR(15) NOT NULL,
     RoleID INT NOT NULL,
     Active BOOLEAN NOT NULL,
     SecurityQuestionID INT NOT NULL,
