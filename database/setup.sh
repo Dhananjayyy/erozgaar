@@ -2,7 +2,7 @@
 
 username="root"
 password="@DhananjayXX4X"
-db="erozgaar"
+db="testerozgaar"
 
 mysql --user="$username" --password="$password" <<EOF
 DROP DATABASE IF EXISTS $db;
