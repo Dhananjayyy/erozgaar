@@ -9,5 +9,6 @@ DROP DATABASE IF EXISTS $db;
 CREATE DATABASE $db;
 USE $db;
 SOURCE tables.sql;
+SOURCE data.sql;
 EOF
 echo "Database setup complete"

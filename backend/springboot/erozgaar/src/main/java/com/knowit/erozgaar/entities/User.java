@@ -1,28 +1,33 @@
 package com.knowit.erozgaar.entities;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "User")
 public class User {
-//     CREATE TABLE User (
-//     UserID INT AUTO_INCREMENT,
-//     UserName VARCHAR(50) NOT NULL,
-//     Password VARCHAR(50) NOT NULL,
-//     RoleID INT NOT NULL,
-//     Active BOOLEAN NOT NULL,
-//     SecurityQuestionID INT NOT NULL,
-//     Answer VARCHAR(50) NOT NULL,
-//     AddressID INT NOT NULL,
-//     CONSTRAINT fk_user_role FOREIGN KEY(RoleID) REFERENCES Role(RoleID) ON DELETE CASCADE,
-//     CONSTRAINT fk_user_securityquestion FOREIGN KEY(SecurityQuestionID) REFERENCES SecurityQuestion(SecurityQuestionID) ON DELETE CASCADE,
-//     CONSTRAINT fk_user_address FOREIGN KEY(AddressID) REFERENCES address(AddressID) ON DELETE CASCADE,
-//     CONSTRAINT pk_user PRIMARY KEY(UserID)
-// );
+    @Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userID;
+    @Column(name = "UserName")
     private String userName;
+    @Column(name = "Password")
     private String password;
+    @Column(name = "RoleID")
     private int roleID;
+    @Column(name = "Active")
     private boolean active;
+    @Column(name = "SecurityQuestionID")
     private int securityQuestionID;
+    @Column(name = "Answer")
     private String answer;
+    @Column(name = "AddressID")
     private int addressID;
+
 
     public User() {
     }
@@ -104,5 +109,12 @@ public class User {
 
     public void setAddressID(int addressID) {
         this.addressID = addressID;
+    }
+
+    @Override
+    public String toString() {
+        return "User [userID=" + userID + ", userName=" + userName + ", password=" + password + ", roleID=" + roleID
+                + ", active=" + active + ", securityQuestionID=" + securityQuestionID + ", answer=" + answer
+                + ", addressID=" + addressID + "]";
     }
 }
