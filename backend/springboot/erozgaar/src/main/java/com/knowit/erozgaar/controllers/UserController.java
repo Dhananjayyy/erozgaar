@@ -38,6 +38,7 @@ public class UserController {
     @PostMapping("/registerworker")
     public boolean saveWorker(@RequestBody UserWorkerRegistration user) {
         try {
+            //System.out.println(user);
             if (uservice.existsById(user.getUserId())) {
                 return false;
             }
