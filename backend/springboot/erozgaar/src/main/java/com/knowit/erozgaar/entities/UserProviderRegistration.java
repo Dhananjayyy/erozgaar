@@ -1,9 +1,6 @@
 package com.knowit.erozgaar.entities;
 
-import java.sql.Date;
-
-
-public class UserWorkerRequest {
+public class UserProviderRegistration {
     private int userId;
     private String userName;
     private String password;
@@ -14,23 +11,23 @@ public class UserWorkerRequest {
     private SecurityQuestion securityQuestion;
     private String answer;
 
-    private int workerId;
+    private int providerId;
     private String firstName;
-    private String middle_name;
+    private String middleName;
     private String lastName;
+    private String organization;
     private String education;
     private Address address;
-    private Date dateOfBirth;
-    private boolean relocation;
 
-    public UserWorkerRequest() {
+    public UserProviderRegistration() {
         super();
     }
 
-    public UserWorkerRequest(int userId, String userName, String password, String phoneNumber, String gender, Role role,
-            boolean active, SecurityQuestion securityQuestion, String answer,int workerId, String firstName, String middle_name,
-            String lastName, String education, Address address, Date dateOfBirth, boolean relocation) {
-                this.userId = userId;
+    public UserProviderRegistration(int userId, String userName, String password, String phoneNumber, String gender,
+            Role role, boolean active, SecurityQuestion securityQuestion, String answer, int providerId,
+            String firstName, String middleName, String lastName, String organization, String education,
+            Address address) {
+        this.userId = userId;
         this.userName = userName;
         this.password = password;
         this.phoneNumber = phoneNumber;
@@ -39,14 +36,13 @@ public class UserWorkerRequest {
         this.active = active;
         this.securityQuestion = securityQuestion;
         this.answer = answer;
-        this.workerId = workerId;
+        this.providerId = providerId;
         this.firstName = firstName;
-        this.middle_name = middle_name;
+        this.middleName = middleName;
         this.lastName = lastName;
+        this.organization = organization;
         this.education = education;
         this.address = address;
-        this.dateOfBirth = dateOfBirth;
-        this.relocation = relocation;
     }
 
     public int getUserId() {
@@ -121,12 +117,12 @@ public class UserWorkerRequest {
         this.answer = answer;
     }
 
-    public int getWorkerId() {
-        return workerId;
+    public int getProviderId() {
+        return providerId;
     }
 
-    public void setWorkerId(int workerId) {
-        this.workerId = workerId;
+    public void setProviderId(int providerId) {
+        this.providerId = providerId;
     }
 
     public String getFirstName() {
@@ -138,11 +134,11 @@ public class UserWorkerRequest {
     }
 
     public String getMiddleName() {
-        return middle_name;
+        return middleName;
     }
 
-    public void setMiddleName(String middle_name) {
-        this.middle_name = middle_name;
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
     }
 
     public String getLastName() {
@@ -151,6 +147,14 @@ public class UserWorkerRequest {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(String organization) {
+        this.organization = organization;
     }
 
     public String getEducation() {
@@ -169,28 +173,13 @@ public class UserWorkerRequest {
         this.address = address;
     }
 
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public boolean isRelocation() {
-        return relocation;
-    }
-
-    public void setRelocation(boolean relocation) {
-        this.relocation = relocation;
-    }
-
     @Override
     public String toString() {
-        return "UserWorkerRequest [userName=" + userName + ", password=" + password + ", phoneNumber=" + phoneNumber
-                + ", gender=" + gender + ", role=" + role + ", active=" + active + ", securityQuestion="
-                + securityQuestion + ", answer=" + answer + ", firstName=" + firstName + ", middle_name=" + middle_name
-                + ", lastName=" + lastName + ", education=" + education + ", address=" + address + ", dateOfBirth="
-                + dateOfBirth + ", relocation=" + relocation + "]";
+        return "UserRegistrationRequest [userId=" + userId + ", userName=" + userName + ", password=" + password
+                + ", phoneNumber=" + phoneNumber + ", gender=" + gender + ", role=" + role + ", active=" + active
+                + ", securityQuestion=" + securityQuestion + ", answer=" + answer + ", providerId=" + providerId
+                + ", firstName=" + firstName + ", middleName=" + middleName + ", lastName=" + lastName
+                + ", organization=" + organization + ", education=" + education + ", address=" + address + "]";
     }
+
 }

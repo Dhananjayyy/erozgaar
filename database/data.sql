@@ -126,9 +126,9 @@ VALUES
 INSERT INTO users (user_name, password, phone_number,gender, role_id, active, security_question_id, answer)
 VALUES
     ('Akash.sharma', 'Akash@123',9876543210,'Male', 1, TRUE, 1, 'Don'),
-    ('Sanket.Patel', 'Sanket@987',9856543210,'Other', 1, TRUE, 2, 'Patil Vasti'),
-    ('Shreyash.Patel', 'Shreyash@345',9876547710,'Female', 1, TRUE, 3, 'Fish'),
-    ('Sunil.Gupta', 'Sunil@698',9812543210,'Male', 1, FALSE, 5, 'Kudal High School'),
+    ('Sanket.Patel', 'Sanket@123',9856543210,'Other', 1, TRUE, 2, 'Patil Vasti'),
+    ('Shreyash.Patel', 'Shreyash@123',9876547710,'Female', 1, TRUE, 3, 'Fish'),
+    ('Sunil.Gupta', 'Sunil@123',9812543210,'Male', 1, FALSE, 5, 'Kudal High School'),
     ('Ramesh.Sharma', 'Ramesh@234',8876543210,'Male', 2, TRUE, 1, 'TZP'),
     ('Disha.Patel', 'Disha@963',6986543210,'Female', 2, TRUE, 2, 'Pratap Nagar'),
     ('Shubham.Shinde', 'Shubham@456',9126587410,'Other', 2, TRUE, 3, 'Dosa'),
