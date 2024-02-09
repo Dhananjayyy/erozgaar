@@ -7,5 +7,6 @@ import com.knowit.erozgaar.entities.SecurityQuestion;
 
 @Repository
 public interface SecurityQuestionRepository extends JpaRepository<SecurityQuestion, Integer> {
+    
 
 }

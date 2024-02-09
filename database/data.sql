@@ -85,7 +85,7 @@ INSERT INTO vlc (first_name, middle_name, last_name, education, address_id)
 VALUES 
     ('Akshay', 'Maruti', 'Patil', 'Diploma', 9),
     ('Priya', 'Rajesh', 'Sharma', 'Diploma', 5),
-    ('Amit', 'Sopan', 'Pawar', 'Diploma', 18),
+    ('Pratiksha', 'Sopan', 'Pawar', 'Diploma', 18),
     ('Sneha', 'Aditya', 'Mane', 'Diploma', 14);
 
 
@@ -99,11 +99,11 @@ VALUES
 
 INSERT INTO workers (first_name, middle_name, last_name, education, address_id, date_of_birth, relocation)
 VALUES 
-    ('Akash', 'Swapnil', 'Sharma', 'X', 19, '1990-05-15',TRUE),
-    ('Sanket', 'Narendra', 'Patel', 'XI', 7, '1988-09-22',FALSE),
-    ('Shreayash', 'Hanumant', 'Singh', 'XII', 8, '1995-02-10',TRUE),
-    ('Abhishek', 'Balasaheb', 'Yadav', 'VIII', 4, '1992-11-30',FALSE),
-    ('Sunil', 'Sanjay', 'Gupta', 'IX', 10, '1987-07-08',TRUE);
+    ('Akash', 'Swapnil', 'Sharma', 'Below 12', 19, '1990-05-15',TRUE),
+    ('Sanket', 'Narendra', 'Patel', '12 and above', 7, '1988-09-22',FALSE),
+    ('Shreayash', 'Hanumant', 'Singh', 'Below 12', 8, '1995-02-10',TRUE),
+    ('Abhishek', 'Balasaheb', 'Yadav', 'Below 10', 4, '1992-11-30',FALSE),
+    ('Sunil', 'Sanjay', 'Gupta', '12 and above', 10, '1987-07-08',TRUE);
 
 
 INSERT INTO security_questions (question)
@@ -128,13 +128,13 @@ VALUES
     ('Akash.sharma', 'Akash@123',9876543210,'Male', 1, TRUE, 1, 'Don'),
     ('Sanket.Patel', 'Sanket@987',9856543210,'Other', 1, TRUE, 2, 'Patil Vasti'),
     ('Shreyash.Patel', 'Shreyash@345',9876547710,'Female', 1, TRUE, 3, 'Fish'),
-    ('Sunil.Gupta', 'Sunil@698',9812543210,'Male', 1, TRUE, 5, 'Kudal High School'),
+    ('Sunil.Gupta', 'Sunil@698',9812543210,'Male', 1, FALSE, 5, 'Kudal High School'),
     ('Ramesh.Sharma', 'Ramesh@234',8876543210,'Male', 2, TRUE, 1, 'TZP'),
     ('Disha.Patel', 'Disha@963',6986543210,'Female', 2, TRUE, 2, 'Pratap Nagar'),
     ('Shubham.Shinde', 'Shubham@456',9126587410,'Other', 2, TRUE, 3, 'Dosa'),
-    ('Aditi.Yadav', 'Aditi@3678',9876549875,'Female', 2, TRUE, 4,'Simba'),
+    ('Aditi.Yadav', 'Aditi@3678',9876549875,'Female', 2, FALSE, 4,'Simba'),
     ('Akshay.Patil', 'Akshay@963',7654543210,'Male', 3, TRUE, 5, 'SVM'),
     ('Priya.Sharma', 'Priya@789',6845312458,'Female', 3, TRUE, 1, 'Salaar'),
     ('Sneha.Mane', 'Sneha@569',5647895210,'Female', 3, TRUE, 1, 'Yes Boss'),
-    ('Amit.Pawar', 'Amit@789',1176543210,'Female', 4, TRUE, 4, 'Monu');
+    ('Pratiksha.Pawar', 'admin@123',1176543210,'Female', 4, TRUE, 4, 'Monu');
 

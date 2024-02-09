@@ -77,11 +77,11 @@ public class User {
 		this.userName = userName;
 	}
 
-	public String getPwd() {
+	public String getPassword() {
 		return password;
 	}
 
-	public void setPwd(String pwd) {
+	public void setPassword(String pwd) {
 		this.password = pwd;
 	}
 
