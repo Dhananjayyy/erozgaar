@@ -1,5 +1,4 @@
-
-INSERT INTO States (StateName) VALUES 
+INSERT INTO states (state_name) VALUES 
 ('Andhra Pradesh'),
 ('Arunachal Pradesh'),
 ('Assam'),
@@ -34,7 +33,7 @@ INSERT INTO States (StateName) VALUES
 
 
 
-INSERT INTO Cities (CityName, StateID) VALUES 
+INSERT INTO cities (city_name, state_id) VALUES 
 ('Bengaluru', 11),
 ('Mysuru', 11),
 ('Hubballi', 11),
@@ -55,7 +54,7 @@ INSERT INTO Cities (CityName, StateID) VALUES
 
 
 
-INSERT INTO Addresses (AddressLine1, AddressLine2, CityID) VALUES 
+INSERT INTO addresses (address_line_1, address_line_2, city_id) VALUES 
 ('123 Near Gokhalenagar School', 'Gokhalenagar', 2),
 ('456 Near Gokhalenagar School', 'Gokhalenagar', 2),
 ('697 Near Kusalkar Putla', 'Gokhalenagar', 2),
@@ -69,7 +68,7 @@ INSERT INTO Addresses (AddressLine1, AddressLine2, CityID) VALUES
 
 
 
-INSERT INTO Addresses (AddressLine1, AddressLine2, CityID) VALUES 
+INSERT INTO addresses (address_line_1, address_line_2, city_id) VALUES 
 ('123, MG Road', 'Near Brigade Road', 1),
 ('693, Koramangala', 'Near Forum Mall', 1),
 ('789, Indiranagar', 'Near 100 Feet Road', 1),
@@ -82,7 +81,7 @@ INSERT INTO Addresses (AddressLine1, AddressLine2, CityID) VALUES
 ('889, Marathahalli', 'Near Outer Ring Road', 1);
 
 
-INSERT INTO VLC (FirstName, MiddleName, LastName, Education, AddressID)
+INSERT INTO vlc (first_name, middle_name, last_name, education, address_id)
 VALUES 
     ('Akshay', 'Maruti', 'Patil', 'Diploma', 9),
     ('Priya', 'Rajesh', 'Sharma', 'Diploma', 5),
@@ -90,7 +89,7 @@ VALUES
     ('Sneha', 'Aditya', 'Mane', 'Diploma', 14);
 
 
-INSERT INTO Providers (FirstName, MiddleName, LastName,OrganizationName, Education, AddressID)
+INSERT INTO providers (first_name, middle_name, last_name,organization_name, education, address_id)
 VALUES 
     ('Ramesh', 'Kumar', 'Sharma','', 'Diploma', 1),
     ('','','','JW Marriott','Basic Schooling', 2),
@@ -98,7 +97,7 @@ VALUES
     ('Aditi', 'Bai', 'Yadav','', 'Graduation', 4);
 
 
-INSERT INTO Workers (FirstName, MiddleName, LastName, Education, AddressID, DateOfBirth, Relocation)
+INSERT INTO workers (first_name, middle_name, last_name, education, address_id, date_of_birth, relocation)
 VALUES 
     ('Akash', 'Swapnil', 'Sharma', 'X', 19, '1990-05-15',TRUE),
     ('Sanket', 'Narendra', 'Patel', 'XI', 7, '1988-09-22',FALSE),
@@ -107,7 +106,7 @@ VALUES
     ('Sunil', 'Sanjay', 'Gupta', 'IX', 10, '1987-07-08',TRUE);
 
 
-INSERT INTO SecurityQuestions (Question)
+INSERT INTO security_questions (question)
 VALUES 
     ('What is the name of your favorite Indian movie?'),
     ('What is the name of the street you grew up on?'),
@@ -117,24 +116,25 @@ VALUES
 
 
 
-INSERT INTO Roles(RoleName)
-values("Worker"),
-("Provider"),
-("VLC"),
-("Admin");
-
-INSERT INTO Users (UserName, Password,PhoneNumber , RoleID, Active, SecurityQuestionID, Answer)
+INSERT INTO roles(role_name)
 VALUES
-    ('Akash.sharma', 'Akash@123',9876543210, 1, TRUE, 1, 'Don'),
-    ('Sanket.Patel', 'Sanket@987',9856543210, 1, TRUE, 2, 'Patil Vasti'),
-    ('Shreyash.Patel', 'Shreyash@345',9876547710, 1, TRUE, 3, 'Fish'),
-    ('Sunil.Gupta', 'Sunil@698',9812543210, 1, TRUE, 5, 'Kudal High School'),
-    ('Ramesh.Sharma', 'Ramesh@234',8876543210, 2, TRUE, 1, 'TZP'),
-    ('Disha.Patel', 'Disha@963',6986543210, 2, TRUE, 2, 'Pratap Nagar'),
-    ('Shubham.Kale', 'Shubham@456',9126587410, 2, TRUE, 3, 'Dosa'),
-    ('Aditi.Yadav', 'Aditi@3678',9876549875, 2, TRUE, 4, 'Simba'),
-    ('Akshay.Patil', 'Akshay@963',7654543210, 3, TRUE, 5, 'SVM'),
-    ('Priya.Sharma', 'Priya@789',6845312458, 3, TRUE, 1, 'Salaar'),
-    ('Sneha.Mane', 'Sneha@569',5647895210, 3, TRUE, 1, 'Yes Boss'),
-    ('Amit.Pawar', 'Amit@789',1176543210, 4, TRUE, 4, 'Monu');
+    ('Worker'),
+    ('Provider'),
+    ('VLC'),
+    ('Admin');  
+
+INSERT INTO users (user_name, password, phone_number,gender, role_id, active, security_question_id, answer)
+VALUES
+    ('Akash.sharma', 'Akash@123',9876543210,'Male', 1, TRUE, 1, 'Don'),
+    ('Sanket.Patel', 'Sanket@987',9856543210,'Other', 1, TRUE, 2, 'Patil Vasti'),
+    ('Shreyash.Patel', 'Shreyash@345',9876547710,'Female', 1, TRUE, 3, 'Fish'),
+    ('Sunil.Gupta', 'Sunil@698',9812543210,'Male', 1, TRUE, 5, 'Kudal High School'),
+    ('Ramesh.Sharma', 'Ramesh@234',8876543210,'Male', 2, TRUE, 1, 'TZP'),
+    ('Disha.Patel', 'Disha@963',6986543210,'Female', 2, TRUE, 2, 'Pratap Nagar'),
+    ('Shubham.Shinde', 'Shubham@456',9126587410,'Other', 2, TRUE, 3, 'Dosa'),
+    ('Aditi.Yadav', 'Aditi@3678',9876549875,'Female', 2, TRUE, 4,'Simba'),
+    ('Akshay.Patil', 'Akshay@963',7654543210,'Male', 3, TRUE, 5, 'SVM'),
+    ('Priya.Sharma', 'Priya@789',6845312458,'Female', 3, TRUE, 1, 'Salaar'),
+    ('Sneha.Mane', 'Sneha@569',5647895210,'Female', 3, TRUE, 1, 'Yes Boss'),
+    ('Amit.Pawar', 'Amit@789',1176543210,'Female', 4, TRUE, 4, 'Monu');
 

@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ErozgaarApplication<erozgaar>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.knowit.erozgaar.ErozgaarApplication",
+            "projectName": "erozgaar",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
