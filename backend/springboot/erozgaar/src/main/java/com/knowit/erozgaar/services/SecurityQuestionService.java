@@ -5,13 +5,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.knowit.erozgaar.entities.SecurityQuestion;
+import com.knowit.erozgaar.entities.User;
 import com.knowit.erozgaar.repositories.SecurityQuestionRepository;
+import com.knowit.erozgaar.repositories.UserRepository;
 
 
 @Service
 public class SecurityQuestionService {
     @Autowired
 	SecurityQuestionRepository sqrepo;
+
+	@Autowired
+	UserRepository urepo;
+
 	
 	public SecurityQuestion getById(int id)
 	{
@@ -27,4 +33,8 @@ public class SecurityQuestionService {
 		}
 		return r;
 	}
+
+	public User getUserWithSecurityQuestionById(int userId) {
+        return urepo.findById(userId).orElse(null);
+    }
 }
