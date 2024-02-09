@@ -1,120 +1,140 @@
 package com.knowit.erozgaar.entities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "User")
+@Table(name="users")
 public class User {
-    @Id
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userID;
-    @Column(name = "UserName")
-    private String userName;
-    @Column(name = "Password")
-    private String password;
-    @Column(name = "RoleID")
-    private int roleID;
-    @Column(name = "Active")
-    private boolean active;
-    @Column(name = "SecurityQuestionID")
-    private int securityQuestionID;
-    @Column(name = "Answer")
-    private String answer;
-    @Column(name = "AddressID")
-    private int addressID;
+	@Column(name = "user_id")
+	private int id;
+	
+	@Column(name="user_name")
+	private String userName;
+	
+	@Column(name="password")
+	private String password;
 
+	@Column(name = "phone_number")
+    private String phoneNumber;
 
-    public User() {
-    }
+    @Column(name = "gender")
+    private String gender;
+	
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name="role_id")
+	private Role role;
+	
+	@Column(name="active")
+	private boolean active;
 
-    public User(int userID, String userName, String password, int roleID, boolean active, int securityQuestionID, String answer, int addressID) {
-        this.userID = userID;
-        this.userName = userName;
-        this.password = password;
-        this.roleID = roleID;
-        this.active = active;
-        this.securityQuestionID = securityQuestionID;
-        this.answer = answer;
-        this.addressID = addressID;
-    }
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name="security_question_id")
+	private SecurityQuestion securityQuestion;
 
-    public int getUserID() {
-        return this.userID;
-    }
+	@Column(name = "answer")
+	private String answer;
 
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
+	public User() {
+		super();
+	}
 
-    public String getUserName() {
-        return this.userName;
-    }
+	public User(int id, String userName, String password, String phoneNumber, String gender, Role role, boolean active,
+			SecurityQuestion securityQuestion, String answer) {
+		this.id = id;
+		this.userName = userName;
+		this.password = password;
+		this.phoneNumber = phoneNumber;
+		this.gender = gender;
+		this.role = role;
+		this.active = active;
+		this.securityQuestion = securityQuestion;
+		this.answer = answer;
+	}
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public String getPassword() {
-        return this.password;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public String getUserName() {
+		return userName;
+	}
 
-    public int getRoleID() {
-        return this.roleID;
-    }
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
-    public void setRoleID(int roleID) {
-        this.roleID = roleID;
-    }
+	public String getPwd() {
+		return password;
+	}
 
-    public boolean isActive() {
-        return this.active;
-    }
+	public void setPwd(String pwd) {
+		this.password = pwd;
+	}
 
-    public boolean getActive() {
-        return this.active;
-    }
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
 
-    public int getSecurityQuestionID() {
-        return this.securityQuestionID;
-    }
+	public String getGender() {
+		return gender;
+	}
 
-    public void setSecurityQuestionID(int securityQuestionID) {
-        this.securityQuestionID = securityQuestionID;
-    }
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
 
-    public String getAnswer() {
-        return this.answer;
-    }
+	public Role getRole() {
+		return role;
+	}
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
-    }
+	public void setRole(Role role) {
+		this.role = role;
+	}
 
-    public int getAddressID() {
-        return this.addressID;
-    }
+	public boolean isActive() {
+		return active;
+	}
 
-    public void setAddressID(int addressID) {
-        this.addressID = addressID;
-    }
+	public void setActive(boolean active) {
+		this.active = active;
+	}
 
-    @Override
-    public String toString() {
-        return "User [userID=" + userID + ", userName=" + userName + ", password=" + password + ", roleID=" + roleID
-                + ", active=" + active + ", securityQuestionID=" + securityQuestionID + ", answer=" + answer
-                + ", addressID=" + addressID + "]";
-    }
+	public SecurityQuestion getSecurityQuestion() {
+		return securityQuestion;
+	}
+
+	public void setSecurityQuestion(SecurityQuestion securityQuestion) {
+		this.securityQuestion = securityQuestion;
+	}
+
+	public String getAnswer() {
+		return answer;
+	}
+
+	public void setAnswer(String answer) {
+		this.answer = answer;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", uid=" + userName + ", pwd=" + password + ", role=" + role + ", active=" + active + "]";
+	}
 }
