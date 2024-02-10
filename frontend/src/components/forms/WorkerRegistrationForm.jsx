@@ -173,17 +173,17 @@ export default function WorkerRegistrationForm() {
 
     const passwordsMatch = checkPasswordsMatch();
     
-    // if (!passwordsMatch) {
-    //   setAlertType("alert-warning");
-    //   showErrorMessage('Passwords do not match',5000)
-    //   return;
-    // }
-    // //
-    // if(worker.formValid === false){
-    //   setAlertType("alert-danger");
-    //   showErrorMessage('Please enter valid data',5000)
-    //   return;
-    // }
+    if (!passwordsMatch) {
+      setAlertType("alert-warning");
+      showErrorMessage('Passwords do not match',5000)
+      return;
+    }
+    //
+    if(worker.formValid === false){
+      setAlertType("alert-danger");
+      showErrorMessage('Please enter valid data',5000)
+      return;
+    }
 
     fetch("http://localhost:9000/registerworker", {
       method: "POST",

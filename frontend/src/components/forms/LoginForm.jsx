@@ -1,9 +1,20 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { login } from "../LoggedSlice";
+
 
 export default function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+  const [displayAlert, setDisplayAlert] = useState(false);
+  const [dispMsg, setDispMsg] = useState("");
+
+  
+  const dispatch = useDispatch();
+  let navigate= useNavigate();
+
 
   useEffect(() => {
     const UserNameRegex = /^[a-zA-Z]{3,}\.[a-zA-Z]{3,}$/;
@@ -31,6 +42,16 @@ export default function LoginForm() {
     setPassword(event.target.value);
   };
 
+  function showErrorMessage(msg, time) {
+    setDisplayAlert(true);
+    setDispMsg(msg);
+    if (time !== 0) {
+      setTimeout(() => {
+        setDisplayAlert(false);
+      }, time);
+    }
+  }
+
   const submitme = (e) => {
     e.preventDefault();
     const UserName = document.getElementById("uid").value;
@@ -42,7 +63,46 @@ export default function LoginForm() {
     }
 
     // Additional submission logic can go here
+    const srole = document.querySelector(
+      "input[type='radio'][name=selectedrole]:checked"
+    ).value;
+    
+    fetch("http://localhost:9000/RoleService", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ uid :username, pwd: password }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+
+        var login_status = data.login_status
+        if (login_status) {
+          if (parseInt(srole) === 1) {
+            console.log(JSON.stringify(data.result))
+            dispatch(login({ id:data.result[0].UserID, userType:'user' }));
+            navigate("/WorkerHome", {state: {"id": data.result[0].UserID}});
+          }
+          if (parseInt(srole) === 2) {
+            dispatch(login({ id:data.result[0].AdminID, userType:'admin' }));
+            navigate("/ProviderHome", {state: {"id": data.result[0].AdminID}});
+          }
+          if (parseInt(srole) === 3) {
+            dispatch(login({ id:data.result[0].ProviderID, userType:'provider' }));
+            navigate("/VLCHome", {state: {"id": data.result[0].ProviderID}});
+          }
+        }else{
+          showErrorMessage("Please enter correct username / password",5000);
+          return;
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+    
   };
+  
 
   const clearForm = () => {
     setUsername("");
@@ -79,6 +139,16 @@ export default function LoginForm() {
               onChange={handlePasswordChange}
               value={password}
             />
+          </div>
+          <div>
+            <div
+              className={`alert text-center alert-danger p-2 ${
+                displayAlert ? "d-block" : "d-none"
+              }`}
+              role="alert"
+            >
+              {dispMsg}
+            </div>
           </div>
         </div>
         <div className="text-center mt-3">
