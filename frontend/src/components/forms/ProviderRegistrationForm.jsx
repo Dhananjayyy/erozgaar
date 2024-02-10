@@ -1,4 +1,4 @@
-import { useReducer,useState } from "react";
+import { useReducer, useState } from "react";
 
 export default function ProviderRegistrationForm() {
   const init = {
@@ -6,14 +6,16 @@ export default function ProviderRegistrationForm() {
     mname: { value: "", valid: false, touched: false, error: "" },
     lname: { value: "", valid: false, touched: false, error: "" },
     phone: { value: 0, valid: false, touched: false, error: "" },
+    aadhar: { value: 0, valid: false, touched: false, error: "" },
+    gender:{value: 0, valid: false, touched: false, error: "" },
     education: { value: 0, valid: false, touched: false, error: "" },
     state: { value: 0, valid: false, touched: false, error: "" },
     city: { value: 0, valid: false, touched: false, error: "" },
     address1: { value: 0, valid: false, touched: false, error: "" },
     address2: { value: 0, valid: false, touched: false, error: "" },
-    uid: { value: 0, valid: false, touched: false, error: "" },
+    username: { value: 0, valid: false, touched: false, error: "" },
     pwd: { value: 0, valid: false, touched: false, error: "" },
-    repwd: { value: 0, valid: false, touched: false, error: "" },
+    cpwd: { value: 0, valid: false, touched: false, error: "" },
     question: { value: 0, valid: false, touched: false, error: "" },
     answer: { value: 0, valid: false, touched: false, error: "" },
     formValid: false,
@@ -41,7 +43,7 @@ export default function ProviderRegistrationForm() {
     }
   };
 
-  const [provider,dispatch]=useReducer(reducer,init);
+  const [provider, dispatch] = useReducer(reducer, init);
   const [displayAlert, setDisplayAlert] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [alertType, setAlertType] = useState("danger");
@@ -75,7 +77,7 @@ export default function ProviderRegistrationForm() {
         formValid: formValid,
       },
     });
-  }; 
+  };
   function checkPasswordsMatch() {
     const password = provider.pwd.value;
     const confirmPassword = provider.cpwd.value;
@@ -103,12 +105,12 @@ export default function ProviderRegistrationForm() {
         }
         break;
       // case "dob":
-        // pattern = /^[a-zA-Z0-9._%+-]{3,}@[a-zA-Z0-9.-]{3,}\.[a-zA-Z]{2,}$/;
-        // if (!pattern.test(value)) {
-        //   valid = false;
-        //   error = "Invalid Email";
-        // }
-        // break;
+      // pattern = /^[a-zA-Z0-9._%+-]{3,}@[a-zA-Z0-9.-]{3,}\.[a-zA-Z]{2,}$/;
+      // if (!pattern.test(value)) {
+      //   valid = false;
+      //   error = "Invalid Email";
+      // }
+      // break;
       case "phone":
         pattern = /^\d{10}$/;
         if (!pattern.test(value)) {
@@ -117,17 +119,33 @@ export default function ProviderRegistrationForm() {
         }
         break;
 
-        case "uid":
-          pattern = new RegExp("^${provider.fname.value}.${provider.lname.value}$");
+        case "aadhar":
+          pattern = /^\d{12}$/;
+          if (!pattern.test(value)) {
+            valid = false;
+            error = "Invalid Aadhar Number";
+          }
+          break;
+
+      case "username":
+        pattern = new RegExp(`^${provider.fname.value}\\.${provider.lname.value}$`);
+        if (!pattern.test(value)) {
+          valid = false;
+          error = "Invalid username";
+        }
+        break;
+
+      case "pwd":
+        pattern = /^[A-Z][a-zA-Z0-9][!@#$%^&][a-zA-Z0-9]*$/;
+
         if (!pattern.test(value)) {
           valid = false;
           error = "Invalid Password";
         }
         break;
 
-      case "pwd":
-      case "cpwd":
-        pattern =  /^[A-Z][a-zA-Z0-9][!@#$%^&][a-zA-Z0-9]*$/;
+        case "cpwd":
+        pattern = /^[A-Z][a-zA-Z0-9][!@#$%^&][a-zA-Z0-9]*$/;
 
         if (!pattern.test(value)) {
           valid = false;
@@ -144,16 +162,16 @@ export default function ProviderRegistrationForm() {
     e.preventDefault();
 
     const passwordsMatch = checkPasswordsMatch();
-    
+
     if (!passwordsMatch) {
       setAlertType("alert-warning");
-      showErrorMessage('Passwords do not match',5000)
+      showErrorMessage('Passwords do not match', 5000)
       return;
     }
     //
-    if(worker.formValid === false){
+    if (provider.formValid === false) {
       setAlertType("alert-danger");
-      showErrorMessage('Please enter valid data',5000)
+      showErrorMessage('Please enter valid data', 5000)
       return;
     }
 
@@ -162,7 +180,7 @@ export default function ProviderRegistrationForm() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ uid: provider.uid.value }),
+      body: JSON.stringify({ username: provider.username.value }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -180,12 +198,14 @@ export default function ProviderRegistrationForm() {
               mname: provider.mname.value,
               lname: provider.lname.value,
               phone: provider.phone.value,
+              aadhar:provider.aadhar.value,
+              gender:provider.gender.value,
               education: provider.education.value,
               state: provider.state.value,
               city: provider.city.value,
               address1: provider.address1.value,
               address2: provider.address2.value,
-              uid: provider.uid.value,
+              username: provider.username.value,
               pwd: provider.pwd.value,
               question: provider.squestion.value,
               answer: provider.answer.value,
@@ -196,9 +216,9 @@ export default function ProviderRegistrationForm() {
             .then((data) => {
               console.log("insert data: " + data.registered);
 
-              if(data.registered === true){
+              if (data.registered === true) {
                 setAlertType("alert-success");
-                showErrorMessage("Registration successful. Please log in.",5000)
+                showErrorMessage("Registration successful. Please log in.", 5000)
                 return;
               }
             })
@@ -206,13 +226,13 @@ export default function ProviderRegistrationForm() {
               console.error("Error:", error);
             });
         }
-        if(data){
+        if (data) {
           setAlertType("alert-info");
-          showErrorMessage("Username already exists. Please log in.",5000);
-          
+          showErrorMessage("Username already exists. Please log in.", 5000);
+
           // console.log(document.getElementById("successalert").textContent)
           // setDisplayAlert(true)
-          
+
           return;
         }
       })
@@ -221,7 +241,7 @@ export default function ProviderRegistrationForm() {
       });
   };
 
-    
+
   return (
     <form>
       <div className="container mt-5 mb-5 border border-dark rounded ">
@@ -238,9 +258,9 @@ export default function ProviderRegistrationForm() {
                 className="form-control"
                 id="fname"
                 placeholder="Mark"
-              onChange={(e) => handleChange("fname", e.target.value)}
-              onBlur={(e) => handleChange("fname", e.target.value)}
-               w-25
+                onChange={(e) => handleChange("fname", e.target.value)}
+                onBlur={(e) => handleChange("fname", e.target.value)}
+                w-25
               />
               <span className="error text-danger">{provider.fname.touched && !provider.fname.valid && provider.fname.error}</span>
             </div>
@@ -254,9 +274,9 @@ export default function ProviderRegistrationForm() {
                 className="form-control"
                 id="mname"
                 placeholder="Elliot"
-              onChange={(e) => handleChange("mname", e.target.value)}
-              onBlur={(e) => handleChange("mname", e.target.value)}
-              w-25
+                onChange={(e) => handleChange("mname", e.target.value)}
+                onBlur={(e) => handleChange("mname", e.target.value)}
+                w-25
               />
               <span className="error text-danger">
                 {provider.mname.touched && !provider.mname.valid && provider.mname.error}
@@ -271,9 +291,9 @@ export default function ProviderRegistrationForm() {
                 className="form-control"
                 id="lname"
                 placeholder="Zuckerberg"
-              onChange={(e) => handleChange("lname", e.target.value)}
-              onBlur={(e) => handleChange("lname", e.target.value)}
-              w-25
+                onChange={(e) => handleChange("lname", e.target.value)}
+                onBlur={(e) => handleChange("lname", e.target.value)}
+                w-25
               />
               <span className="error text-danger">
                 {provider.lname.touched && !provider.lname.valid && provider.lname.error}
@@ -305,11 +325,56 @@ export default function ProviderRegistrationForm() {
             </div>
             <div className="col">
               <div className="mb-3 border bg-light rounded p-2">
-                <label htmlFor="eduidnumbercation" className="form-label">
+                <label htmlFor="eduidnumbercation" id="idnumber" className="form-label">
                   Mobile Number
                 </label>
                 <input
-                  type="number" className="form-control" id="idnumber" placeholder="9852614280" />
+                  type="number" className="form-control" id="idnumber" placeholder="9852614280"
+                  onChange={(e) => handleChange("phone", e.target.value)}
+                  onBlur={(e) => handleChange("phone", e.target.value)}
+                />
+                <span className="error text-danger">
+                  {provider.phone.touched && !provider.phone.valid && provider.phone.error}
+                </span>
+              </div>
+            </div>
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
+                <label htmlFor="eduidnumbercation" id="idaadhar" className="form-label">
+                  Aadhar Number
+                </label>
+                <input
+                  type="number" className="form-control" id="idaadhar" maxLength={12} placeholder="825462315284"
+                  onChange={(e) => handleChange("aadhar", e.target.value)}
+                  onBlur={(e) => handleChange("aadhar", e.target.value)}
+                  />
+                  <span className="error text-danger">
+                  {provider.aadhar.touched && !provider.aadhar.valid && provider.aadhar.error}
+                </span>
+              </div>
+              
+            </div>
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
+              <label htmlFor="eduidnumbercation" id="idgender" className="form-label">
+                 Gender
+                </label>
+                <select
+                  className="form-select">
+                  <option id="idgender" className="form-option" value="gender1">
+                    Select Gender
+                  </option>
+                  <option id="idgender" className="form-option" value="gender2">
+                    Male
+                  </option>
+                  <option id="idgender" className="form-option" value="gender3">
+                    Female
+                  </option>
+                  <option id="idgender" className="form-option" value="gender4">
+                    Other
+                  </option>
+                </select>
+                
               </div>
             </div>
 
@@ -327,13 +392,13 @@ export default function ProviderRegistrationForm() {
                 type="text"
                 className="form-control"
                 id="iduname"
-                placeholder="mark.zukerberg"
-              onChange={(e) => handleChange("uid", e.target.value)}
-              onBlur={(e) => handleChange("uid", e.target.value)}
-              w-25
+                placeholder="Mark.Zukerberg"
+                onChange={(e) => handleChange("username", e.target.value)}
+                onBlur={(e) => handleChange("username", e.target.value)}
+                w-25
               />
               <span className="error text-danger">
-                {provider.uid.touched && !provider.uid.valid && provider.uid.error}
+                {provider.username.touched && !provider.username.valid && provider.username.error}
               </span>
             </div>
           </div>
@@ -347,12 +412,12 @@ export default function ProviderRegistrationForm() {
                 className="form-control"
                 id="pwd"
                 placeholder="Enter your password"
-              // onChange={(e) => handleChange("pwd", e.target.value)}
-              // onBlur={(e) => handleChange("pwd", e.target.value)}
+              onChange={(e) => handleChange("pwd", e.target.value)}
+              onBlur={(e) => handleChange("pwd", e.target.value)}
               />
-              {/* <span className="error text-danger">
-                {users.pwd.touched && !users.pwd.valid && users.pwd.error}
-              </span> */}
+              <span className="error text-danger">
+                {provider.pwd.touched && !provider.pwd.valid && provider.pwd.error}
+              </span>
             </div>
           </div>
           <div className="col">
@@ -365,14 +430,29 @@ export default function ProviderRegistrationForm() {
                 className="form-control"
                 id="cpwd"
                 placeholder="Confirm password"
-              // onChange={(e) => handleChange("pwd", e.target.value)}
-              // onBlur={(e) => handleChange("pwd", e.target.value)}
+              onChange={(e) => handleChange("cpwd", e.target.value)}
+              onBlur={(e) => handleChange("cpwd", e.target.value)}
               />
-              {/* <span className="error text-danger">
-                {users.pwd.touched && !users.pwd.valid && users.pwd.error}
-              </span> */}
+              <span className="error text-danger">
+                {provider.cpwd.touched && !provider.cpwd.valid && provider.cpwd.error}
+              </span>
             </div>
           </div>
+        </div>
+        <div className="row">
+          <div className="col"></div>
+          <div
+            className={`col alert text-center d-flex justify-content-center ${
+              alertType
+            } p-2 w-75 ${
+              displayAlert ? "d-block" : "d-none"
+            }`}
+            role="alert"
+          >
+            {errorMsg}
+          </div>
+          
+          <div className="col"></div>
         </div>
 
         {/* Row 3 */}
@@ -416,7 +496,7 @@ export default function ProviderRegistrationForm() {
                 type="text"
                 className="form-control"
                 id="sanswer"
-                placeholder="Answer... "/>
+                placeholder="Answer... " />
             </div>
           </div>
         </div>
@@ -537,38 +617,38 @@ export default function ProviderRegistrationForm() {
 
         </div>
         <div className="row">
-        <div className="row text-center m-3">
-          <div className="col "></div>
-          <div className="col">
-            <button
-              className="btn btn-primary col-6"
-              type="submit"
-              onClick={(e) => {
-                submitData(e);
-              }}
-            >
-              Register
-            </button>
+          <div className="row text-center m-3">
+            <div className="col "></div>
+            <div className="col">
+              <button
+                className="btn btn-primary col-6"
+                type="submit"
+                onClick={(e) => {
+                  submitData(e);
+                }}
+              >
+                Register
+              </button>
+            </div>
+            <div className="col">
+              <button
+                className="btn btn-outline-danger col-6"
+                type="reset"
+                onClick={() => {
+                  handleReset();
+                }}
+              >
+                Clear
+              </button>
+            </div>
+            <div className="col"></div>
           </div>
-          <div className="col">
-            <button
-              className="btn btn-outline-danger col-6"
-              type="reset"
-              onClick={() => {
-                handleReset();
-              }}
-            >
-              Clear
-            </button>
-          </div>
-          <div className="col"></div>
-        </div>
         </div>
 
 
       </div>
 
-        {/* {JSON.stringify(provider) + ""} */}
+      {JSON.stringify(provider) + ""}
 
     </form>
   );
