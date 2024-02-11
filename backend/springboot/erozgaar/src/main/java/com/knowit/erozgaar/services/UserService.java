@@ -4,7 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.knowit.erozgaar.entities.User;
-import com.knowit.erozgaar.entities.UserLogin;
+import com.knowit.erozgaar.repositories.SecurityQuestionRepository;
 import com.knowit.erozgaar.repositories.UserRepository;
 
 
@@ -14,6 +14,9 @@ public class UserService {
 
 	@Autowired
 	UserRepository urepo;
+
+	@Autowired
+	SecurityQuestionRepository sqrepo;
 	
 	public User save(User u)
 	{
@@ -33,12 +36,36 @@ public class UserService {
 		return urepo.findById(id).isPresent();
 	}
 
-	public UserLogin login(String username, String password) {
-        User user = urepo.findUserByUsernameAndPassword(username, password);
-		UserLogin userLogin = new UserLogin(user.getId(), user.getRole().getRoleName());	
-        if (user != null) {
-            return userLogin;
-        }
-        return null;
-    }
+	public User existsByUsernamePassword(String username, String password) {
+		User user = urepo.findUserByUsernameAndPassword(username, password);
+	
+		if (user != null) {
+			return user;
+		}
+	
+		return null;
+	}
+	
+
+	public boolean existsByUsername(String username) {
+		System.out.println(username);
+		System.out.println(urepo.findUserByUsername(username));
+		return urepo.findUserByUsername(username) != null;
+	}
+
+	// public UserWorker getUserWorker(int id) {
+	// 	return urepo.findUserWorkerById(id);
+	// }
+
+	// public UserWorker getUserWorker(String username) {
+	// 	return urepo.findUserWorkerByUsername(username);
+	// }
+
+	// public UserProvider getUserProvider(int id) {
+	// 	return urepo.findUserProviderById(id);
+	// }
+
+	// public UserProvider getUserProvider(String username) {
+	// 	return urepo.findUserProviderByUsername(username);
+	// }
 }

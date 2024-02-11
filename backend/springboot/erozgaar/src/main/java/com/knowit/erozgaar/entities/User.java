@@ -1,6 +1,4 @@
 package com.knowit.erozgaar.entities;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,14 +28,20 @@ public class User {
     @Column(name = "gender")
     private String gender;
 	
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne
 	@JoinColumn(name="role_id")
 	private Role role;
 	
 	@Column(name="active")
 	private boolean active;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@Column(name = "adhaar")
+	private String adhaar;
+
+	@Column(name = "account_number")
+	private String accountNumber;
+
+	@ManyToOne
 	@JoinColumn(name="security_question_id")
 	private SecurityQuestion securityQuestion;
 
@@ -49,7 +53,7 @@ public class User {
 	}
 
 	public User(int id, String userName, String password, String phoneNumber, String gender, Role role, boolean active,
-			SecurityQuestion securityQuestion, String answer) {
+			String adhaar, String accountNumber, SecurityQuestion securityQuestion, String answer) {
 		this.id = id;
 		this.userName = userName;
 		this.password = password;
@@ -57,6 +61,8 @@ public class User {
 		this.gender = gender;
 		this.role = role;
 		this.active = active;
+		this.adhaar = adhaar;
+		this.accountNumber = accountNumber;
 		this.securityQuestion = securityQuestion;
 		this.answer = answer;
 	}
@@ -81,8 +87,8 @@ public class User {
 		return password;
 	}
 
-	public void setPassword(String pwd) {
-		this.password = pwd;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getPhoneNumber() {
@@ -117,12 +123,20 @@ public class User {
 		this.active = active;
 	}
 
-	public SecurityQuestion getSecurityQuestion() {
-		return securityQuestion;
+	public String getAdhaar() {
+		return adhaar;
 	}
 
-	public void setSecurityQuestion(SecurityQuestion securityQuestion) {
-		this.securityQuestion = securityQuestion;
+	public void setAdhaar(String adhaar) {
+		this.adhaar = adhaar;
+	}
+
+	public String getAccountNumber() {
+		return accountNumber;
+	}
+
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
 	}
 
 	public String getAnswer() {
@@ -133,8 +147,12 @@ public class User {
 		this.answer = answer;
 	}
 
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", uid=" + userName + ", pwd=" + password + ", role=" + role + ", active=" + active + "]";
+	public SecurityQuestion getSecurityQuestion() {
+		return securityQuestion;
 	}
+
+	public void setSecurityQuestion(SecurityQuestion securityQuestion) {
+		this.securityQuestion = securityQuestion;
+	}
+
 }

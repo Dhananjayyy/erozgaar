@@ -37,11 +37,15 @@ public class Provider {
 	@JoinColumn(name="address_id")
     private Address address;
 
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name="user_id")
+    private User user;
+
     public Provider() {
         super();
     }
 
-    public Provider(int id, String firstName, String middleName, String lastName, String organization, String education, Address address) {
+    public Provider(int id, String firstName, String middleName, String lastName, String organization, String education, Address address, User user) {
         this.id = id;
         this.firstName = firstName;
         this.middleName = middleName;
@@ -49,6 +53,7 @@ public class Provider {
         this.organization = organization;
         this.education = education;
         this.address = address;
+        this.user = user;
     }
 
     public int getId() {
@@ -107,11 +112,19 @@ public class Provider {
         this.address = address;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "Provider [id=" + id + ", firstName=" + firstName + ", middleName=" + middleName + ", lastName="
                 + lastName + ", organization=" + organization + ", education=" + education + ", address=" + address
-                + "]";
+                + user.toString() + "]";
     }
 
 }

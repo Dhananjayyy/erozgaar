@@ -80,32 +80,6 @@ INSERT INTO addresses (address_line_1, address_line_2, city_id) VALUES
 ('220, Electronic City', 'Near Wipro Gate', 1),
 ('889, Marathahalli', 'Near Outer Ring Road', 1);
 
-
-INSERT INTO vlc (first_name, middle_name, last_name, education, address_id)
-VALUES 
-    ('Akshay', 'Maruti', 'Patil', 'Diploma', 9),
-    ('Priya', 'Rajesh', 'Sharma', 'Diploma', 5),
-    ('Pratiksha', 'Sopan', 'Pawar', 'Diploma', 18),
-    ('Sneha', 'Aditya', 'Mane', 'Diploma', 14);
-
-
-INSERT INTO providers (first_name, middle_name, last_name,organization_name, education, address_id)
-VALUES 
-    ('Ramesh', 'Kumar', 'Sharma','', 'Diploma', 1),
-    ('','','','JW Marriott','Basic Schooling', 2),
-    ('','','','Yash Constructions', 'Diploma', 3),
-    ('Aditi', 'Bai', 'Yadav','', 'Graduation', 4);
-
-
-INSERT INTO workers (first_name, middle_name, last_name, education, address_id, date_of_birth, relocation)
-VALUES 
-    ('Akash', 'Swapnil', 'Sharma', 'Below 12', 19, '1990-05-15',TRUE),
-    ('Sanket', 'Narendra', 'Patel', '12 and above', 7, '1988-09-22',FALSE),
-    ('Shreayash', 'Hanumant', 'Singh', 'Below 12', 8, '1995-02-10',TRUE),
-    ('Abhishek', 'Balasaheb', 'Yadav', 'Below 10', 4, '1992-11-30',FALSE),
-    ('Sunil', 'Sanjay', 'Gupta', '12 and above', 10, '1987-07-08',TRUE);
-
-
 INSERT INTO security_questions (question)
 VALUES 
     ('What is the name of your favorite Indian movie?'),
@@ -114,8 +88,6 @@ VALUES
     ('What is the name of your first pet?'),
     ('What is the name of the school you attended in the 10th grade?');
 
-
-
 INSERT INTO roles(role_name)
 VALUES
     ('Worker'),
@@ -123,18 +95,46 @@ VALUES
     ('VLC'),
     ('Admin');  
 
-INSERT INTO users (user_name, password, phone_number,gender, role_id, active, security_question_id, answer)
+INSERT INTO users (user_name, password, phone_number,gender, role_id, active,adhaar,account_number, security_question_id, answer)
 VALUES
-    ('Akash.sharma', 'Akash@123',9876543210,'Male', 1, TRUE, 1, 'Don'),
-    ('Sanket.Patel', 'Sanket@123',9856543210,'Other', 1, TRUE, 2, 'Patil Vasti'),
-    ('Shreyash.Patel', 'Shreyash@123',9876547710,'Female', 1, TRUE, 3, 'Fish'),
-    ('Sunil.Gupta', 'Sunil@123',9812543210,'Male', 1, FALSE, 5, 'Kudal High School'),
-    ('Ramesh.Sharma', 'Ramesh@234',8876543210,'Male', 2, TRUE, 1, 'TZP'),
-    ('Disha.Patel', 'Disha@963',6986543210,'Female', 2, TRUE, 2, 'Pratap Nagar'),
-    ('Shubham.Shinde', 'Shubham@456',9126587410,'Other', 2, TRUE, 3, 'Dosa'),
-    ('Aditi.Yadav', 'Aditi@3678',9876549875,'Female', 2, FALSE, 4,'Simba'),
-    ('Akshay.Patil', 'Akshay@963',7654543210,'Male', 3, TRUE, 5, 'SVM'),
-    ('Priya.Sharma', 'Priya@789',6845312458,'Female', 3, TRUE, 1, 'Salaar'),
-    ('Sneha.Mane', 'Sneha@569',5647895210,'Female', 3, TRUE, 1, 'Yes Boss'),
-    ('Pratiksha.Pawar', 'admin@123',1176543210,'Female', 4, TRUE, 4, 'Monu');
+    ('Akash.sharma', 'Akash@123',9876543210,'Male', 1, TRUE,"123456781234","1234567890", 1, 'Don'),
+    ('Sanket.Patel', 'Sanket@123',9856543210,'Other', 1, TRUE,"223456781234","2234567890", 2, 'Patil Vasti'),
+    ('Shreyash.Patel', 'Shreyash@123',9876547710,'Female', 1, TRUE,"323456781234","3234567890", 3, 'Fish'),
+
+
+    ('Ramesh.Sharma', 'Ramesh@123',8876543210,'Male', 2, TRUE,"523456781234","5234567890", 1, 'TZP'),
+    ('jw.marriott', 'Jw@123',6986543210,'Female', 2, TRUE,"623456781234","6234567890", 2, 'Pratap Nagar'),
+    ('yash.constructions', 'Yash@123',9126587410,'Other', 2, TRUE,"723456781234","7234567890", 3, 'Dosa'),
+    ('Aditi.Yadav', 'Aditi@123',9876549875,'Female', 2, FALSE,"923456781234","8234567890", 4,'Simba'),
+
+    ('Akshay.Patil', 'Akshay@123',7654543210,'Male', 3, TRUE,"823456781234","9234567890", 5, 'SVM'),
+    ('Priya.Sharma', 'Priya@123',6845312458,'Female', 3, TRUE,"103456781234","1034567890", 1, 'Salaar'),
+    ('Sneha.Mane', 'Sneha@123',5647895210,'Female', 3, TRUE,"113456731234","1134567890", 1, 'Yes Boss'),
+
+    ('pratiksha.pawar', 'Admin@123',1176543210,'Female', 4, TRUE,'','', 4, 'Monu');
+
+INSERT INTO admins (first_name, middle_name, last_name, user_id)
+VALUES 
+    ('Pratiksha', 'Sopan', 'Pawar', 11);
+
+INSERT INTO vlc (first_name, middle_name, last_name, education, address_id, user_id)
+VALUES 
+    ('Akshay', 'Maruti', 'Patil', 'Diploma', 9, 8),
+    ('Priya', 'Rajesh', 'Sharma', 'Diploma', 5, 9),
+    ('Sneha', 'Aditya', 'Mane', 'Diploma', 14, 10);
+
+-- ('Pratiksha', 'Sopan', 'Pawar', 'Diploma', 18),
+
+INSERT INTO providers (first_name, middle_name, last_name, organization_name, education, address_id, user_id)
+VALUES 
+    ('Ramesh', 'Kumar', 'Sharma', '', 'Diploma', 1, 4),
+    ('', '', '', 'JW Marriott', 'Basic Schooling', 2, 5),
+    ('', '', '', 'Yash Constructions', 'Diploma', 3, 6),
+    ('Aditi', 'Bai', 'Yadav', '', 'Graduation', 4, 7);
+
+INSERT INTO workers (first_name, middle_name, last_name, education, address_id, date_of_birth, relocation, user_id)
+VALUES 
+    ('Akash', 'Swapnil', 'Sharma', 'Below 12', 19, '1990-05-15', TRUE, 1),
+    ('Sanket', 'Narendra', 'Patel', '12 and above', 7, '1988-09-22', FALSE, 2),
+    ('Shreayash', 'Hanumant', 'Singh', 'Below 12', 8, '1995-02-10', TRUE, 3);
 
