@@ -23,7 +23,7 @@ public class UserController {
     public List<User> getUsers() {
         return uService.getAll();
     }
-
+  
     @PostMapping("/checkusername")
     public boolean checkUsername(@RequestBody UserName username) {
         return uService.existsByUsername(username.getUsername());

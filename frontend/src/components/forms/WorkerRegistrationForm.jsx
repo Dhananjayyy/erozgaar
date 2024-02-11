@@ -197,7 +197,6 @@ export default function WorkerRegistrationForm() {
     e.preventDefault();
 
     const passwordsMatch = checkPasswordsMatch();
-
     if (!passwordsMatch) {
       setAlertType("alert-warning");
       showErrorMessage("Passwords do not match", 5000);
@@ -211,11 +210,62 @@ export default function WorkerRegistrationForm() {
     }
 
     fetch("http://localhost:8080/checkusername", {
+    
+    // if (!passwordsMatch) {
+    //   setAlertType("alert-warning");
+    //   showErrorMessage('Passwords do not match',5000)
+    //   return;
+    // }
+    // //
+    // if(worker.formValid === false){
+    //   setAlertType("alert-danger");
+    //   showErrorMessage('Please enter valid data',5000)
+    //   return;
+    // }
+
+    fetch("http://localhost:9000/registerworker", {
+
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
+
       body: JSON.stringify({ username: worker.uid.value}),
+
+
+      //body: JSON.stringify({ uid: worker.uid.value }),
+      body: JSON.stringify({
+        "userName": worker.uid.value,
+        "password": worker.pwd.value,
+        "phoneNumber": worker.phone.value,
+        "gender": worker.gender.value,
+        "role": {
+          "roleName": worker.role.value
+        },
+        "active": false,
+        "securityQuestion": {
+          "question": worker.question.value,
+        },
+        "answer": worker.answer.value,
+      
+        "firstName": worker.firstName.value,
+        "middleName": worker.middleName.value,
+        "lastName": worker.lastName.value,
+        "education": worker.education.value,
+        "address": {
+          "addressLine1" : worker.address1.value,
+          "addressLine2" : worker.address2.value,
+          "city" : {
+              "cityName" : worker.city.value,
+              "state" : {
+                  "stateName" : worker.state.value
+              }
+          }
+        },
+        "dateOfBirth": worker.dateOfBirth.value,
+        "relocation": worker.relocation.value
+      }
+      ),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -223,6 +273,8 @@ export default function WorkerRegistrationForm() {
         console.log("client side:" + JSON.stringify({ userName: worker.uid.value, password: worker.pwd.value}))
         console.log("server side"+ JSON.stringify(data));
         // //console.log("email exist:" + JSON.stringify(typeof(data)));
+        // console.log("email exist:" + JSON.stringify(typeof(data)));
+        console.log("data: " + JSON.stringify(data));
 
         if (!data) {
           fetch("http://localhost:8080/register/worker", {
