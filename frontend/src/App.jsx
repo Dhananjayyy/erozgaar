@@ -7,8 +7,7 @@ function App() {
   return (
     <>
         {/* <h1>Welcome to eRozgaar connect</h1>  */}
-        <WorkerRegistrationForm/> 
-       {/* <WorkerRegistrationForm/> */}
+    
     </>
   )
 }

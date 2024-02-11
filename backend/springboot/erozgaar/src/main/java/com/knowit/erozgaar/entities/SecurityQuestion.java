@@ -14,6 +14,7 @@ public class SecurityQuestion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "security_question_id")
     private int securityQuestionId;
+    
     @Column(name = "question")
     private String question;
 

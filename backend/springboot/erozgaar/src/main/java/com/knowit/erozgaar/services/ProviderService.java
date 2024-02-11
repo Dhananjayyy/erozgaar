@@ -16,4 +16,8 @@ public class ProviderService {
     {
         return prepo.save(p);
     }
+
+    public Provider getByUsername(String username) {
+		return prepo.findByUsername(username);
+	}
 }
