@@ -1,4 +1,6 @@
 package com.knowit.erozgaar.entities;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,6 +21,7 @@ public class User {
 	@Column(name="user_name")
 	private String userName;
 	
+	@JsonIgnore
 	@Column(name="password")
 	private String password;
 

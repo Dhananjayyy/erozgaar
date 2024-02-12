@@ -73,7 +73,7 @@ CREATE TABLE workers (
     last_name VARCHAR(50) NOT NULL,
     education VARCHAR(50) NOT NULL,
     address_id INT NOT NULL,
-    date_of_birth DATE NOT NULL,
+    date_of_birth DATE,
     relocation BOOLEAN NOT NULL DEFAULT FALSE,
     user_id INT NOT NULL,
     CONSTRAINT fk_worker_address FOREIGN KEY(address_id) REFERENCES addresses(address_id) ON DELETE CASCADE,

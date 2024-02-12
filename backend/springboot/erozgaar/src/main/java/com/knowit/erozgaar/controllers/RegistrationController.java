@@ -41,6 +41,7 @@ public class RegistrationController {
 
     @PostMapping("/worker")
     public boolean saveWorker(@RequestBody UserWorkerRequest request) {
+        //System.out.println("my dob "+request.getDateOfBirth());
         try {
             Role role = rservice.getById(request.getRole().getRoleId());
             SecurityQuestion securityQuestion = sservice.getById(request.getSecurityQuestion().getSecurityQuestionId());
@@ -64,6 +65,8 @@ public class RegistrationController {
     @PostMapping("/provider")
     public boolean saveProvider(@RequestBody UserProviderRequest request) {
         try {
+            System.out.println("request: "+ request);
+
             Role role = rservice.getById(request.getRole().getRoleId());
             SecurityQuestion securityQuestion = sservice.getById(request.getSecurityQuestion().getSecurityQuestionId());
 
@@ -77,6 +80,7 @@ public class RegistrationController {
 
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }

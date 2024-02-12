@@ -1,8 +1,11 @@
 package com.knowit.erozgaar.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class UserProviderRequest extends User{
 
     private int providerId;
+
     private String firstName;
     private String middleName;
     private String lastName;

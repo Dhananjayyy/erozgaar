@@ -2,6 +2,7 @@ package com.knowit.erozgaar.entities;
 
 import java.sql.Date;
 
+
 public class UserWorkerRequest extends User {
     private int workerId;
     private String firstName;
@@ -9,6 +10,8 @@ public class UserWorkerRequest extends User {
     private String lastName;
     private String education;
     private Address address;
+
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date dateOfBirth;
     private boolean relocation;
 

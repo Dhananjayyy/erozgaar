@@ -145,7 +145,6 @@ export default function WorkerRegistrationForm() {
         //regex pattern for lowercase alphabets and numbers like admin@123
         pattern = /^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/;
 
-
         if (!pattern.test(value)) {
           valid = false;
           error = "Invalid Password";
@@ -178,14 +177,14 @@ export default function WorkerRegistrationForm() {
         }
         break;
 
-      case "address1":
-      case "address2":
-        pattern = new RegExp("^[a-zA-Z0-9, ]{3,}$");
-        if (!pattern.test(value)) {
-          valid = false;
-          error = "Invalid Address";
-        }
-        break;
+      // case "address1":
+      // case "address2":
+      //   pattern = new RegExp("^[a-zA-Z0-9,/.]{3,}$");
+      //   if (!pattern.test(value)) {
+      //     valid = false;
+      //     error = "Invalid Address";
+      //   }
+      //   break;
 
       default:
         console.log("default switch");
@@ -210,86 +209,56 @@ export default function WorkerRegistrationForm() {
       return;
     }
 
-    fetch("http://localhost:8080/checkusername", {
+    var reqbody = JSON.stringify({
+      userName: worker.uid.value,
+      password: worker.pwd.value,
+      phoneNumber: worker.phone.value,
+      gender: worker.gender.value,
+      role: {
+        roleId: 1,
+      },
+      active: true,
+      adhaar: worker.adhaar.value,
+      accountNumber: worker.accountNumber.value,
+      securityQuestion: {
+        securityQuestionId: worker.question.value,
+      },
+      answer: worker.answer.value,
+      firstName: worker.fname.value,
+      middleName: worker.mname.value,
+      lastName: worker.lname.value,
+      education: worker.education.value,
+      address: {
+        addressLine1: worker.address1.value,
+        addressLine2: worker.address2.value,
+        city: {
+          cityName: worker.city.value,
+          state: {
+            stateName: worker.state.value,
+          },
+        },
+      },
+      dateOfBirth: worker.dob.value,
+      relocation: true,
+    });
+
+    fetch("http://localhost:8080/register/worker", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username: worker.uid.value}),
+      body: reqbody,
     })
       .then((response) => response.json())
       .then((data) => {
-        // emailexists = data;
-        console.log("client side:" + JSON.stringify({ userName: worker.uid.value, password: worker.pwd.value}))
-        console.log("server side"+ JSON.stringify(data));
-        // //console.log("email exist:" + JSON.stringify(typeof(data)));
-
-        if (!data) {
-          fetch("http://localhost:8080/register/worker", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              userName:worker.uid.value,
-              password:worker.pwd.value,
-              phoneNumber:worker.phone.value,
-              gender:worker.gender.value,
-              role: {
-                roleName: "Worker"
-              },
-              active:false,
-              adhaar: worker.adhaar.value,
-              accountNumber:worker.accountNumber.value,
-              securityQuestion: {
-                question: worker.question.value,
-              },
-              answer:worker.answer.value,
-
-              firstName: worker.fname.value,
-              middleName: worker.mname.value,
-              lastName: worker.lname.value,
-              education: worker.education.value,
-              address: {
-                addressLine1 : worker.address1.value,
-                addressLine2: worker.address2.value,
-                city: {
-                    cityName: worker.city.value,
-                    state: {
-                        stateName: worker.state.value
-                    },
-                },
-              "dateOfBirth": worker.dob.value,
-              "relocation": false,
-              }
-            }),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              console.log("body data:", JSON.stringify());
-              console.log("return data: " + data.registered);
-
-              if (data.registered === true) {
-                setAlertType("alert-success");
-                showErrorMessage(
-                  "Registration successful. Please log in.",
-                  5000
-                );
-                return;
-              }
-            })
-            .catch((error) => {
-              console.error("Error:", error);
-            });
-        }
-        if (data) {
+        console.log("return data: " + data);
+        if (data === true) {
+          setAlertType("alert-success");
+          showErrorMessage("Registration successful. Please log in.", 5000);
+          return;
+        } else {
           setAlertType("alert-info");
           showErrorMessage("User already exists. Please log in.", 5000);
-
-          // console.log(document.getElementById("successalert").textContent)
-          // setDisplayAlert(true)
-
-          return;
         }
       })
       .catch((error) => {
@@ -385,9 +354,9 @@ export default function WorkerRegistrationForm() {
                 onBlur={(e) => handleChange("gender", e.target.value)}
               >
                 <option value="0">Choose</option>
-                <option value="1">Male</option>
-                <option value="2">Female</option>
-                <option value="3">Other</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
               </select>
               <span className="error text-danger">
                 <span className="error text-danger">
@@ -459,10 +428,10 @@ export default function WorkerRegistrationForm() {
                 onBlur={(e) => handleChange("education", e.target.value)}
               >
                 <option value="0">Choose</option>
-                <option value="1"></option>
-                <option value="2">XII</option>
-                <option value="3">Graduation</option>
-                <option value="3">Other</option>
+                <option value="X">X</option>
+                <option value="XII">XII</option>
+                <option value="Graduation">Graduation</option>
+                <option value="Other">Other</option>
               </select>
               <span className="error text-danger">
                 <span className="error text-danger">
@@ -729,11 +698,17 @@ export default function WorkerRegistrationForm() {
                 onBlur={(e) => handleChange("question", e.target.value)}
               >
                 <option value="0">Choose</option>
-                <option value="1">Que1</option>
-                <option value="2">Que1</option>
-                <option value="3">Que1</option>
-                <option value="3">Que1</option>
-                <option value="3">Que1</option>
+                <option value="1">
+                  What is the name of your favorite Indian movie?
+                </option>
+                <option value="2">
+                  What is the name of the street you grew up on?
+                </option>
+                <option value="3">What is your favorite Indian dish?</option>
+                <option value="4">What is the name of your first pet?</option>
+                <option value="5">
+                  What is the name of the school you attended in the 10th grade?
+                </option>
               </select>
               <span className="error text-danger">
                 <span className="error text-danger">
@@ -771,7 +746,7 @@ export default function WorkerRegistrationForm() {
 
         {/* 6th row */}
         <div className="row text-center m-3">
-          <div className="col"></div>
+          
           <div
             className={`col alert text-center d-flex justify-content-center ${alertType} p-2 w-75 ${
               displayAlert ? "d-block" : "d-none"
@@ -780,6 +755,11 @@ export default function WorkerRegistrationForm() {
           >
             {errorMsg}
           </div>
+        </div>
+
+        {/* 7th row */}
+        <div className="row text-center m-3">
+        <div className="col"></div>
           <div className="col">
             <button
               className="btn btn-primary col-6"
@@ -802,9 +782,10 @@ export default function WorkerRegistrationForm() {
               Clear
             </button>
           </div>
+          <div className="col"></div>
         </div>
 
-        {JSON.stringify(worker) + ""}
+        {/* {JSON.stringify(worker) + ""} */}
       </div>
     </form>
   );
