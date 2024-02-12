@@ -237,9 +237,9 @@ export default function WorkerRegistrationForm() {
             stateName: worker.state.value,
           },
         },
+        dateOfBirth: worker.dob.value,
+        relocation: true,
       },
-      dateOfBirth: worker.dob.value,
-      relocation: true,
     });
 
     fetch("http://localhost:8080/register/worker", {
