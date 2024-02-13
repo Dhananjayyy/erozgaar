@@ -5,6 +5,7 @@ import VlcHome from './components/vlc/VlcHome'
 import ShowRequest from './components/vlc/VlcComponents/ShowRequest'
 import Profile from './components/vlc/VlcComponents/Profile'
 import RegisterWorker from './components/vlc/VlcComponents/RegisterWorker'
+import Home from './components/vlc/VlcComponents/Home'
 
 function App() {
 
@@ -21,7 +22,7 @@ function App() {
         <Route path="/provider" element={<ProviderHome/>} />
         <Route path="/admin" element={<AdminHome/>} /> */}
         <Route path="/vlc" element={<VlcHome/>} /> 
-        <Route path="/home" element={<VlcHome/>} />
+        <Route path="/home" element={<Home/>} />
         <Route path="/showRequest" element={<ShowRequest/>} />
         <Route path="/profile" element={<Profile/>} />
         <Route path="/registerWorker" element={<RegisterWorker/>} />
