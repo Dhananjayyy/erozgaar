@@ -10,11 +10,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name="workers")
-public class Worker {
+public class Worker{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="worker_id")
@@ -42,12 +43,16 @@ public class Worker {
     @Column(name="relocation")
     private boolean relocation;
 
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name="user_id")
+    private User user;
+
     public Worker() {
         super();
     }
 
     public Worker(int id, String firstName, String middleName, String lastName, String education, Address address,
-            Date dateOfBirth, boolean relocation) {
+            Date dateOfBirth, boolean relocation, User user) {
         this.id = id;
         this.firstName = firstName;
         this.middleName = middleName;
@@ -56,6 +61,7 @@ public class Worker {
         this.address = address;
         this.dateOfBirth = dateOfBirth;
         this.relocation = relocation;
+        this.user = user;
     }
 
     public int getId() {
@@ -122,10 +128,18 @@ public class Worker {
         this.relocation = relocation;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "Worker [id=" + id + ", firstName=" + firstName + ", middleName=" + middleName + ", lastName=" + lastName
-                + ", education=" + education + ", address=" + address + ", dateOfBirth=" + dateOfBirth + ", relocation" + relocation +"]";
+                + ", education=" + education + ", address=" + address + ", dateOfBirth=" + dateOfBirth + ", relocation" + relocation + user.toString() +"]";
     }
 
      
