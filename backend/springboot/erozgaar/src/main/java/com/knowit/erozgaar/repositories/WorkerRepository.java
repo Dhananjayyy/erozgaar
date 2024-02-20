@@ -1,13 +1,17 @@
 package com.knowit.erozgaar.repositories;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.knowit.erozgaar.entities.Worker;
+
+import jakarta.transaction.Transactional;
 
 @Repository
 public interface WorkerRepository extends JpaRepository<Worker, Integer>{
@@ -26,4 +30,20 @@ public interface WorkerRepository extends JpaRepository<Worker, Integer>{
     
     @Query("SELECT w FROM Worker w WHERE w.id = :workerId AND w.available = TRUE")
     public Worker isAvailable(@Param("workerId") int workerId);
+    
+    @Query("SELECT w FROM Worker w WHERE w.user.id = :uid")
+	public Worker getWorker(@Param("uid") int uid);
+    
+    @Transactional
+    @Modifying
+    @Query("UPDATE Worker SET firstName=:fname, middleName=:mname, lastName=:lname,relocation=:relocation,dateOfBirth=:dob WHERE user.id=:uid")
+    public int updateWorker(@Param("fname") String fname, @Param("mname") String mname, @Param("lname") String lname,@Param("relocation")boolean relocation , @Param("dob")Date dob,@Param("uid") int uid);
+    
+    
+    
+    
+    
+    
+
+
 }

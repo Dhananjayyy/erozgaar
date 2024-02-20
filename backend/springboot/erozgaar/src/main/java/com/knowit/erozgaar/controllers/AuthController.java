@@ -111,9 +111,9 @@ public class AuthController {
 		System.out.println(userDetails);
 		
 		
-		if(!userDetails.isActive()) {
-			return ResponseEntity.ok(new MessageResponse("inactive"));
-		}
+//		if(!userDetails.isActive()) {
+//			return ResponseEntity.ok(new MessageResponse("inactive"));
+//		}
 
 		String jwtToken = jwtUtils.generateTokenFromUsername(loginRequest.getUsername());
 		List<String> roles = userDetails.getAuthorities().stream()

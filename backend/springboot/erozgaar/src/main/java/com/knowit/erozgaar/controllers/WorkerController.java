@@ -34,4 +34,9 @@ public class WorkerController {
     public List<Worker> getAvailableWorkerByVlcUid(@RequestParam("userId") int userId, @RequestParam("jobId") int jobId){
     	return wservice.getAvailableWorkerByVlcUid(userId, jobId);
     }
+    
+    @GetMapping("/getworkerbyid")
+  	 public Worker getWorkerById(@RequestParam("uid") int uid) {
+  		 return wservice.getWorkerById(uid);
+  	 }
 }

@@ -25,4 +25,13 @@ public class VillageLevelConnectorService {
 	public int getCityIdbyUserId(int uid) {
 		return vlcrepo.getCityIdbyUserId(uid);
 	}
+	
+	public VillageLevelConnector getVlcById(int uid) {
+		return vlcrepo.getVlc(uid);
+
+	}
+	
+	public int updateVlc(String fname, String mname,String lname, Integer uid) {
+		return vlcrepo.updateVlc(fname,mname,lname,uid);
+	}
 }
