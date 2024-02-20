@@ -21,6 +21,7 @@ export default function WorkerRegistrationForm() {
     repwd: { value: 0, valid: false, touched: false, error: "" },
     question: { value: 0, valid: false, touched: false, error: "" },
     answer: { value: 0, valid: false, touched: false, error: "" },
+    preference: { value: 0, valid: false, touched: false, error: "" },
     formValid: false,
   };
 
@@ -60,6 +61,44 @@ export default function WorkerRegistrationForm() {
       }, time);
     }
   }
+
+  const handleDate = (key, value) => {
+    let valid = true;
+    let error = "";
+    if (key === "dob") {
+      const currentDate = new Date();
+      const selectedDate = new Date(value);
+      const yearsDiff = currentDate.getFullYear() - selectedDate.getFullYear();
+      if (yearsDiff < 18 || (yearsDiff === 18 && currentDate.getMonth() < selectedDate.getMonth()) || (yearsDiff === 18 && currentDate.getMonth() === selectedDate.getMonth() && currentDate.getDate() < selectedDate.getDate())) {
+        valid = false;
+        error = "You must be at least 18 years old to register.";
+      }
+    } else {
+      const { valid: fieldValid, error: fieldError } = validateData(key, value);
+      valid = fieldValid;
+      error = fieldError;
+    }
+  
+    let formValid = true;
+    for (let k in worker) {
+      if (worker[k].valid === false) {
+        formValid = false;
+        break;
+      }
+    }
+  
+    dispatch({
+      type: "update",
+      data: {
+        key,
+        val: value,
+        touched: true,
+        valid,
+        error,
+        formValid: formValid,
+      },
+    });
+  };
 
   const handleChange = (key, value) => {
     const { valid, error } = validateData(key, value);
@@ -145,19 +184,19 @@ export default function WorkerRegistrationForm() {
         //regex pattern for lowercase alphabets and numbers like admin@123
         pattern = /^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/;
 
-
         if (!pattern.test(value)) {
           valid = false;
           error = "Invalid Password";
         }
         break;
 
-      // case "state":
-      // case "city":
+      case "state":
+      case "city":
       case "education":
       case "relocation":
       case "question":
       case "gender":
+      case "preference":
         if (value === "0") {
           valid = false;
           error = "Please select an option";
@@ -178,14 +217,14 @@ export default function WorkerRegistrationForm() {
         }
         break;
 
-      case "address1":
-      case "address2":
-        pattern = new RegExp("^[a-zA-Z0-9, ]{3,}$");
-        if (!pattern.test(value)) {
-          valid = false;
-          error = "Invalid Address";
-        }
-        break;
+      // case "address1":
+      // case "address2":
+      //   pattern = new RegExp("^[a-zA-Z0-9,/.]{3,}$");
+      //   if (!pattern.test(value)) {
+      //     valid = false;
+      //     error = "Invalid Address";
+      //   }
+      //   break;
 
       default:
         console.log("default switch");
@@ -197,6 +236,7 @@ export default function WorkerRegistrationForm() {
     e.preventDefault();
 
     const passwordsMatch = checkPasswordsMatch();
+
     if (!passwordsMatch) {
       setAlertType("alert-warning");
       showErrorMessage("Passwords do not match", 5000);
@@ -209,140 +249,66 @@ export default function WorkerRegistrationForm() {
       return;
     }
 
-    fetch("http://localhost:8080/checkusername", {
-    
-    // if (!passwordsMatch) {
-    //   setAlertType("alert-warning");
-    //   showErrorMessage('Passwords do not match',5000)
-    //   return;
-    // }
-    // //
-    // if(worker.formValid === false){
-    //   setAlertType("alert-danger");
-    //   showErrorMessage('Please enter valid data',5000)
-    //   return;
-    // }
+    var reqbody = JSON.stringify({
+      userName: worker.uid.value,
+      password: worker.pwd.value,
+      phoneNumber: worker.phone.value,
+      gender: worker.gender.value,
+      role: {
+        roleId: 1,
+      },
+      active: false,
+      adhaar: worker.adhaar.value,
+      accountNumber: worker.accountNumber.value,
+      securityQuestion: {
+        securityQuestionId: worker.question.value,
+      },
+      answer: worker.answer.value,
+      firstName: worker.fname.value,
+      middleName: worker.mname.value,
+      lastName: worker.lname.value,
+      education: worker.education.value,
+      jobCategory: {
+        id:worker.preference.value
+      },
+      address: {
+        addressLine1: worker.address1.value,
+        addressLine2: worker.address2.value,
+        city: {
+          id: worker.city.value,
+        },
+      },
+      dateOfBirth: worker.dob.value,
+      relocation: true,
+    });
 
-    fetch("http://localhost:9000/registerworker", {
+    console.log(reqbody);
 
+    fetch("http://localhost:8080/regWorker", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-
-      body: JSON.stringify({ username: worker.uid.value}),
-
-
-      //body: JSON.stringify({ uid: worker.uid.value }),
-      body: JSON.stringify({
-        "userName": worker.uid.value,
-        "password": worker.pwd.value,
-        "phoneNumber": worker.phone.value,
-        "gender": worker.gender.value,
-        "role": {
-          "roleName": worker.role.value
-        },
-        "active": false,
-        "securityQuestion": {
-          "question": worker.question.value,
-        },
-        "answer": worker.answer.value,
-      
-        "firstName": worker.firstName.value,
-        "middleName": worker.middleName.value,
-        "lastName": worker.lastName.value,
-        "education": worker.education.value,
-        "address": {
-          "addressLine1" : worker.address1.value,
-          "addressLine2" : worker.address2.value,
-          "city" : {
-              "cityName" : worker.city.value,
-              "state" : {
-                  "stateName" : worker.state.value
-              }
-          }
-        },
-        "dateOfBirth": worker.dateOfBirth.value,
-        "relocation": worker.relocation.value
-      }
-      ),
+      body: reqbody,
     })
       .then((response) => response.json())
       .then((data) => {
-        // emailexists = data;
-        console.log("client side:" + JSON.stringify({ userName: worker.uid.value, password: worker.pwd.value}))
-        console.log("server side"+ JSON.stringify(data));
-        // //console.log("email exist:" + JSON.stringify(typeof(data)));
-        // console.log("email exist:" + JSON.stringify(typeof(data)));
-        console.log("data: " + JSON.stringify(data));
-
-        if (!data) {
-          fetch("http://localhost:8080/register/worker", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              userName:worker.uid.value,
-              password:worker.pwd.value,
-              phoneNumber:worker.phone.value,
-              gender:worker.gender.value,
-              role: {
-                roleName: "Worker"
-              },
-              active:false,
-              adhaar: worker.adhaar.value,
-              accountNumber:worker.accountNumber.value,
-              securityQuestion: {
-                question: worker.question.value,
-              },
-              answer:worker.answer.value,
-
-              firstName: worker.fname.value,
-              middleName: worker.mname.value,
-              lastName: worker.lname.value,
-              education: worker.education.value,
-              address: {
-                addressLine1 : worker.address1.value,
-                addressLine2: worker.address2.value,
-                city: {
-                    cityName: worker.city.value,
-                    state: {
-                        stateName: worker.state.value
-                    },
-                },
-              "dateOfBirth": worker.dob.value,
-              "relocation": false,
-              }
-            }),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              console.log("body data:", JSON.stringify());
-              console.log("return data: " + data.registered);
-
-              if (data.registered === true) {
-                setAlertType("alert-success");
-                showErrorMessage(
-                  "Registration successful. Please log in.",
-                  5000
-                );
-                return;
-              }
-            })
-            .catch((error) => {
-              console.error("Error:", error);
-            });
-        }
-        if (data) {
-          setAlertType("alert-info");
-          showErrorMessage("User already exists. Please log in.", 5000);
-
-          // console.log(document.getElementById("successalert").textContent)
-          // setDisplayAlert(true)
-
+        
+        console.log("return data: " + JSON.stringify(data));
+        if (data.msg === "success") {
+          setAlertType("alert-success");
+          showErrorMessage("Registration successful. Please log in.", 5000);
           return;
+        } 
+        if(data.msg === "duplicate"){
+          setAlertType("alert-danger");
+          showErrorMessage("User already exists.", 5000);
+          return
         }
+        setAlertType("alert-danger");
+        showErrorMessage("Error in registration", 5000);
+
+
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -437,9 +403,9 @@ export default function WorkerRegistrationForm() {
                 onBlur={(e) => handleChange("gender", e.target.value)}
               >
                 <option value="0">Choose</option>
-                <option value="1">Male</option>
-                <option value="2">Female</option>
-                <option value="3">Other</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
               </select>
               <span className="error text-danger">
                 <span className="error text-danger">
@@ -465,7 +431,7 @@ export default function WorkerRegistrationForm() {
                 type="date"
                 className="form-control"
                 id="dob"
-                onChange={(e) => handleChange("dob", e.target.value)}
+                onChange={(e) => handleDate("dob", e.target.value)}
                 onBlur={(e) => handleChange("dob", e.target.value)}
               />
               <span className="error text-danger">
@@ -511,10 +477,10 @@ export default function WorkerRegistrationForm() {
                 onBlur={(e) => handleChange("education", e.target.value)}
               >
                 <option value="0">Choose</option>
-                <option value="1"></option>
-                <option value="2">XII</option>
-                <option value="3">Graduation</option>
-                <option value="3">Other</option>
+                <option value="X">X</option>
+                <option value="XII">XII</option>
+                <option value="Graduation">Graduation</option>
+                <option value="Other">Other</option>
               </select>
               <span className="error text-danger">
                 <span className="error text-danger">
@@ -555,48 +521,60 @@ export default function WorkerRegistrationForm() {
 
         {/* 3rd row */}
         <div className="row">
-          <div className="col">
+        <div className="col">
             <div className="mb-3 border bg-light rounded p-2">
-              <label htmlFor="pwd" className="form-label">
+              <label htmlFor="state" className="form-label">
                 State
               </label>
-              <input
-                type="text"
-                className="form-control"
-                id="sid"
-                placeholder="Enter your state"
+              <select
+                className="form-select"
                 onChange={(e) => handleChange("state", e.target.value)}
                 onBlur={(e) => handleChange("state", e.target.value)}
-              />
+              >
+                <option id="state" className="form-option" value="0">
+                  Select State
+                </option>
+                <option id="state" className="form-option" value="14">
+                  Maharashtra
+                </option>
+                <option id="state" className="form-option" value="20">
+                  Punjab
+                </option>
+                <option id="state" className="form-option" value="7">
+                  Gujarat
+                </option>
+              </select>
               <span className="error text-danger">
-                <span className="error text-danger">
-                  {worker.state.touched &&
-                    !worker.state.valid &&
-                    worker.state.error}
-                </span>
+                {worker.state.touched && !worker.state.valid && worker.state.error}
               </span>
             </div>
           </div>
 
           <div className="col">
             <div className="mb-3 border bg-light rounded p-2">
-              <label htmlFor="pwd" className="form-label">
+              <label htmlFor="city" className="form-label">
                 City
               </label>
-              <input
-                type="text"
-                className="form-control"
-                id="cid"
-                placeholder="Enter your city"
+              <select
+                className="form-select"
                 onChange={(e) => handleChange("city", e.target.value)}
                 onBlur={(e) => handleChange("city", e.target.value)}
-              />
+              >
+                <option id="0" className="form-option" value="0">
+                  Select City
+                </option>
+                <option id="city" className="form-option" value="8">
+                  Pune
+                </option>
+                <option id="city" className="form-option" value="5">
+                  Amritsar
+                </option>
+                {/* <option id="city" className="form-option" value="7">
+                  Surat
+                </option> */}
+              </select>
               <span className="error text-danger">
-                <span className="error text-danger">
-                  {worker.city.touched &&
-                    !worker.city.valid &&
-                    worker.city.error}
-                </span>
+                {worker.city.touched && !worker.city.valid && worker.city.error}
               </span>
             </div>
           </div>
@@ -665,6 +643,7 @@ export default function WorkerRegistrationForm() {
                 placeholder="Enter your username"
                 onChange={(e) => handleChange("adhaar", e.target.value)}
                 onBlur={(e) => handleChange("adhaar", e.target.value)}
+                maxLength={12}
               />
               <span className="error text-danger">
                 <span className="error text-danger">
@@ -682,12 +661,13 @@ export default function WorkerRegistrationForm() {
                 Account Number
               </label>
               <input
-                type="password"
+                type="number"
                 className="form-control"
                 id="accountNumber"
                 placeholder="Enter your Answer"
                 onChange={(e) => handleChange("accountNumber", e.target.value)}
                 onBlur={(e) => handleChange("accountNumber", e.target.value)}
+                maxLength={10}
               />
               <span className="error text-danger">
                 <span className="error text-danger">
@@ -698,6 +678,41 @@ export default function WorkerRegistrationForm() {
               </span>
             </div>
           </div>
+
+          <div className="col">
+            <div className="mb-3 border bg-light rounded p-2">
+              <label htmlFor="pwd" className="form-label">
+                Job Preference
+              </label>
+              <select
+                className="form-select"
+                onChange={(e) => handleChange("preference", e.target.value)}
+                onBlur={(e) => handleChange("preference", e.target.value)}
+              >
+                <option value="0">Choose</option>
+                <option value="1">
+                  Housekeeping
+                </option>
+                <option value="2">
+                  Cooking
+                </option>
+                <option value="3">Cleaning</option>
+                <option value="4">Driving</option>
+                <option value="5">
+                  Security
+                </option>
+              </select>
+              <span className="error text-danger">
+                <span className="error text-danger">
+                  {worker.preference.touched &&
+                    !worker.preference.valid &&
+                    worker.preference.error}
+                </span>
+              </span>
+            </div>
+          </div>
+
+          
         </div>
 
         <hr />
@@ -781,11 +796,17 @@ export default function WorkerRegistrationForm() {
                 onBlur={(e) => handleChange("question", e.target.value)}
               >
                 <option value="0">Choose</option>
-                <option value="1">Que1</option>
-                <option value="2">Que1</option>
-                <option value="3">Que1</option>
-                <option value="3">Que1</option>
-                <option value="3">Que1</option>
+                <option value="1">
+                  What is the name of your favorite Indian movie?
+                </option>
+                <option value="2">
+                  What is the name of the street you grew up on?
+                </option>
+                <option value="3">What is your favorite Indian dish?</option>
+                <option value="4">What is the name of your first pet?</option>
+                <option value="5">
+                  What is the name of the school you attended in the 10th grade?
+                </option>
               </select>
               <span className="error text-danger">
                 <span className="error text-danger">
@@ -823,7 +844,7 @@ export default function WorkerRegistrationForm() {
 
         {/* 6th row */}
         <div className="row text-center m-3">
-          <div className="col"></div>
+          
           <div
             className={`col alert text-center d-flex justify-content-center ${alertType} p-2 w-75 ${
               displayAlert ? "d-block" : "d-none"
@@ -832,6 +853,11 @@ export default function WorkerRegistrationForm() {
           >
             {errorMsg}
           </div>
+        </div>
+
+        {/* 7th row */}
+        <div className="row text-center m-3">
+        <div className="col"></div>
           <div className="col">
             <button
               className="btn btn-primary col-6"
@@ -854,9 +880,10 @@ export default function WorkerRegistrationForm() {
               Clear
             </button>
           </div>
+          <div className="col"></div>
         </div>
 
-        {JSON.stringify(worker) + ""}
+        {/* {JSON.stringify(worker) + ""} */}
       </div>
     </form>
   );

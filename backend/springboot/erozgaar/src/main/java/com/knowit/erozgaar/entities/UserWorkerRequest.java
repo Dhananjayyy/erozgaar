@@ -2,35 +2,154 @@ package com.knowit.erozgaar.entities;
 
 import java.sql.Date;
 
-public class UserWorkerRequest extends User {
+
+public class UserWorkerRequest{
+    private int userId;
+    private String userName;
+    private String password;
+    private String phoneNumber;
+    private String gender;
+    private Role role;
+    private boolean active;
+    private String adhaar;
+    private String accountNumber;
+    private SecurityQuestion securityQuestion;
+    private String answer;
+
     private int workerId;
     private String firstName;
     private String middleName;
     private String lastName;
     private String education;
     private Address address;
+    
+    private JobCategory jobCategory;
+
     private Date dateOfBirth;
     private boolean relocation;
 
+    
+
     public UserWorkerRequest() {
-        super();
     }
 
-    public UserWorkerRequest(int userId, String userName, String password, String phoneNumber, String gender,
-            Role role, boolean active, String adhaar, String accountNumber, SecurityQuestion securityQuestion,
-            String answer, int workerId, String firstName, String middleName, String lastName, String education,
-            Address address, Date dateOfBirth, boolean relocation) {
-        
-        super(userId, userName, password, phoneNumber, gender, role, active, adhaar, accountNumber, securityQuestion,
-        answer);
-        this.workerId = workerId;
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.education = education;
-        this.address = address;
-        this.dateOfBirth = dateOfBirth;
-        this.relocation = relocation;
+    
+
+    public UserWorkerRequest(int userId, String userName, String password, String phoneNumber, String gender, Role role,
+			boolean active, String adhaar, String accountNumber, SecurityQuestion securityQuestion, String answer,
+			int workerId, String firstName, String middleName, String lastName, String education, Address address,
+			JobCategory jobCategory, Date dateOfBirth, boolean relocation) {
+		super();
+		this.userId = userId;
+		this.userName = userName;
+		this.password = password;
+		this.phoneNumber = phoneNumber;
+		this.gender = gender;
+		this.role = role;
+		this.active = active;
+		this.adhaar = adhaar;
+		this.accountNumber = accountNumber;
+		this.securityQuestion = securityQuestion;
+		this.answer = answer;
+		this.workerId = workerId;
+		this.firstName = firstName;
+		this.middleName = middleName;
+		this.lastName = lastName;
+		this.education = education;
+		this.address = address;
+		this.jobCategory = jobCategory;
+		this.dateOfBirth = dateOfBirth;
+		this.relocation = relocation;
+	}
+
+
+
+	public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public String getAdhaar() {
+        return adhaar;
+    }
+
+    public void setAdhaar(String adhaar) {
+        this.adhaar = adhaar;
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
+    public SecurityQuestion getSecurityQuestion() {
+        return securityQuestion;
+    }
+
+    public void setSecurityQuestion(SecurityQuestion securityQuestion) {
+        this.securityQuestion = securityQuestion;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 
     public int getWorkerId() {
@@ -53,8 +172,8 @@ public class UserWorkerRequest extends User {
         return middleName;
     }
 
-    public void setMiddleName(String middle_name) {
-        this.middleName = middle_name;
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
     }
 
     public String getLastName() {
@@ -97,11 +216,26 @@ public class UserWorkerRequest extends User {
         this.relocation = relocation;
     }
 
-    @Override
+    public JobCategory getJobCategory() {
+		return jobCategory;
+	}
+
+	public void setJobCategory(JobCategory jobCategory) {
+		this.jobCategory = jobCategory;
+	}
+
+
+
+	@Override
     public String toString() {
-        return "UserWorkerRegistration [" + super.toString() + ", workerId=" + workerId + ", firstName=" + firstName + ", middle_name="
+        return "UserWorkerRequest1 [userId=" + userId + ", userName=" + userName + ", password=" + password
+                + ", phoneNumber=" + phoneNumber + ", gender=" + gender + ", role=" + role + ", active=" + active
+                + ", adhaar=" + adhaar + ", accountNumber=" + accountNumber + ", securityQuestion=" + securityQuestion
+                + ", answer=" + answer + ", workerId=" + workerId + ", firstName=" + firstName + ", middleName="
                 + middleName + ", lastName=" + lastName + ", education=" + education + ", address=" + address
                 + ", dateOfBirth=" + dateOfBirth + ", relocation=" + relocation + "]";
     }
+
+    
 
 }

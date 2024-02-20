@@ -1,5 +1,7 @@
 package com.knowit.erozgaar.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,4 +22,18 @@ public class ProviderService {
     public Provider getByUsername(String username) {
 		return prepo.findByUsername(username);
 	}
+    
+    public List<Provider> getProviders()
+	{
+		return prepo.getListForApproval();
+		
+	}
+    
+    public Provider getProviderByUserId(int id){
+    	return prepo.getProviderByUserId(id);
+    }
+    
+    public int getProviderIdByUserId(int uid) {
+    	return prepo.getProviderIdByUserId(uid);
+    }
 }

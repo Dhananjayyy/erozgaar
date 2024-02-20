@@ -24,7 +24,7 @@ public class Address {
     @Column(name="address_line_2")
     private String addressLine2;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
 	@JoinColumn(name="city_id")
     private City city;
 
