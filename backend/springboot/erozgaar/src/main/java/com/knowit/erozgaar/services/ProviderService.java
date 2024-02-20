@@ -1,5 +1,6 @@
 package com.knowit.erozgaar.services;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +30,6 @@ public class ProviderService {
 		
 	}
     
-    public List<Provider> getProvidersByCity(int uid)
-	{
-		
-		return prepo.getListForApprovalByCity(uid);
-		
-	}
-    
     public Provider getProviderByUserId(int id){
     	return prepo.getProviderByUserId(id);
     }
@@ -48,8 +42,7 @@ public class ProviderService {
     	return prepo.getProviderById(uid);
     }
     
-    public int updateProvider(String fname, String mname, String lname, String org,int uid) {
-    	return prepo.updateProvider(fname,mname,lname,org,uid);
+    public int updateProvider(String fname, String mname, String lname, int uid) {
+    	return prepo.updateProvider(fname,mname,lname,uid);
     }
-    
 }

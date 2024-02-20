@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.knowit.erozgaar.entities.Doctor;
+import com.knowit.erozgaar.entities.DoctorReg;
 import com.knowit.erozgaar.entities.JobCategory;
 import com.knowit.erozgaar.entities.LoginRequest;
 import com.knowit.erozgaar.entities.MessageResponse;
@@ -40,6 +42,7 @@ import com.knowit.erozgaar.entities.Worker;
 import com.knowit.erozgaar.repositories.UserRepository;
 import com.knowit.erozgaar.security.JwtUtils;
 import com.knowit.erozgaar.security.MyUserDetails;
+import com.knowit.erozgaar.services.DoctorService;
 import com.knowit.erozgaar.services.JobCategoryService;
 import com.knowit.erozgaar.services.JobService;
 import com.knowit.erozgaar.services.ProviderService;
@@ -77,6 +80,9 @@ public class AuthController {
 	UserService uservice;
 
 	@Autowired
+	DoctorService dservice;
+
+	@Autowired
 	SecurityQuestionService sservice;
 
 	@Autowired
@@ -105,9 +111,9 @@ public class AuthController {
 		System.out.println(userDetails);
 		
 		
-		if(userDetails.getActive() == 0) {
-			return ResponseEntity.ok(new MessageResponse("inactive"));
-		}
+//		if(!userDetails.isActive()) {
+//			return ResponseEntity.ok(new MessageResponse("inactive"));
+//		}
 
 		String jwtToken = jwtUtils.generateTokenFromUsername(loginRequest.getUsername());
 		List<String> roles = userDetails.getAuthorities().stream()
@@ -130,7 +136,7 @@ public class AuthController {
 			//JobCategory jobCategory = jcservice.getById(request.getJobCategory().getId());
 
 			User u = new User(request.getUserName(), encoder.encode(request.getPassword()), request.getPhoneNumber(),
-					request.getGender(), role, 0, request.getAdhaar(), request.getAccountNumber(), securityQuestion,
+					request.getGender(), role, false, request.getAdhaar(), request.getAccountNumber(), securityQuestion,
 					request.getAnswer());
 			Worker w = new Worker(request.getWorkerId(), request.getFirstName(), request.getMiddleName(),
 					request.getLastName(),
@@ -155,7 +161,7 @@ public class AuthController {
 			SecurityQuestion securityQuestion = sservice.getById(request.getSecurityQuestion().getSecurityQuestionId());
 
 			User u = new User(request.getUserName(), encoder.encode(request.getPassword()), request.getPhoneNumber(),
-					request.getGender(), role, 0,request.getAdhaar(), request.getAccountNumber(), securityQuestion,
+					request.getGender(), role, false, request.getAdhaar(), request.getAccountNumber(), securityQuestion,
 					request.getAnswer());
 			Provider p = new Provider(request.getProviderId(), request.getFirstName(), request.getMiddleName(),
 					request.getLastName(), request.getOrganization(), request.getEducation(), request.getAddress(), u);
@@ -175,7 +181,7 @@ public class AuthController {
 			SecurityQuestion securityQuestion = sservice.getById(request.getSecurityQuestion().getSecurityQuestionId());
 
 			User u = new User(request.getUserName(), encoder.encode(request.getPassword()), request.getPhoneNumber(),
-					request.getGender(), role, 1, request.getAdhaar(), request.getAccountNumber(), securityQuestion,
+					request.getGender(), role, request.isActive(), request.getAdhaar(), request.getAccountNumber(), securityQuestion,
 					request.getAnswer());
 			VillageLevelConnector vlc = new VillageLevelConnector(request.getVlcId(), request.getFirstName(),
 					request.getMiddleName(), request.getLastName(), request.getEducation(), request.getAddress(), u);

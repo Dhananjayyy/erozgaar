@@ -135,6 +135,20 @@ public class AppSecurityConfigurer {
 			//getProviderRegRequests
 			//getAssignedWorkers
 			
+			//update profile of worker
+			authorize.requestMatchers("/getuserbyusername").permitAll();
+			authorize.requestMatchers("/getuserbyid").permitAll();
+			authorize.requestMatchers("/getuserworkerbyid").permitAll();
+			authorize.requestMatchers("/updateWorker").permitAll();
+			
+			//update vlc
+			authorize.requestMatchers("/getuservlcbyid").permitAll();
+			authorize.requestMatchers("/updateVlc").permitAll();
+			
+			
+			authorize.requestMatchers("/getuserproviderbyid").permitAll();
+			authorize.requestMatchers("/updateProvider").permitAll();
+			
 			authorize.requestMatchers("/logout").permitAll();
 			
 			authorize.requestMatchers("/regDoctor").permitAll();

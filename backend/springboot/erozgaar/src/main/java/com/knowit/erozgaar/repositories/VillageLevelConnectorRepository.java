@@ -19,6 +19,7 @@ public interface VillageLevelConnectorRepository extends JpaRepository<VillageLe
     @Query("SELECT v.address.city.id FROM VillageLevelConnector v WHERE v.user.id = :userId")
     public int getCityIdbyUserId(@Param("userId") int userId);
     
+
     @Query("SELECT v FROM VillageLevelConnector v WHERE v.user.id = :uid")
 	public VillageLevelConnector getVlc(@Param("uid") int uid);
     
