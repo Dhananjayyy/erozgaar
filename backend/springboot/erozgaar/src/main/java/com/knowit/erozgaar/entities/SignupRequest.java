@@ -1,7 +1,9 @@
 package com.knowit.erozgaar.entities;
 
-public class LoginRequest {
-	String username, password;
+public class SignupRequest {
+
+	String username,password;
+	
 
 	public String getUsername() {
 		return username;

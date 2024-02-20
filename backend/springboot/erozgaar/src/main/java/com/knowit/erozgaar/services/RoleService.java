@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.knowit.erozgaar.entities.Role;
 import com.knowit.erozgaar.repositories.RoleRepository;
 
-
 @Service
 public class RoleService {
 
@@ -29,7 +28,5 @@ public class RoleService {
 		}
 		return r;
 	}
-
-    
 	
 }

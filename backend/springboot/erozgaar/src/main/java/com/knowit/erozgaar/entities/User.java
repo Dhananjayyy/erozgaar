@@ -24,6 +24,7 @@ public class User {
 	@JsonIgnore
 	@Column(name="password")
 	private String password;
+	
 
 	@Column(name = "phone_number")
     private String phoneNumber;
@@ -55,9 +56,8 @@ public class User {
 		super();
 	}
 
-	public User(int id, String userName, String password, String phoneNumber, String gender, Role role, boolean active,
+	public User(String userName, String password, String phoneNumber, String gender, Role role, boolean active,
 			String adhaar, String accountNumber, SecurityQuestion securityQuestion, String answer) {
-		this.id = id;
 		this.userName = userName;
 		this.password = password;
 		this.phoneNumber = phoneNumber;

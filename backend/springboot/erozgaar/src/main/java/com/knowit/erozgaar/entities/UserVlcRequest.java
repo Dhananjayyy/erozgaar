@@ -1,6 +1,6 @@
 package com.knowit.erozgaar.entities;
 
-public class UserProviderRequest{
+public class UserVlcRequest {
     private int userId;
     private String userName;
     private String password;
@@ -13,23 +13,20 @@ public class UserProviderRequest{
     private SecurityQuestion securityQuestion;
     private String answer;
 
-    private int providerId;
+    private int vlcId;
     private String firstName;
     private String middleName;
     private String lastName;
-    private String organization;
     private String education;
     private Address address;
 
-    public UserProviderRequest() {
+    public UserVlcRequest() {
         super();
     }
 
-
-    public UserProviderRequest(int userId, String userName, String password, String phoneNumber, String gender,
-            Role role, boolean active, String adhaar, String accountNumber, SecurityQuestion securityQuestion,
-            String answer, int providerId, String firstName, String middleName, String lastName, String organization,
-            String education, Address address) {
+    public UserVlcRequest(int userId, String userName, String password, String phoneNumber, String gender, Role role,
+            boolean active, String adhaar, String accountNumber, SecurityQuestion securityQuestion, String answer,
+            int vlcId, String firstName, String middleName, String lastName, String education, Address address) {
         this.userId = userId;
         this.userName = userName;
         this.password = password;
@@ -41,15 +38,13 @@ public class UserProviderRequest{
         this.accountNumber = accountNumber;
         this.securityQuestion = securityQuestion;
         this.answer = answer;
-        this.providerId = providerId;
+        this.vlcId = vlcId;
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
-        this.organization = organization;
         this.education = education;
         this.address = address;
     }
-
 
     public int getUserId() {
         return userId;
@@ -139,12 +134,12 @@ public class UserProviderRequest{
         this.answer = answer;
     }
 
-    public int getProviderId() {
-        return providerId;
+    public int getVlcId() {
+        return vlcId;
     }
 
-    public void setProviderId(int providerId) {
-        this.providerId = providerId;
+    public void setVlcId(int vlcId) {
+        this.vlcId = vlcId;
     }
 
     public String getFirstName() {
@@ -171,14 +166,6 @@ public class UserProviderRequest{
         this.lastName = lastName;
     }
 
-    public String getOrganization() {
-        return organization;
-    }
-
-    public void setOrganization(String organization) {
-        this.organization = organization;
-    }
-
     public String getEducation() {
         return education;
     }
@@ -195,14 +182,14 @@ public class UserProviderRequest{
         this.address = address;
     }
 
-
     @Override
     public String toString() {
-        return "UserProviderRequest [userId=" + userId + ", userName=" + userName + ", password=" + password
+        return "UserVlcRequest [userId=" + userId + ", userName=" + userName + ", password=" + password
                 + ", phoneNumber=" + phoneNumber + ", gender=" + gender + ", role=" + role + ", active=" + active
                 + ", adhaar=" + adhaar + ", accountNumber=" + accountNumber + ", securityQuestion=" + securityQuestion
-                + ", answer=" + answer + ", providerId=" + providerId + ", firstName=" + firstName + ", middleName="
-                + middleName + ", lastName=" + lastName + ", organization=" + organization + ", education=" + education
-                + ", address=" + address + "]";
+                + ", answer=" + answer + ", vlcId=" + vlcId + ", firstName=" + firstName + ", middleName=" + middleName
+                + ", lastName=" + lastName + ", education=" + education + ", address=" + address + "]";
     }
+
+    
 }

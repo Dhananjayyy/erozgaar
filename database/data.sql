@@ -97,7 +97,7 @@ VALUES
 
 INSERT INTO users (user_name, password, phone_number,gender, role_id, active,adhaar,account_number, security_question_id, answer)
 VALUES
-    ('Akash.sharma', 'Akash@123',9876543210,'Male', 1, TRUE,"123456781234","1234567890", 1, 'Don'),
+    ('Akash.Sharma', '$2a$12$D/e/OHU5SYUOH9VV9jEuceNNGcfBpunWZVPBbQhhFAQWzP3vY2ih.',9876543210,'Male', 1, TRUE,"123456781234","1234567890", 1, 'Don'),
     ('Sanket.Patel', 'Sanket@123',9856543210,'Other', 1, TRUE,"223456781234","2234567890", 2, 'Patil Vasti'),
     ('Shreyash.Patel', 'Shreyash@123',9876547710,'Female', 1, TRUE,"323456781234","3234567890", 3, 'Fish'),
 
@@ -111,7 +111,7 @@ VALUES
     ('Priya.Sharma', 'Priya@123',6845312458,'Female', 3, TRUE,"103456781234","1034567890", 1, 'Salaar'),
     ('Sneha.Mane', 'Sneha@123',5647895210,'Female', 3, TRUE,"113456731234","1134567890", 1, 'Yes Boss'),
 
-    ('pratiksha.pawar', 'Admin@123',1176543210,'Female', 4, TRUE,'','', 4, 'Monu');
+    ('Pratiksha.Pawar', '$2a$12$zIWuhxUqfgHR981H5biV4eYFvaY.LZfmol5ia7mG9K/vL.sjjV2li',1176543210,'Female', 4, TRUE,'','', 4, 'Monu');
 
 INSERT INTO admins (first_name, middle_name, last_name, user_id)
 VALUES 

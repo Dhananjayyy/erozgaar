@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.knowit.erozgaar.entities.VillageLevelConnector;
 import com.knowit.erozgaar.repositories.VillageLevelConnectorRepository;
 
+
 @Service
 public class VillageLevelConnectorService {
 
