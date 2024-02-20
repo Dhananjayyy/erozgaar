@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 export default function LoginForm() {
   const navigate = useNavigate()
 
-  const [displayAlert, setDisplayAlert] = useState(false);
+  const [displayAlert, setDisplayAlert] = useState(false)
   const [dispMsg, setDispMsg] = useState("")
 
 
@@ -37,11 +37,16 @@ export default function LoginForm() {
     })
       .then((response) => response.json())
       .then((data) => {
-
+        console.log(JSON.stringify(data))
         if (data === false) {
           showErrorMessage("Please enter correct username / password", 5000);
           return;
-        } else if (data != "false") {
+        } 
+        if(data.msg === "inactive"){
+          showErrorMessage("Inactive Account", 5000);
+          return;
+        }
+        if (data != "false") {
           const role = data.user.role.roleName
           const active = data.user.active
           if (active) {

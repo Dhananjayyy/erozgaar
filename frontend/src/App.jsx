@@ -1,31 +1,38 @@
 //import './App.css'
 
 import { Route, Routes } from "react-router-dom";
-import HomePage from "./components/home/HomePage";
-import LoginForm from "./components/forms/LoginForm";
-import WorkerRegistrationForm from "./components/forms/WorkerRegistrationForm";
+import HomeLayout from "./components/home/HomeLayout";
 import ProviderRegistrationForm from "./components/forms/ProviderRegistrationForm";
-import WorkerHome from "./components/worker/WorkerHome";
+import WorkerRegistrationForm from "./components/forms/WorkerRegistrationForm";
+import WorkerHome from "./components/worker/WorkerHomeLayout";
 import ProviderHome from "./components/provider/ProviderHome";
-import AdminHome from "./components/admin/AdminHome";
-import VlcHome from "./components/vlc/VlcHome";
+import AdminHomeLayout from "./components/admin/AdminHomeLayout";
+import VLCHomeLayout from "./components/vlc/VLCHomeLayout";
+import LoginForm from "./components/forms/LoginForm";
+import AddVLC from "./components/forms/VlcRegistrationForm";
+import ProviderHomeLayout from "./components/provider/ProviderHomeLayout";
+
 
 function App() {
   return (
     <>
       <Routes>
         {/* Main */}
-        <Route path="/" element={<HomePage />} />
-        <Route path="/worker" element={<WorkerHome/>} />
-        <Route path="/provider" element={<ProviderHome/>} />
-        <Route path="/admin" element={<AdminHome/>} />
-        <Route path="/vlc" element={<VlcHome/>} />
+        {/* <Route path="/" element={<AddVLC/>} /> */}
+        {/* <Route path="/" element={<ProviderRegistrationForm/>} /> */}
+        {/* <Route path="/" element={<VLCHomeLayout/>} /> */}
+        <Route path="/" element={<HomeLayout />} />
+        <Route path="/workerlayout" element={<WorkerHome/>} />
+
+        <Route path="/providerlayout" element={<ProviderHomeLayout/>} />
+        <Route path="/adminlayout" element={<AdminHomeLayout/>} />
+        <Route path="/vlclayout" element={<VLCHomeLayout/>} /> */
         {/* Login */}
-        <Route path="/login" element={<LoginForm/>} />
+        {/* <Route path="/login" element={<LoginForm/>} /> */}
 
         {/* Registration Form */}
-        <Route path="/registerworker" element={<WorkerRegistrationForm/>} />
-        <Route path="/registerprovider" element={<ProviderRegistrationForm/>} />
+        {/* <Route path="/registerworker" element={<WorkerRegistrationForm/>} />
+        <Route path="/registerprovider" element={<ProviderRegistrationForm/>} /> */} */
 
       </Routes>
     </>

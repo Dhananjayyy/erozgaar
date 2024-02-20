@@ -1,9 +1,12 @@
 package com.knowit.erozgaar.controllers;
 
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.*;
 
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.knowit.erozgaar.entities.Doctor;
 import com.knowit.erozgaar.entities.DoctorReg;
+import com.knowit.erozgaar.entities.JobCategory;
 import com.knowit.erozgaar.entities.LoginRequest;
 import com.knowit.erozgaar.entities.MessageResponse;
 import com.knowit.erozgaar.entities.Provider;
@@ -38,6 +43,8 @@ import com.knowit.erozgaar.repositories.UserRepository;
 import com.knowit.erozgaar.security.JwtUtils;
 import com.knowit.erozgaar.security.MyUserDetails;
 import com.knowit.erozgaar.services.DoctorService;
+import com.knowit.erozgaar.services.JobCategoryService;
+import com.knowit.erozgaar.services.JobService;
 import com.knowit.erozgaar.services.ProviderService;
 import com.knowit.erozgaar.services.RoleService;
 import com.knowit.erozgaar.services.SecurityQuestionService;
@@ -47,8 +54,8 @@ import com.knowit.erozgaar.services.WorkerService;
 
 import jakarta.transaction.Transactional;
 
+//@CrossOrigin(origins = "http://localhost:5173")
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
 
 	@Autowired
@@ -86,10 +93,14 @@ public class AuthController {
 
 	@Autowired
 	VillageLevelConnectorService vlcservice;
+	
+	@Autowired
+	JobCategoryService jcservice;
 
 	@PostMapping("/login")
 	public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
 		System.out.println(loginRequest.getUsername() + " : " + loginRequest.getPassword());
+		
 
 		Authentication authentication = authManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -98,6 +109,11 @@ public class AuthController {
 
 		MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
 		System.out.println(userDetails);
+		
+		
+		if(!userDetails.isActive()) {
+			return ResponseEntity.ok(new MessageResponse("inactive"));
+		}
 
 		String jwtToken = jwtUtils.generateTokenFromUsername(loginRequest.getUsername());
 		List<String> roles = userDetails.getAuthorities().stream()
@@ -114,49 +130,66 @@ public class AuthController {
 	@Transactional
 	@PostMapping("/regWorker")
 	public ResponseEntity<?> registerWorker(@RequestBody UserWorkerRequest request) {
-		Role role = rservice.getById(request.getRole().getRoleId());
-		SecurityQuestion securityQuestion = sservice.getById(request.getSecurityQuestion().getSecurityQuestionId());
+		try {
+			Role role = rservice.getById(request.getRole().getRoleId());
+			SecurityQuestion securityQuestion = sservice.getById(request.getSecurityQuestion().getSecurityQuestionId());
+			//JobCategory jobCategory = jcservice.getById(request.getJobCategory().getId());
 
-		User u = new User(request.getUserName(), encoder.encode(request.getPassword()), request.getPhoneNumber(),
-				request.getGender(), role, false, request.getAdhaar(), request.getAccountNumber(), securityQuestion,
-				request.getAnswer());
-		Worker w = new Worker(request.getWorkerId(), request.getFirstName(), request.getMiddleName(),
-				request.getLastName(),
-				request.getEducation(), request.getAddress(), request.getDateOfBirth(), request.isRelocation(), u);
+			User u = new User(request.getUserName(), encoder.encode(request.getPassword()), request.getPhoneNumber(),
+					request.getGender(), role, false, request.getAdhaar(), request.getAccountNumber(), securityQuestion,
+					request.getAnswer());
+			Worker w = new Worker(request.getWorkerId(), request.getFirstName(), request.getMiddleName(),
+					request.getLastName(),
+					request.getEducation(), request.getAddress(), request.getDateOfBirth(), request.isRelocation(),true,request.getJobCategory(), u);
 
-		wservice.save(w);
-		return ResponseEntity.ok(new MessageResponse("Worker registered successfully!"));
+			wservice.save(w);
+			return ResponseEntity.ok(new MessageResponse("success"));
+		}catch (DataIntegrityViolationException e) {
+	        // Handle duplicate entry violation (username already exists)
+	        return ResponseEntity.ok(new MessageResponse("duplicate"));
+		}
+		catch (Exception e) {
+			return ResponseEntity.ok(new MessageResponse("error"));
+		}
 	}
 
 	@Transactional
 	@PostMapping("/regProvider")
 	public ResponseEntity<?> registerProvider(@RequestBody UserProviderRequest request) {
-		Role role = rservice.getById(request.getRole().getRoleId());
-		SecurityQuestion securityQuestion = sservice.getById(request.getSecurityQuestion().getSecurityQuestionId());
+		try {
+			Role role = rservice.getById(request.getRole().getRoleId());
+			SecurityQuestion securityQuestion = sservice.getById(request.getSecurityQuestion().getSecurityQuestionId());
 
-		User u = new User(request.getUserName(), encoder.encode(request.getPassword()), request.getPhoneNumber(),
-				request.getGender(), role, false, request.getAdhaar(), request.getAccountNumber(), securityQuestion,
-				request.getAnswer());
-		Provider p = new Provider(request.getProviderId(), request.getFirstName(), request.getMiddleName(),
-				request.getLastName(), request.getOrganization(), request.getEducation(), request.getAddress(), u);
+			User u = new User(request.getUserName(), encoder.encode(request.getPassword()), request.getPhoneNumber(),
+					request.getGender(), role, false, request.getAdhaar(), request.getAccountNumber(), securityQuestion,
+					request.getAnswer());
+			Provider p = new Provider(request.getProviderId(), request.getFirstName(), request.getMiddleName(),
+					request.getLastName(), request.getOrganization(), request.getEducation(), request.getAddress(), u);
 
-		pservice.save(p);
-		return ResponseEntity.ok(new MessageResponse("Provider registered successfully!"));
+			pservice.save(p);
+			return ResponseEntity.ok(new MessageResponse("success"));
+		} catch (Exception e) {
+			return ResponseEntity.ok(new MessageResponse("error"));
+		}
 	}
 
 	@Transactional
 	@PostMapping("/regVlc")
 	public ResponseEntity<?> registerVlc(@RequestBody UserVlcRequest request) {
-		Role role = rservice.getById(request.getRole().getRoleId());
-		SecurityQuestion securityQuestion = sservice.getById(request.getSecurityQuestion().getSecurityQuestionId());
+		try {
+			Role role = rservice.getById(request.getRole().getRoleId());
+			SecurityQuestion securityQuestion = sservice.getById(request.getSecurityQuestion().getSecurityQuestionId());
 
-		User u = new User(request.getUserName(), encoder.encode(request.getPassword()), request.getPhoneNumber(),
-				request.getGender(), role, false, request.getAdhaar(), request.getAccountNumber(), securityQuestion,
-				request.getAnswer());
-		VillageLevelConnector vlc = new VillageLevelConnector(request.getVlcId(), request.getFirstName(),
-				request.getMiddleName(), request.getLastName(), request.getEducation(), request.getAddress(), u);
-		vlcservice.save(vlc);
-		return ResponseEntity.ok(new MessageResponse("VLC registered successfully!"));
+			User u = new User(request.getUserName(), encoder.encode(request.getPassword()), request.getPhoneNumber(),
+					request.getGender(), role, request.isActive(), request.getAdhaar(), request.getAccountNumber(), securityQuestion,
+					request.getAnswer());
+			VillageLevelConnector vlc = new VillageLevelConnector(request.getVlcId(), request.getFirstName(),
+					request.getMiddleName(), request.getLastName(), request.getEducation(), request.getAddress(), u);
+			vlcservice.save(vlc);
+			return ResponseEntity.ok(new MessageResponse("success"));
+		} catch (Exception e) {
+			return ResponseEntity.ok(new MessageResponse("error"));
+		}
 	}
 
 	@PostMapping("/logout")

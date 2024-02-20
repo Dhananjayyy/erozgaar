@@ -22,6 +22,8 @@ public class UserWorkerRequest{
     private String lastName;
     private String education;
     private Address address;
+    
+    private JobCategory jobCategory;
 
     private Date dateOfBirth;
     private boolean relocation;
@@ -31,32 +33,38 @@ public class UserWorkerRequest{
     public UserWorkerRequest() {
     }
 
-    public UserWorkerRequest(int userId, String userName, String password, String phoneNumber, String gender,
-            Role role, boolean active, String adhaar, String accountNumber, SecurityQuestion securityQuestion,
-            String answer, int workerId, String firstName, String middleName, String lastName, String education,
-            Address address, Date dateOfBirth, boolean relocation) {
-        this.userId = userId;
-        this.userName = userName;
-        this.password = password;
-        this.phoneNumber = phoneNumber;
-        this.gender = gender;
-        this.role = role;
-        this.active = active;
-        this.adhaar = adhaar;
-        this.accountNumber = accountNumber;
-        this.securityQuestion = securityQuestion;
-        this.answer = answer;
-        this.workerId = workerId;
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.education = education;
-        this.address = address;
-        this.dateOfBirth = dateOfBirth;
-        this.relocation = relocation;
-    }
+    
 
-    public int getUserId() {
+    public UserWorkerRequest(int userId, String userName, String password, String phoneNumber, String gender, Role role,
+			boolean active, String adhaar, String accountNumber, SecurityQuestion securityQuestion, String answer,
+			int workerId, String firstName, String middleName, String lastName, String education, Address address,
+			JobCategory jobCategory, Date dateOfBirth, boolean relocation) {
+		super();
+		this.userId = userId;
+		this.userName = userName;
+		this.password = password;
+		this.phoneNumber = phoneNumber;
+		this.gender = gender;
+		this.role = role;
+		this.active = active;
+		this.adhaar = adhaar;
+		this.accountNumber = accountNumber;
+		this.securityQuestion = securityQuestion;
+		this.answer = answer;
+		this.workerId = workerId;
+		this.firstName = firstName;
+		this.middleName = middleName;
+		this.lastName = lastName;
+		this.education = education;
+		this.address = address;
+		this.jobCategory = jobCategory;
+		this.dateOfBirth = dateOfBirth;
+		this.relocation = relocation;
+	}
+
+
+
+	public int getUserId() {
         return userId;
     }
 
@@ -208,7 +216,17 @@ public class UserWorkerRequest{
         this.relocation = relocation;
     }
 
-    @Override
+    public JobCategory getJobCategory() {
+		return jobCategory;
+	}
+
+	public void setJobCategory(JobCategory jobCategory) {
+		this.jobCategory = jobCategory;
+	}
+
+
+
+	@Override
     public String toString() {
         return "UserWorkerRequest1 [userId=" + userId + ", userName=" + userName + ", password=" + password
                 + ", phoneNumber=" + phoneNumber + ", gender=" + gender + ", role=" + role + ", active=" + active

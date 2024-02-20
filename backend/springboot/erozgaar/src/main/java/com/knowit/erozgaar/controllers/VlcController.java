@@ -21,20 +21,25 @@ import com.knowit.erozgaar.entities.Doctor;
 import com.knowit.erozgaar.entities.DoctorReg;
 import com.knowit.erozgaar.entities.Role;
 import com.knowit.erozgaar.entities.User;
+import com.knowit.erozgaar.entities.Worker;
 import com.knowit.erozgaar.services.DoctorService;
 import com.knowit.erozgaar.services.RoleService;
 import com.knowit.erozgaar.services.UserService;
 import com.knowit.erozgaar.services.VillageLevelConnectorService;
+import com.knowit.erozgaar.services.WorkerService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000",exposedHeaders = "**")
+@CrossOrigin(origins = "http://localhost:5173",exposedHeaders = "**")
 public class VlcController {
 	
 	@Autowired
-	UserService lservice;
+	UserService uservice;
 	
 	@Autowired
 	VillageLevelConnectorService dservice;
+
+	@Autowired
+	WorkerService wservice;
 	
 	@Autowired
 	RoleService rserevice;
@@ -76,7 +81,7 @@ public class VlcController {
 	// @GetMapping("/approve")
 	// public boolean approve(@RequestParam("id") int id)
 	// {
-	// 	return lservice.approve(id);
+	// 	return uservice.approve(id);
 	// }
 	
 	
@@ -101,17 +106,17 @@ public class VlcController {
 	
 	
 	
-	// @GetMapping("/getDoctor")
-	// public Doctor getDoctor(@RequestParam int loginid)
+	// @GetMapping("/getWorker")
+	// public Worker getWorker(@RequestParam int loginid)
 	// {
-	// 	User l = lservice.getUser(loginid);
-	// 	return dservice.getDoctor(l);		
+	// 	User l = uservice.getUser(loginid);
+	// 	return dservice.getWorker(l);		
 	// }
 	
 	// @GetMapping("/getRegRequests")
 	// public List<Doctor> getListForApproval()
 	// {
 	// 	System.out.println("sending pending approvals");
-	// 	return dservice.getDoctors();		
+	// 	return dservice.getWorkers();		
 	// }
 }

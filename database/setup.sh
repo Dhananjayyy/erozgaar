@@ -10,5 +10,6 @@ CREATE DATABASE $db;
 USE $db;
 SOURCE tables.sql;
 SOURCE data.sql;
+SOURCE triggers.sql;
 EOF
 echo "Database setup complete"

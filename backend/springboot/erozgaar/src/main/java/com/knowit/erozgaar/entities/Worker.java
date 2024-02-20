@@ -42,6 +42,13 @@ public class Worker{
 
     @Column(name="relocation")
     private boolean relocation;
+    
+    @Column(name = "available")
+    private boolean available;
+    
+    @ManyToOne
+	@JoinColumn(name="job_category_id")
+    private JobCategory jobCategory;
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name="user_id")
@@ -51,96 +58,115 @@ public class Worker{
         super();
     }
 
-    public Worker(int id, String firstName, String middleName, String lastName, String education, Address address,
-            Date dateOfBirth, boolean relocation, User user) {
-        this.id = id;
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.education = education;
-        this.address = address;
-        this.dateOfBirth = dateOfBirth;
-        this.relocation = relocation;
-        this.user = user;
-    }
+	public Worker(int id, String firstName, String middleName, String lastName, String education, Address address,
+			Date dateOfBirth, boolean relocation, boolean available, JobCategory jobCategory, User user) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.middleName = middleName;
+		this.lastName = lastName;
+		this.education = education;
+		this.address = address;
+		this.dateOfBirth = dateOfBirth;
+		this.relocation = relocation;
+		this.available = available;
+		this.jobCategory = jobCategory;
+		this.user = user;
+	}
 
-    public int getId() {
-        return id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public String getFirstName() {
-        return firstName;
-    }
+	public String getFirstName() {
+		return firstName;
+	}
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    public String getMiddleName() {
-        return middleName;
-    }
+	public String getMiddleName() {
+		return middleName;
+	}
 
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
-    }
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
 
-    public String getLastName() {
-        return lastName;
-    }
+	public String getLastName() {
+		return lastName;
+	}
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-    public String getEducation() {
-        return education;
-    }
+	public String getEducation() {
+		return education;
+	}
 
-    public void setEducation(String education) {
-        this.education = education;
-    }
+	public void setEducation(String education) {
+		this.education = education;
+	}
 
-    public Address getAddress() {
-        return address;
-    }
+	public Address getAddress() {
+		return address;
+	}
 
-    public void setAddress(Address address) {
-        this.address = address;
-    }
+	public void setAddress(Address address) {
+		this.address = address;
+	}
 
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
 
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
 
-    public boolean isRelocation() {
-        return relocation;
-    }
+	public boolean isRelocation() {
+		return relocation;
+	}
 
-    public void setRelocation(boolean relocation) {
-        this.relocation = relocation;
-    }
+	public void setRelocation(boolean relocation) {
+		this.relocation = relocation;
+	}
 
-    public User getUser() {
-        return user;
-    }
+	public boolean isAvailable() {
+		return available;
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+	public void setAvailable(boolean available) {
+		this.available = available;
+	}
 
-    @Override
-    public String toString() {
-        return "Worker [id=" + id + ", firstName=" + firstName + ", middleName=" + middleName + ", lastName=" + lastName
-                + ", education=" + education + ", address=" + address + ", dateOfBirth=" + dateOfBirth + ", relocation" + relocation + user.toString() +"]";
-    }
+	public JobCategory getJobCategory() {
+		return jobCategory;
+	}
 
+	public void setJobCategory(JobCategory jobCategory) {
+		this.jobCategory = jobCategory;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	@Override
+	public String toString() {
+		return "Worker [id=" + id + ", firstName=" + firstName + ", middleName=" + middleName + ", lastName=" + lastName
+				+ ", education=" + education + ", address=" + address + ", dateOfBirth=" + dateOfBirth + ", relocation="
+				+ relocation + ", available=" + available + ", jobCategory=" + jobCategory + ", user=" + user + "]";
+	}
      
 }

@@ -59,7 +59,7 @@ public class AppSecurityConfigurer {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedOrigin("http://localhost:5173");
         config.addAllowedHeader("*");
         config.addExposedHeader("Authorization");
         config.addAllowedMethod("OPTIONS");
@@ -93,14 +93,35 @@ public class AppSecurityConfigurer {
 			authorize.requestMatchers("/regWorker").permitAll();
 			authorize.requestMatchers("/regProvider").permitAll();
 			authorize.requestMatchers("/regVlc").permitAll();
+			authorize.requestMatchers("/approve").permitAll();
+			authorize.requestMatchers("/getWorkerRegRequests").permitAll();
+			authorize.requestMatchers("/approveProvider").permitAll();
+			authorize.requestMatchers("/getProvRegRequests").permitAll();
+			authorize.requestMatchers("/getAllJobs").permitAll();
+			authorize.requestMatchers("/getAllJobsByVlc").permitAll();
+			authorize.requestMatchers("/addJob").permitAll();
+			authorize.requestMatchers("/addJobAllocation").permitAll();
+			authorize.requestMatchers("/getProviderByUserId").permitAll();
+			authorize.requestMatchers("/getUser").permitAll();
+			authorize.requestMatchers("/approveWorker").permitAll();
+			authorize.requestMatchers("/approveProvider").permitAll();
+			authorize.requestMatchers("/approve").permitAll();
+			authorize.requestMatchers("/getAvailableWorkers").permitAll();
+			authorize.requestMatchers("/sendWorkers").permitAll();
+			//allocateJob
+			//getProviderByUserId
+			//addJobAllocation
+			//approveWorker
+			//getAvailableWorker
+			
 			authorize.requestMatchers("/logout").permitAll();
-
+			
 			authorize.requestMatchers("/regDoctor").permitAll();
 			authorize.requestMatchers("/getAllSps").permitAll();
 			authorize.requestMatchers("/getAllSps").permitAll();
 			authorize.requestMatchers("/uploadimg/**").permitAll();
 			authorize.requestMatchers("/dotnetapi").permitAll();
-			authorize.requestMatchers("/getRegRequests").hasAuthority("ADMIN");
+			// authorize.requestMatchers("/getRegRequests").hasAuthority("ADMIN");
 			authorize.requestMatchers("/approve").hasAuthority("ADMIN");
 			authorize.requestMatchers("/getDoctor").hasAuthority("DOCTOR");
 			//authorize.requestMatchers("/c").hasAuthority("USER");

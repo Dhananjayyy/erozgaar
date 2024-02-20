@@ -21,4 +21,8 @@ public class VillageLevelConnectorService {
 	public VillageLevelConnector getByUsername(String username) {
 		return vlcrepo.findByUsername(username);
 	}
+	
+	public int getCityIdbyUserId(int uid) {
+		return vlcrepo.getCityIdbyUserId(uid);
+	}
 }

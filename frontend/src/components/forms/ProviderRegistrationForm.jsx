@@ -10,7 +10,7 @@ export default function ProviderRegistrationForm() {
     gender: { value: 0, valid: false, touched: false, error: "" },
     education: { value: "", valid: false, touched: false, error: "" },
     state: { value: "", valid: false, touched: false, error: "" },
-    city: { value: "", valid: false, touched: false, error: "" },
+    city: { value: 0, valid: false, touched: false, error: "" },
     address1: { value: "", valid: false, touched: false, error: "" },
     address2: { value: "", valid: false, touched: false, error: "" },
     username: { value: "", valid: false, touched: false, error: "" },
@@ -212,20 +212,17 @@ export default function ProviderRegistrationForm() {
         addressLine1: provider.address1.value,
         addressLine2: provider.address2.value,
         city: {
-          cityName: provider.city.value,
-          state: {
-            stateName: provider.state.value,
-          },
+          id: provider.city.value,
         },
-        organization: provider.organization.value,
       },
+      organization: provider.organization.value,
     });
 
   
 
     console.log(reqbody);
 
-    fetch("http://localhost:8080/register/provider", {
+    fetch("http://localhost:8080/regProvider", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -234,8 +231,8 @@ export default function ProviderRegistrationForm() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("return data: " + data);
-        if (data === true) {
+        console.log("return data: " + JSON.stringify(data));
+        if (data.msg === "success") {
           setAlertType("alert-success");
           showErrorMessage("Registration successful. Please log in.", 5000);
           return;
@@ -369,10 +366,11 @@ export default function ProviderRegistrationForm() {
                   Mobile Number
                 </label>
                 <input
-                  type="number"
+                  type="tel"
                   className="form-control"
                   id="idnumber"
                   placeholder="9852614280"
+                  maxLength={10}
                   onChange={(e) => handleChange("phone", e.target.value)}
                   onBlur={(e) => handleChange("phone", e.target.value)}
                 />
@@ -393,7 +391,7 @@ export default function ProviderRegistrationForm() {
                   Aadhar Number
                 </label>
                 <input
-                  type="number"
+                  type="tel"
                   className="form-control"
                   id="idaadhar"
                   maxLength={12}
@@ -645,18 +643,18 @@ export default function ProviderRegistrationForm() {
                     onChange={(e) => handleChange("city", e.target.value)}
                     onBlur={(e) => handleChange("city", e.target.value)}
                   >
-                    <option id="idcity" className="form-option" value="">
+                    <option id="idcity" className="form-option" value="0">
                       Select City
                     </option>
-                    <option id="idcity" className="form-option" value="Pune">
+                    <option id="idcity" className="form-option" value="8">
                       Pune
                     </option>
-                    <option id="idcity" className="form-option" value="Patna">
-                      Patna
+                    <option id="idcity" className="form-option" value="5">
+                      Amritsar
                     </option>
-                    <option id="idcity" className="form-option" value="Kochi">
+                    {/* <option id="idcity" className="form-option" value="Kochi">
                       Kochi
-                    </option>
+                    </option> */}
                   </select>
                 </div>
               </div>

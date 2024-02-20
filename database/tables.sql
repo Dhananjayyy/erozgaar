@@ -1,5 +1,8 @@
 -- tables
 
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS; 
+SET FOREIGN_KEY_CHECKS=0;   
+
 CREATE TABLE states (
     state_id INT AUTO_INCREMENT,
     state_name VARCHAR(50) NOT NULL,
@@ -66,21 +69,6 @@ CREATE TABLE providers (
     CONSTRAINT fk_provider_user FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
-CREATE TABLE workers (
-    worker_id INT AUTO_INCREMENT,
-    first_name VARCHAR(50) NOT NULL,
-    middle_name VARCHAR(50),
-    last_name VARCHAR(50) NOT NULL,
-    education VARCHAR(50) NOT NULL,
-    address_id INT NOT NULL,
-    date_of_birth DATE,
-    relocation BOOLEAN NOT NULL DEFAULT FALSE,
-    user_id INT NOT NULL,
-    CONSTRAINT fk_worker_address FOREIGN KEY(address_id) REFERENCES addresses(address_id) ON DELETE CASCADE,
-    CONSTRAINT pk_worker PRIMARY KEY(worker_id),
-    CONSTRAINT fk_worker_user FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE
-);
-
 CREATE TABLE vlc (
     vlc_id INT AUTO_INCREMENT,
     first_name VARCHAR(50) NOT NULL,
@@ -103,3 +91,70 @@ CREATE TABLE admins (
     CONSTRAINT pk_admin PRIMARY KEY(admin_id),
     CONSTRAINT fk_admin_user FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
+
+CREATE TABLE job_category (
+    job_category_id INT AUTO_INCREMENT,
+    category_name VARCHAR(50),
+    CONSTRAINT pk_jobcategory PRIMARY KEY(job_category_id)
+);
+
+-- open, in-selection, in-progress, completed (when payment is done), closed (when no workers are chosen and start date is elapsed)
+-- open - 1, in-selection - 2, in-progress - 3, completed - 4, closed - 5
+CREATE TABLE jobs (
+    job_id INT AUTO_INCREMENT,
+    job_title VARCHAR(50) NOT NULL,
+    job_description VARCHAR(255) NOT NULL,
+    job_category_id INT NOT NULL,
+    address_id INT NOT NULL,
+    job_status INT NOT NULL DEFAULT 1,
+    no_of_workers INT NOT NULL,
+    provider_id INT NOT NULL,
+    post_date DATE NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    -- payment_id INT NOT NULL,
+    CONSTRAINT fk_job_category FOREIGN KEY(job_category_id) REFERENCES job_category(job_category_id) ON DELETE CASCADE,
+    CONSTRAINT fk_job_address FOREIGN KEY(address_id) REFERENCES addresses(address_id) ON DELETE CASCADE,
+    -- CONSTRAINT fk_job_payment FOREIGN KEY(payment_id) REFERENCES payments(payment_id) ON DELETE CASCADE,
+    CONSTRAINT fk_job_provider FOREIGN KEY(provider_id) REFERENCES providers(provider_id) ON DELETE CASCADE,
+    CONSTRAINT pk_job PRIMARY KEY(job_id)
+);
+
+CREATE TABLE job_allocation (
+    job_allocation_id INT AUTO_INCREMENT,
+    job_id INT NOT NULL,
+    worker_id INT NOT NULL,
+    status INT NOT NULL DEFAULT 0,
+    CONSTRAINT fk_joballocation_job FOREIGN KEY(job_id) REFERENCES jobs(job_id) ON DELETE CASCADE,
+    CONSTRAINT fk_joballocation_worker FOREIGN KEY(worker_id) REFERENCES workers(worker_id) ON DELETE CASCADE,
+    CONSTRAINT pk_joballocation PRIMARY KEY(job_allocation_id)
+);
+
+CREATE TABLE payments (
+    payment_id INT AUTO_INCREMENT,
+    amount DECIMAL(10, 2) NOT NULL,
+    payment_date DATE NOT NULL,
+    job_allocation_id INT NOT NULL,
+    CONSTRAINT fk_payment_joballocation FOREIGN KEY(job_allocation_id) REFERENCES job_allocation(job_allocation_id) ON DELETE CASCADE,
+    CONSTRAINT pk_payment PRIMARY KEY(payment_id)
+);
+
+CREATE TABLE workers (
+    worker_id INT AUTO_INCREMENT,
+    first_name VARCHAR(50) NOT NULL,
+    middle_name VARCHAR(50),
+    last_name VARCHAR(50) NOT NULL,
+    education VARCHAR(50) NOT NULL,
+    address_id INT NOT NULL,
+    date_of_birth DATE,
+    relocation BOOLEAN NOT NULL DEFAULT FALSE,
+    available BOOLEAN NOT NULL DEFAULT TRUE,
+    job_category_id INT NOT NULL,
+    user_id INT NOT NULL,
+    CONSTRAINT fk_worker_address FOREIGN KEY(address_id) REFERENCES addresses(address_id) ON DELETE CASCADE,
+    CONSTRAINT pk_worker PRIMARY KEY(worker_id),
+    CONSTRAINT fk_worker_jobcategory FOREIGN KEY(job_category_id) REFERENCES job_category(job_category_id) ON DELETE CASCADE,
+    CONSTRAINT fk_worker_user FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
