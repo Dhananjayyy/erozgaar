@@ -15,27 +15,28 @@ import ProviderHomeLayout from "./components/provider/ProviderHomeLayout";
 
 function App() {
   return (
-    <>
-      <Routes>
-        {/* Main */}
-        {/* <Route path="/" element={<AddVLC/>} /> */}
-        {/* <Route path="/" element={<ProviderRegistrationForm/>} /> */}
-        {/* <Route path="/" element={<VLCHomeLayout/>} /> */}
-        <Route path="/" element={<HomeLayout />} />
-        <Route path="/workerlayout" element={<WorkerHome/>} />
+    // <>
+    //   <Routes>
+    //     {/* Main */}
+    //     {/* <Route path="/" element={<AddVLC/>} /> */}
+    //     {/* <Route path="/" element={<ProviderRegistrationForm/>} /> */}
+    //     {/* <Route path="/" element={<VLCHomeLayout/>} /> */}
+    //     <Route path="/" element={<HomeLayout />} />
+    //     <Route path="/workerlayout" element={<WorkerHome/>} />
 
-        <Route path="/providerlayout" element={<ProviderHomeLayout/>} />
-        <Route path="/adminlayout" element={<AdminHomeLayout/>} />
-        <Route path="/vlclayout" element={<VLCHomeLayout/>} /> */
-        {/* Login */}
-        {/* <Route path="/login" element={<LoginForm/>} /> */}
+    //     <Route path="/providerlayout" element={<ProviderHomeLayout/>} />
+    //     <Route path="/adminlayout" element={<AdminHomeLayout/>} />
+    //     <Route path="/vlclayout" element={<VLCHomeLayout/>} /> */
+    //     {/* Login */}
+    //     {/* <Route path="/login" element={<LoginForm/>} /> */}
 
-        {/* Registration Form */}
-        {/* <Route path="/registerworker" element={<WorkerRegistrationForm/>} />
-        <Route path="/registerprovider" element={<ProviderRegistrationForm/>} /> */} */
+    //     {/* Registration Form */}
+    //     {/* <Route path="/registerworker" element={<WorkerRegistrationForm/>} />
+    //     <Route path="/registerprovider" element={<ProviderRegistrationForm/>} /> */} */
 
-      </Routes>
-    </>
+    //   </Routes>
+    // </>
+    <ProviderRegistrationForm/>
   );
 }
 
