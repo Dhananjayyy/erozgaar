@@ -58,9 +58,7 @@ public class Job {
 	
 	@Column(name = "end_date")
 	private Date endDate;
-	
-//	@Column(name = "payment_amount")
-//	private double paymentAmount;
+
 	
 	public Job() {
 		// TODO Auto-generated constructor stub

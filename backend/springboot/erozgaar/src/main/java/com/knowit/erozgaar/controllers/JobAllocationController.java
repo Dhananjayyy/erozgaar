@@ -1,19 +1,25 @@
 package com.knowit.erozgaar.controllers;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.knowit.erozgaar.entities.Job;
 import com.knowit.erozgaar.entities.JobAllocation;
+import com.knowit.erozgaar.entities.PickWorker;
 import com.knowit.erozgaar.entities.Worker;
 import com.knowit.erozgaar.entities.WorkerJobAllocationRequest;
 import com.knowit.erozgaar.services.JobAllocationService;
 import com.knowit.erozgaar.services.JobService;
 import com.knowit.erozgaar.services.WorkerService;
+
+import jakarta.transaction.Transactional;
 
 @RestController
 public class JobAllocationController {
@@ -48,5 +54,29 @@ public class JobAllocationController {
         } catch (Exception e) {
             return false;
         }
+	}
+	
+	@GetMapping("/getAllocatedWorkers")
+	public List<JobAllocation> getWorkers(@RequestParam("userId") int userId){
+		List<JobAllocation> list = null;
+		try {
+			list = jaservice.getAllottedWorkersByProviderUserId(userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	@Transactional
+	@PostMapping("/pickWorkers")
+	public boolean pickWorkers(@RequestParam("jobId") int jobId,@RequestBody PickWorker pw) {
+		//System.out.println("Job id " + jobId);
+		for(int jobAllocationId : pw.getAllocationIds()){
+			System.out.println("job allocation ids");
+			System.out.println(jobAllocationId);
+			jaservice.pick(jobAllocationId);
+		}
+		jaservice.updateJobStatus(jobId);
+		return true;
 	}
 }

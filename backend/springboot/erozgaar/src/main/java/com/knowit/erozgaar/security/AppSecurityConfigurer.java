@@ -93,12 +93,12 @@ public class AppSecurityConfigurer {
 			authorize.requestMatchers("/regWorker").permitAll();
 			authorize.requestMatchers("/regProvider").permitAll();
 			authorize.requestMatchers("/regVlc").permitAll();
-			authorize.requestMatchers("/approve").permitAll();
+
 			authorize.requestMatchers("/getWorkerRegRequests").permitAll();
 			authorize.requestMatchers("/approveProvider").permitAll();
 			authorize.requestMatchers("/getProvRegRequests").permitAll();
 			authorize.requestMatchers("/getAllJobs").permitAll();
-			authorize.requestMatchers("/getAllJobsByVlc").permitAll();
+			authorize.requestMatchers("/getAllJobsByVlc").hasAuthority("VLC");
 			authorize.requestMatchers("/addJob").permitAll();
 			authorize.requestMatchers("/addJobAllocation").permitAll();
 			authorize.requestMatchers("/getProviderByUserId").permitAll();
@@ -106,13 +106,13 @@ public class AppSecurityConfigurer {
 			authorize.requestMatchers("/approveWorker").permitAll();
 			authorize.requestMatchers("/approveProvider").permitAll();
 			authorize.requestMatchers("/approve").permitAll();
-			authorize.requestMatchers("/getAvailableWorkers").permitAll();
+			authorize.requestMatchers("/getAvailableWorkers").hasAuthority("VLC");
 			authorize.requestMatchers("/sendWorkers").permitAll();
-			//allocateJob
-			//getProviderByUserId
-			//addJobAllocation
-			//approveWorker
-			//getAvailableWorker
+			authorize.requestMatchers("/getAllocatedWorkers").permitAll();
+			authorize.requestMatchers("/pickWorkers").permitAll();
+			authorize.requestMatchers("/getJobsByProvider").permitAll();
+			authorize.requestMatchers("/getAllJobsForWorker").permitAll();
+			authorize.requestMatchers("/updateCompletionJobStatus").permitAll();
 			
 			authorize.requestMatchers("/logout").permitAll();
 			

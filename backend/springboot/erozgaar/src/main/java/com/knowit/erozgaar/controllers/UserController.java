@@ -27,7 +27,4 @@ public class UserController {
 	 public User getUser(@RequestParam("id") int id) {
 		 return uservice.getUser(id);
 	 }
-	 
-	 
-
 }

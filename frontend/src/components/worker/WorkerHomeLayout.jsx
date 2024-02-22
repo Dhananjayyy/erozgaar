@@ -2,10 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import WorkerProfile from "./WorkerProfile";
 import WorkerHome from "./WorkerHome";
+import ShowJobStatus from "./ShowJobStatus";
 
 export default function WorkerHomeLayout() {
   const navigate = useNavigate();
   const [selectedLink, setSelectedLink] = useState("workerhome");
+
+  var userinfo = null;
+  if (localStorage.getItem("loggedUser") != null) {
+    userinfo = JSON.parse(localStorage.getItem("loggedUser"));
+    console.log(userinfo);
+  }
 
   const handleLogout = () => {
     if (localStorage.getItem("user")) {
@@ -28,6 +35,8 @@ export default function WorkerHomeLayout() {
         return <WorkerProfile />;
       case "workerhome":
         return <WorkerHome />;
+        case "jobstatus":
+        return <ShowJobStatus/>;
       default:
         return null;
     }
@@ -45,6 +54,17 @@ export default function WorkerHomeLayout() {
                   onClick={() => handleLinkClick('workerhome')}
                 >
                   Home
+                </Link>
+              </li>
+            </div>
+
+            <div className="col text-center">
+              <li className="nav-item">
+                <Link
+                  className={`nav-link ${selectedLink === "jobstatus" ? 'active text-white bg-dark' : ''}`}
+                  onClick={() => handleLinkClick('jobstatus')}
+                >
+                  Job Status
                 </Link>
               </li>
             </div>

@@ -550,7 +550,7 @@ export default function PostJob() {
       </div>
       <div className="row">
         <div className="col">
-          <pre>{JSON.stringify(postjob, null, 2)}</pre>
+          {/* <pre>{JSON.stringify(postjob, null, 2)}</pre> */}
         </div>
       </div>
       
