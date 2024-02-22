@@ -16,7 +16,9 @@ export default function ApproveWorker() {
     fetch(`http://localhost:8080/approve?id=${user_id}`, {
       method: "GET",
       headers: {
-        "Content-Type": "application/text",},
+        "Content-Type": "application/text",
+        Authorization: `Bearer ${userinfo.accessToken}`,
+      },
     })
       .then((response) => response.text())
       .then((data) => {
@@ -31,6 +33,7 @@ export default function ApproveWorker() {
           setApprovalMessage("");
         }, 3000);
       });
+      
   };
   
   const deleteWorker = (worker_id) => {
@@ -91,7 +94,6 @@ export default function ApproveWorker() {
               <th scope="col">Middle Name</th>
               <th scope="col">Last Name</th>
               <th scope="col">Approve</th>
-              <th scope="col">Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -112,16 +114,7 @@ export default function ApproveWorker() {
                       Approve
                     </button>
                   </td>
-                  <td>
-                    <button
-                      className="btn btn-danger"
-                      onClick={() => {
-                        deleteWorker(v.worker_id);
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </td>
+                  
                 </tr>
               </>
             ))}
