@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.knowit.erozgaar.entities.JobAllocation;
 import com.knowit.erozgaar.entities.Provider;
 import com.knowit.erozgaar.entities.Worker;
 
@@ -24,4 +25,5 @@ public interface ProviderRepository extends JpaRepository<Provider, Integer>{
     
     @Query("SELECT p.id FROM Provider p WHERE p.user.id = :userId")
     int getProviderIdByUserId(@Param("userId") int userId);
+    
 }

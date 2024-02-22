@@ -1,4 +1,5 @@
 import { useReducer, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function ProviderRegistrationForm() {
   const init = {
@@ -47,6 +48,8 @@ export default function ProviderRegistrationForm() {
   const [displayAlert, setDisplayAlert] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [alertType, setAlertType] = useState("danger");
+
+  const navigate = useNavigate();
 
   function showErrorMessage(msg, time) {
     setDisplayAlert(true);
@@ -234,7 +237,8 @@ export default function ProviderRegistrationForm() {
         console.log("return data: " + JSON.stringify(data));
         if (data.msg === "success") {
           setAlertType("alert-success");
-          showErrorMessage("Registration successful. Please log in.", 5000);
+          showErrorMessage("Registration successful. Your account will be activated after verification.", 5000);
+          //navigate("/login");
           return;
         } else {
           setAlertType("alert-info");

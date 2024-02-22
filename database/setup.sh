@@ -11,5 +11,6 @@ USE $db;
 SOURCE tables.sql;
 SOURCE data.sql;
 SOURCE triggers.sql;
+SOURCE procedures.sql;
 EOF
 echo "Database setup complete"

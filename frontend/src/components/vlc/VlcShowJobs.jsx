@@ -9,28 +9,20 @@ export default function VlcShowJobs() {
 
   const [jobs, setJobs] = useState([]);
   const [workers, setWorkers] = useState([]);
-  var [toggle, setToggle] = useState(0);
+  const [toggle, setToggle] = useState(0);
   const [selectedRole, setSelectedRole] = useState(0);
   const [selectedJobId, setSelectedJobId] = useState(null);
   const [vacancyCount, setVacancyCount] = useState(null);
   const [selectedWorkerIds, setSelectedWorkerIds] = useState([]);
-
   const [displayAlert, setDisplayAlert] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [alertType, setAlertType] = useState("danger");
+  const[disableWorkerButton, setDisableWorkerButton] = useState(false);
+  const[disableCheckbox, setDisableCheckbox] = useState(false);
+  const[workerLimit, setWorkerLimit] = useState(0);
+  
 
-  const handleWorkerCheck = (workerId) => {
-    const isIncluded = selectedWorkerIds.includes(workerId);
-    console.log("isIncluded: " + workerId + " :" + isIncluded);
-    if (!isIncluded) {
-      setSelectedWorkerIds((prevIds) => [...prevIds, workerId]);
-    } else {
-      setSelectedWorkerIds((prevIds) =>
-        prevIds.filter((id) => id !== workerId)
-      );
-    }
-    console.log("selectedWorkerIds: " + selectedWorkerIds);
-  };
+  
 
   function showErrorMessage(msg, time) {
     setDisplayAlert(true);
@@ -46,14 +38,13 @@ export default function VlcShowJobs() {
     setToggle(0);
     setSelectedJobId(null);
     setSelectedRole(value);
+    fetchJobsData()
   };
 
-  useEffect(() => {
+  const fetchJobsData = () => {
     fetch(`http://localhost:8080/getAllJobsByVlc?id=${userinfo.id}`, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: {Authorization: `Bearer ${userinfo.accessToken}`},
     })
       .then((response) => {
         if (!response.ok) {
@@ -68,7 +59,12 @@ export default function VlcShowJobs() {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, [userinfo.id]);
+  };
+
+  // useEffect to fetch jobs data on mount and when userinfo.id changes
+  useEffect(() => {
+    fetchJobsData();
+  }, []);
 
   var arr = [];
   for (var i = 0; i < jobs.length; i++) {
@@ -94,8 +90,22 @@ export default function VlcShowJobs() {
     }
   });
 
-  function showJobDetails() {
+  // function showJobDetails() {
+  //   console.log("clicked on job details");
+  //   if (selectedJobId == null) {
+  //     console.log("if condition");
+  //     showErrorMessage("Please select a Job", 5000);
+  //     return;
+  //   }
+  //   setToggle(1);
+  //   console.log("jobId: " + selectedJobId);
+  // }
+
+  function showJobDetails(jobId) {
+    console.log("selected job id is: " + selectedJobId)
     console.log("clicked on job details");
+    //setSelectedWorkerIds([]);
+    setSelectedJobId(jobId);
     if (selectedJobId == null) {
       console.log("if condition");
       showErrorMessage("Please select a Job", 5000);
@@ -118,9 +128,7 @@ export default function VlcShowJobs() {
       `http://localhost:8080/getAvailableWorkers?userId=${userinfo.id}&jobId=${selectedJobId}`,
       {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: {Authorization: `Bearer ${userinfo.accessToken}`},
       }
     )
       .then((response) => {
@@ -151,6 +159,11 @@ export default function VlcShowJobs() {
   }
 
   function sendWorkers() {
+    const increasedLimit = Math.ceil(workerLimit * 1.5);
+    if(selectedWorkerIds.length !== increasedLimit){
+      showErrorMessage("Please select " + increasedLimit + " workers", 5000);
+      return;
+    }
     if (selectedWorkerIds.length === 0) {
       showErrorMessage("Please select workers", 5000);
       console.log(arr);
@@ -174,6 +187,7 @@ export default function VlcShowJobs() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${userinfo.accessToken}`,
       },
       body: JSON.stringify({
         jobId: selectedJobId,
@@ -189,14 +203,44 @@ export default function VlcShowJobs() {
       .then((data) => {
         console.log("workers provided: " + JSON.stringify(data));
         showErrorMessage("Workers provided successfully", 5000);
-        setToggle(0);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-      setSelectedJobId(null);
+      //setSelectedJobId(null);
       setSelectedWorkerIds([]);
+      fetchJobsData();
+      setToggle(0);
   }
+
+
+  // function checkboxLimit(){
+  //   const increasedLimit = Math.ceil(workerLimit * 1.5);
+  //   //setWorkerLimit(increasedLimit);
+  //   console.log("no of increased workers limit: " + increasedLimit);
+  //   console.log("selected workers: " + selectedWorkerIds.length);
+  //   if(selectedWorkerIds.length !== increasedLimit){
+  //     showErrorMessage("You can select only " + increasedLimit + " workers", 5000);
+  //     return;
+  //   }
+  // }
+
+  const handleWorkerCheck = (workerId) => {
+    const isIncluded = selectedWorkerIds.includes(workerId);
+    console.log("isIncluded: " + workerId + " :" + isIncluded);
+    console.log("no of jobs required"+ arr.noOfWorkers);
+    console.log("no of workers selected"+ selectedWorkerIds.length);
+    if (!isIncluded) {
+      setSelectedWorkerIds((prevIds) => [...prevIds, workerId]);
+    } else {
+      setSelectedWorkerIds((prevIds) =>
+        prevIds.filter((id) => id !== workerId)
+      );
+    }
+    console.log("selectedWorkerIds: " + selectedWorkerIds);
+  };
+
+  
 
   var workerTable = (
     <table className="table table-bordered ">
@@ -234,6 +278,12 @@ export default function VlcShowJobs() {
                 Send <i className="fa fa-share"></i>
               </button>
             </div>
+          </th>
+        </tr>
+
+        <tr>
+          <th scope="col" colSpan="8" className="text-center  bg-light">
+            <div className="display-6">Workers</div>
           </th>
         </tr>
 
@@ -286,9 +336,11 @@ export default function VlcShowJobs() {
                   type="checkbox"
                   name="selectedJob"
                   value={v.id}
-                  checked={selectedWorkerIds.includes(v.id)}
-                  onChange={() => handleWorkerCheck(v.id)}
+                  //checked={selectedWorkerIds.includes(v.id)}
+                  onChange={() => {handleWorkerCheck(v.id)}}
                   style={{ width: "30px", height: "30px" }}
+                  //checked={disableCheckbox ? true : false}
+                  //disabled={disableCheckbox ? true : false}
                 />
               </label>
             </td>
@@ -325,16 +377,24 @@ export default function VlcShowJobs() {
                 {errorMsg}
               </div>
 
-              <button
-                type="button"
-                className="btn btn-success"
-                onClick={() => {
-                  provideWorkers();
-                }}
-              >
-                <i className="fa fa-plus"></i> Provide Workers
-              </button>
+              {!disableWorkerButton && (
+                <button
+                  type="button"
+                  className="btn btn-success"
+                  onClick={() => {
+                    provideWorkers();
+                  }}
+                >
+                  <i className="fa fa-plus"></i> Provide Workers
+                </button>
+              )}
             </div>
+          </th>
+        </tr>
+
+        <tr>
+          <th scope="col" colSpan="8" className="text-center  bg-light">
+            <div className="display-6">Jobs</div>
           </th>
         </tr>
 
@@ -367,7 +427,7 @@ export default function VlcShowJobs() {
         {filteredJobs.map((v) => (
           <tr
             key={v.id}
-            className={selectedJobId === v.id ? "table-active" : ""}
+            //className={selectedJobId === v.id ? "table-active" : ""}
           >
             <td>
               <strong>{v.title + ": "}</strong> {v.description}
@@ -390,8 +450,9 @@ export default function VlcShowJobs() {
                   name="selectedJob"
                   value={v.id}
                   // checked={selectedJobId === v.id}
-                  onChange={() => setSelectedJobId(v.id)}
+                  onChange={() => { setSelectedJobId(v.id); setWorkerLimit(v.noOfWorkers);}}
                   style={{ width: "30px", height: "30px" }}
+                  //disabled={selectedRole >= 3 && selectedRole <= 6}
                 />
               </label>
             </td>
@@ -509,9 +570,11 @@ export default function VlcShowJobs() {
           </div>
           <br />
           {toggle === 0 ? jobTable : workerTable}
-          {selectedWorkerIds}
+            {/* {selectedWorkerIds}
+            {selectedJobId} */}
         </div>
       </div>
+
     </div>
   );
 }

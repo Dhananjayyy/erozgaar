@@ -50,7 +50,7 @@ export default function ApproveProvider() {
     }
 
     console.log("in show request");
-    fetch(`http://localhost:8080/getWorkerRegRequests?userId=${userData.id}`, {
+    fetch(`http://localhost:8080/getProvRegRequests?userId=${userData.id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
