@@ -62,20 +62,25 @@ export default function PostJob() {
   const handleDate = (key, value) => {
     let valid = true;
     let error = "";
-    if (key == "startdate" || key == "enddate") {
+    if (key === "startdate" || key === "enddate") {
       const currentDate = new Date();
       const selectedDate = new Date(value);
-
+  
       if (selectedDate < currentDate) {
         valid = false;
         error = "Selected date cannot be in the past.";
+      }
+  
+      if (key === "enddate" && selectedDate <= new Date(postjob.startdate.value)) {
+        valid = false;
+        error = "End date must be greater than the start date.";
       }
     } else {
       const { valid: fieldValid, error: fieldError } = validateData(key, value);
       valid = fieldValid;
       error = fieldError;
     }
-
+  
     let formValid = true;
     for (let k in postjob) {
       if (postjob[k].valid === false) {
@@ -83,7 +88,7 @@ export default function PostJob() {
         break;
       }
     }
-
+  
     dispatch({
       type: "update",
       data: {
@@ -96,6 +101,7 @@ export default function PostJob() {
       },
     });
   };
+  
 
   //   useEffect(() => {
   //     fetch(`http://localhost:8080/getProviderByUserId?id=${userinfo.id}`, {
@@ -550,7 +556,7 @@ export default function PostJob() {
       </div>
       <div className="row">
         <div className="col">
-          <pre>{JSON.stringify(postjob, null, 2)}</pre>
+          {/* <pre>{JSON.stringify(postjob, null, 2)}</pre> */}
         </div>
       </div>
       

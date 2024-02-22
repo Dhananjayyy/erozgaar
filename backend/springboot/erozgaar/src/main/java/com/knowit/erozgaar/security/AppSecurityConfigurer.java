@@ -96,7 +96,7 @@ public class AppSecurityConfigurer {
 			authorize.requestMatchers("/approve").permitAll();
 			authorize.requestMatchers("/getWorkerRegRequests").permitAll();
 			authorize.requestMatchers("/approveProvider").permitAll();
-			authorize.requestMatchers("/getProvRegRequests").permitAll();
+			authorize.requestMatchers("/getProviderRegRequests").permitAll();
 			authorize.requestMatchers("/getAllJobs").permitAll();
 			authorize.requestMatchers("/getAllJobsByVlc").permitAll();
 			authorize.requestMatchers("/addJob").permitAll();

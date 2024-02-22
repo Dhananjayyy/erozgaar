@@ -5,22 +5,27 @@ export default function ApproveProvider() {
   const [approvalMessage, setApprovalMessage] = useState("");
   const [deleteMsg, setdeleteMsg] = useState("");
 
-  const approveWorker = (user_id) => {
+  var userinfo;
+  if (localStorage.getItem("loggedUser") != null) {
+    userinfo = JSON.parse(localStorage.getItem("loggedUser"));
+    console.log(userinfo);
+  }
+
+  const approveProvider = (user_id) => {
     console.log(user_id);
     fetch(`http://localhost:8080/approve?id=${user_id}`, {
       method: "GET",
       headers: {
-        "Content-Type": "application/text",
-      },
+        "Content-Type": "application/text",},
     })
       .then((response) => response.text())
       .then((data) => {
         console.log("Provider approved successfully:", data);
         setObj((prevObj) =>
-          prevObj.filter((worker) => worker.id !== user_id)
+          prevObj.filter((provider) => provider.id !== user_id)
         );
   
-        setApprovalMessage(`Worker ${user_id} has been approved.`);
+        setApprovalMessage(`Provider ${user_id} has been approved.`);
   
         setTimeout(() => {
           setApprovalMessage("");
@@ -28,13 +33,13 @@ export default function ApproveProvider() {
       });
   };
   
-  const deleteWorker = (worker_id) => {
-    console.log(`worker deleted ${worker_id}`);
+  const deleteProvider = (provider_id) => {
+    console.log(`provider deleted ${provider_id}`);
     setObj((prevObj) =>
-      prevObj.filter((worker) => worker.worker_id !== worker_id)
+      prevObj.filter((provider) => provider.provider_id !== provider_id)
     );
   
-    setdeleteMsg(`Worker ${worker_id} has been deleted.`);
+    setdeleteMsg(`Provider ${provider_id} has been deleted.`);
     setTimeout(() => {
       setdeleteMsg("");
     }, 3000);
@@ -50,7 +55,7 @@ export default function ApproveProvider() {
     }
 
     console.log("in show request");
-    fetch(`http://localhost:8080/getWorkerRegRequests?userId=${userData.id}`, {
+    fetch(`http://localhost:8080/getProviderRegRequests`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -81,10 +86,11 @@ export default function ApproveProvider() {
         <table className="table table-bordered table-hover rounded">
           <thead className="thead-dark">
             <tr>
-              <th scope="col">Provider ID</th>
+              <th scope="col">provider ID</th>
               <th scope="col">First Name</th>
               <th scope="col">Middle Name</th>
               <th scope="col">Last Name</th>
+              <th scope="col">Organization Name</th>
               <th scope="col">Approve</th>
               <th scope="col">Delete</th>
             </tr>
@@ -97,11 +103,12 @@ export default function ApproveProvider() {
                   <td>{v.firstName}</td>
                   <td>{v.middleName}</td>
                   <td>{v.lastName}</td>
+                  <td>{v.organization}</td>
                   <td>
                     <button
                       className="btn btn-primary"
                       onClick={() => {
-                        approveWorker(v.user.id);
+                        approveProvider(v.user.id);
                       }}
                     >
                       Approve
@@ -111,7 +118,7 @@ export default function ApproveProvider() {
                     <button
                       className="btn btn-danger"
                       onClick={() => {
-                        deleteWorker(v.worker_id);
+                        deleteProvider(v.provider_id);
                       }}
                     >
                       Delete

@@ -5,13 +5,18 @@ export default function ApproveWorker() {
   const [approvalMessage, setApprovalMessage] = useState("");
   const [deleteMsg, setdeleteMsg] = useState("");
 
+  var userinfo;
+  if (localStorage.getItem("loggedUser") != null) {
+    userinfo = JSON.parse(localStorage.getItem("loggedUser"));
+    console.log(userinfo);
+  }
+
   const approveWorker = (user_id) => {
     console.log(user_id);
     fetch(`http://localhost:8080/approve?id=${user_id}`, {
       method: "GET",
       headers: {
-        "Content-Type": "application/text",
-      },
+        "Content-Type": "application/text",},
     })
       .then((response) => response.text())
       .then((data) => {

@@ -13,20 +13,7 @@ export default function UpdateWorkerProfile() {
     dob: { value: 0, valid: false, touched: false, error: "" },
     phone: { value: 0, valid: false, touched: false, error: "" },
     relocation: { value: 0, valid: false, touched: false, error: "" },
-    // education: { value: 0, valid: false, touched: false, error: "" },
-    // state: { value: 0, valid: false, touched: false, error: "" },
-    // city: { value: 0, valid: false, touched: false, error: "" },
-    // address1: { value: 0, valid: false, touched: false, error: "" },
-    // address2: { value: 0, valid: false, touched: false, error: "" },
-    // uid: { value: 0, valid: false, touched: false, error: "" },
-    // pwd: { value: 0, valid: false, touched: false, error: "" },
-    // repwd: { value: 0, valid: false, touched: false, error: "" },
-    // question: { value: 0, valid: false, touched: false, error: "" },
-    // answer: { value: 0, valid: false, touched: false, error: "" },
-    // preference: { value: 0, valid: false, touched: false, error: "" },
-    // workerid: { value: 0, valid: false, touched: false, error: "" },
     active: { value: 0, valid: false, touched: false, error: "" },
-
 
     formValid: false,
   };
@@ -246,6 +233,7 @@ export default function UpdateWorkerProfile() {
     ) {
       valid = false;
       error = "Invalid Date of Birth";
+      
     }
   
     dispatch({
@@ -261,40 +249,28 @@ export default function UpdateWorkerProfile() {
     });
   };
 
-const handleChange = (key, value) => {
-  const { valid, error } = validateData(key, value);
-
-  const updatedWorker = {
-    ...worker,
-    [key]: {
-      ...worker[key],
-      value: value,
-      touched: true,
-      valid: valid,
-      error: error,
-    },
-  };
-
-  let formValid = true;
-  for (let k in updatedWorker) {
-    if (updatedWorker[k].valid === false) {
-      formValid = false;
-      break;
+  const handleChange = (key, value) => {
+    const { valid, error } = validateData(key, value);
+    let formValid = true;
+    for (let k in worker) {
+      if (worker[k] && worker[k].valid === false) { 
+        formValid = false;
+        break;
+      }
     }
-  }
-
-  dispatch({
-    type: "update",
-    data: {
-      key,
-      val: value,
-      touched: true,
-      valid,
-      error,
-      formValid,
-    },
-  });
-};
+    dispatch({
+      type: "update",
+      data: {
+        key,
+        val: value,
+        touched: true,
+        valid,
+        error,
+        formValid: formValid,
+      },
+    });
+  };
+  
 
 const handleRelocation = (key, value) => {
   let convertedValue = value.trim().toLowerCase() === "true" ? 1 : 0;
@@ -394,15 +370,6 @@ const handleRelocation = (key, value) => {
         }
         break;
 
-      // case "address1":
-      // case "address2":
-      //   pattern = new RegExp("^[a-zA-Z0-9,/.]{3,}$");
-      //   if (!pattern.test(value)) {
-      //     valid = false;
-      //     error = "Invalid Address";
-      //   }
-      //   break;
-
       default:
         console.log("default switch");
     }
@@ -487,205 +454,199 @@ const handleRelocation = (key, value) => {
 
   return (
     <div id="formContainer">
-      <form id="workerForm">
-        <table>
-          <tbody>
-            <tr>
-              <td>
-                <label htmlFor="fname">First Name:</label>
-              </td>
-              <td>
-                <input type="text" id="fname" name="fname"  defaultValue={obj1.firstName} disabled={submitDisabled}
+      <form id="vlcForm">
+        <div className="container mt-5 mb-5 border border-dark rounded ">
+          <div className="mt-3 mb-5 display-5 text-center">Worker PROFILE</div>
+
+          <div className="row">
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
+              <label htmlFor="fname">First Name:</label>
+               </div>
+            </div>
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
+              <input type="text" id="fname" name="fname"  defaultValue={obj1.firstName} disabled={submitDisabled}
                 onChange={(e)=>{handleChange("fname",e.target.value)}} onBlur={(e)=>{handleChange("fname",e.target.value)}}/>
-              </td>
-              <span className="error text-danger">
+                  <span className="error text-danger">
                   {worker.fname.touched &&
                     !worker.fname.valid &&
                     worker.fname.error}
               </span>
-            </tr>
-            <tr>
-              <td>
-                <label htmlFor="mname">Middle Name:</label>
-              </td>
-              <td>
-                <input type="text" id="mname" name="mname" defaultValue={obj1.middleName} disabled={submitDisabled}
-               onChange={(e)=>{handleChange("mname",e.target.value)}} onBlur={(e)=>{handleChange("mname",e.target.value)}}/>          
-              </td>
-              <span className="error text-danger">
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
+              <label htmlFor="mname">Middle Name:</label>
+               </div>
+            </div>
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
+              <input type="text" id="mname" name="mname" defaultValue={obj1.middleName} disabled={submitDisabled}
+               onChange={(e)=>{handleChange("mname",e.target.value)}} onBlur={(e)=>{handleChange("mname",e.target.value)}}/> 
+                          <span className="error text-danger">
                   {worker.mname.touched &&
                     !worker.mname.valid &&
                     worker.mname.error}
               </span>
-            </tr>
-            <tr>
-              <td>
-                <label htmlFor="lname">Last Name:</label>
-              </td>
-              <td>
-                <input type="text" id="lname" name="lname" defaultValue={obj1.lastName} disabled={submitDisabled} 
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
+              <label htmlFor="lname">Last Name:</label>
+               </div>
+            </div>
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
+              <input type="text" id="lname" name="lname" defaultValue={obj1.lastName} disabled={submitDisabled} 
                 onChange={(e)=>{handleChange("lname",e.target.value)}} onBlur={(e)=>{handleChange("lname",e.target.value)}}/>
-              </td>
-              <span className="error text-danger">
+                  <span className="error text-danger">
                   {worker.lname.touched &&
                     !worker.lname.valid &&
                     worker.lname.error}
               </span>
-            </tr>
-            <tr>
-              <td>
-                <label htmlFor="gender">Gender:</label>
-              </td>
-              <td>
-                <input type="text" id="gender" name="gender" defaultValue={obj1.gender} disabled
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
+              <label htmlFor="gender">Gender:</label>
+               </div>
+            </div>
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
+              <input type="text" id="gender" name="gender" defaultValue={obj1.gender} disabled
                 onChange={(e)=>{handleChange("gender",e.target.value)}} onBlur={(e)=>{handleChange("gender",e.target.value)}}/>
-              </td>
-              <span className="error text-danger">
+                     <span className="error text-danger">
                   {worker.gender.touched &&
                     !worker.gender.valid &&
                     worker.gender.error}
               </span>
-            </tr>
-            <tr>
-              <td>
-                <label htmlFor="adhar">Adhar:</label>
-              </td>
-              <td>
-                <input type="text" id="adhaar" name="adhaar" defaultValue={obj1.adhaar} disabled 
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
+              <label htmlFor="adhar">Adhar:</label>
+               </div>
+            </div>
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
+              <input type="text" id="adhaar" name="adhaar" defaultValue={obj1.adhaar} disabled 
                 onChange={(e)=>{handleChange("adhaar",e.target.value)}} onBlur={(e)=>{handleChange("adhaar",e.target.value)}}/>
-              </td>
-              <span className="error text-danger">
+                             <span className="error text-danger">
                   {worker.adhaar.touched &&
                     !worker.adhaar.valid &&
                     worker.adhaar.error}
               </span>
-            </tr>
-            <tr>
-              <td>
-                <label htmlFor="accno">Account Number:</label>
-              </td>
-              <td>
-                <input type="text" id="accountNumber" name="accountNumber" defaultValue={obj1.accountNumber} disabled={submitDisabled}
-                onChange={(e)=>{handleChange("accountNumber",e.target.value)}} onBlur={(e)=>{handleChange("accountNumber",e.target.value)}} />
-              </td>
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
+              <label htmlFor="accno">Account Number:</label>
+               </div>
+            </div>
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
               <span className="error text-danger">
                   {worker.accountNumber.touched &&
                     !worker.accountNumber.valid &&
                     worker.accountNumber.error}
               </span>
-            </tr>
-            <tr>
-              <td>
-                <label htmlFor="dob">Date of Birth:</label>
-              </td>
-              <td>
-                <input type="date" id="dob" name="dob" defaultValue={obj1.dateOfBirth} disabled={submitDisabled}
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
+              <label htmlFor="dob">Date of Birth:</label>
+               </div>
+            </div>
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
+              <input type="date" id="dob" name="dob" defaultValue={obj1.dateOfBirth} disabled={submitDisabled}
                 onChange={(e)=>{handleDate("dob",e.target.value)}} onBlur={(e)=>{handleDate("dob",e.target.value)}}  />
-              </td>
               <span className="error text-danger">
                   {worker.dob.touched &&
                     !worker.dob.valid &&
                     worker.dob.error}
               </span>
-            </tr>
-            <tr>
-              <td>
-                <label htmlFor="phone">Phone:</label>
-              </td>
-              <td>
-                <input type="text" id="phone" name="phone" defaultValue={obj1.phoneNumber} disabled={submitDisabled} 
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
+              <label htmlFor="phone">Phone:</label>
+               </div>
+            </div>
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
+              <input type="text" id="phone" name="phone" defaultValue={obj1.phoneNumber} disabled={submitDisabled} 
                 onChange={(e)=>{handleChange("phone",e.target.value)}} onBlur={(e)=>{handleChange("phone",e.target.value)}} />
-              </td>
               <span className="error text-danger">
                   {worker.phone.touched &&
                     !worker.phone.valid &&
                     worker.phone.error}
               </span>
-            </tr>
-            {/* <tr>
-              <td>
-                <label htmlFor="education">Education:</label>
-              </td>
-              <td>
-                <input type="text" id="education" name="education" defaultValue={obj1.education} disabled={submitDisabled} 
-                onChange={(e)=>{handleChange("education",e.target.value)}} onBlur={(e)=>{handleChange("education",e.target.value)}} />
-              </td>
-              <span className="error text-danger">
-                  {worker.education.touched &&
-                    !worker.education.valid &&
-                    worker.education.error}
-              </span>
-            </tr> */}
-            <tr>
-              <td>
-                <label htmlFor="relocation">Relocation :</label>
-              </td>
-              <td>
-                <input type="text" id="relocation" name="relocation" defaultValue={obj1.relocation} disabled={submitDisabled} 
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
+              <label htmlFor="relocation">Relocation :</label>
+               </div>
+            </div>
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
+              <input type="text" id="relocation" name="relocation" defaultValue={obj1.relocation} disabled={submitDisabled} 
                 onChange={(e)=>{handleRelocation("relocation",e.target.value)}} onBlur={(e)=>{handleRelocation("relocation",e.target.value)}} />
-              </td>
-              <span className="error text-danger">
+                     <span className="error text-danger">
                   {worker.relocation.touched &&
                     !worker.relocation.valid &&
                     worker.relocation.error}
               </span>
-            </tr>
-            
-            <tr>
-              <td>
-                <label htmlFor="active">Active :</label>
-              </td>
-              <td>
-                <input type="text" id="active" name="active" defaultValue={obj1.active} disabled={submitDisabled} 
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
+              <label htmlFor="active">Active :</label>
+               </div>
+            </div>
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
+              <input type="text" id="active" name="active" defaultValue={obj1.active} disabled={submitDisabled} 
                 onChange={(e)=>{handleChange("active",e.target.value)}} onBlur={(e)=>{handleChange("active",e.target.value)}}/>
-              </td>
-              <span className="error text-danger">
+                <span className="error text-danger">
                   {worker.active.touched &&
                     !worker.active.valid &&
                     worker.active.error}
               </span>
-            </tr>
-            {/* <tr>
-              <td>
-                <label htmlFor="state">State:</label>
-              </td>
-              <td>
-                <input type="text" id="state" name="state" defaultValue={obj1.address.city.state.stateName} disabled={submitDisabled}
-                onChange={(e)=>{handleChange("state",e.target.value)}} onBlur={(e)=>{handleChange("state",e.target.value)}} />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label htmlFor="city">City:</label>
-              </td>
-              <td>
-                <input type="text" id="city" name="city" defaultValue={obj1.address.city.cityName} disabled={submitDisabled} 
-                onChange={(e)=>{handleChange("city",e.target.value)}} onBlur={(e)=>{handleChange("city",e.target.value)}} />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label htmlFor="add1">Address Line1:</label>
-              </td>
-              <td>
-                <input type="text" id="address1" name="address1" defaultValue={obj1.address.addressLine1} disabled={submitDisabled} 
-                onChange={(e)=>{handleChange("address1",e.target.value)}} onBlur={(e)=>{handleChange("address1",e.target.value)}} />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label htmlFor="add2">Address Line2:</label>
-              </td>
-              <td>
-                <input type="text" id="address2" name="address2" defaultValue={obj1.address.addressLine2} disabled={submitDisabled} 
-                onChange={(e)=>{handleChange("address2",e.target.value)}} onBlur={(e)=>{handleChange("address2",e.target.value)}} />
-              </td>
-            </tr> */}
-           
-          </tbody>
-        </table>
+              </div>
+            </div>
+          </div>
 
-        <div className="row text-center m-3">
+          <div className="row text-center m-3">
           
           <div
             className={`col alert text-center d-flex justify-content-center ${alertType} p-2 w-75 ${
@@ -697,18 +658,37 @@ const handleRelocation = (key, value) => {
           </div>
         </div>
 
-        <button type="button" id="editBtn" onClick={toggleDisable}>
-          Edit
-        </button>
-        <button type="button" id="submitBtn" onClick={submitData} disabled={submitDisabled}>
-          Submit
-        </button>
-        <button type="button" id="cancelBtn" onClick={handleReset} disabled={cancelDisabled}>
-          Cancel
-        </button>
+        <div className="row text-center m-3">
+            <div className="col"></div>
+            <div className="col">
+              <button type="button" id="editBtn" onClick={toggleDisable}>
+                Edit
+              </button>
+              <button
+                type="button"
+                id="submitBtn"
+                onClick={submitData}
+                disabled={submitDisabled}
+              >
+                Submit
+              </button>
+              <button
+                type="button"
+                id="cancelBtn"
+                onClick={handleReset}
+                disabled={cancelDisabled}
+              >
+                Cancel
+              </button>
+            </div>
+            <div className="col"></div>
+          </div>
 
+
+          </div>
       </form>
       {JSON.stringify(worker)}
     </div>
   );
+    
 }

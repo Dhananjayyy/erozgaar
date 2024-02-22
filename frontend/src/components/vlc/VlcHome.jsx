@@ -24,7 +24,7 @@ export default function VlcHome() {
       <div className="container mt-3">
         <div className="border border-dark rounded d-flex align-items-center justify-content-center w-100 h-100">
           <h3 className="pt-2">
-            Welcome {userData.firstName + " " + userData.lastName}
+            {/* Welcome {userData.firstName + " " + userData.lastName} */}
           </h3>
         </div>
         <div>
