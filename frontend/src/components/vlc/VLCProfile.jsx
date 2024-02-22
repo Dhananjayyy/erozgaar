@@ -7,23 +7,9 @@ export default function UpdateProfileVLC() {
     fname: { value: "", valid: false, touched: false, error: "" },
     mname: { value: "", valid: false, touched: false, error: "" },
     lname: { value: "", valid: false, touched: false, error: "" },
-    gender: { value: "", valid: false, touched: false, error: "" },
     adhaar: { value: "", valid: false, touched: false, error: "" },
     accountNumber: { value: "", valid: false, touched: false, error: "" },
     phone: { value: 0, valid: false, touched: false, error: "" },
-    // education: { value: 0, valid: false, touched: false, error: "" },
-    // state: { value: 0, valid: false, touched: false, error: "" },
-    // city: { value: 0, valid: false, touched: false, error: "" },
-    // address1: { value: 0, valid: false, touched: false, error: "" },
-    // address2: { value: 0, valid: false, touched: false, error: "" },
-    // uid: { value: 0, valid: false, touched: false, error: "" },
-    // pwd: { value: 0, valid: false, touched: false, error: "" },
-    // repwd: { value: 0, valid: false, touched: false, error: "" },
-    // question: { value: 0, valid: false, touched: false, error: "" },
-    // answer: { value: 0, valid: false, touched: false, error: "" },
-    // vlcid: { value: 0, valid: false, touched: false, error: "" },
-    // active: { value: "", valid: false, touched: false, error: "" },
-
     formValid: false,
   };
 
@@ -136,7 +122,7 @@ export default function UpdateProfileVLC() {
         error: "",
       },
     });
- 
+
     dispatch({
       type: "update",
       data: {
@@ -147,34 +133,19 @@ export default function UpdateProfileVLC() {
         error: "",
       },
     });
-
   };
 
   const handleReset = () => {
+    initializeVlcState(obj1);
     setCancelDisabled(!cancelDisabled);
     setSubmitDisabled(!submitDisabled);
-    dispatch({
-      type: "reset",
-    });
   };
 
   const handleChange = (key, value) => {
     const { valid, error } = validateData(key, value);
-
-    const updatedVlc = {
-      ...vlc,
-      [key]: {
-        ...vlc[key],
-        value: value,
-        touched: true,
-        valid: valid,
-        error: error,
-      },
-    };
-
     let formValid = true;
-    for (let k in updatedVlc) {
-      if (updatedVlc[k].valid === false) {
+    for (let k in vlc) {
+      if (vlc[k] && vlc[k].valid === false) {
         formValid = false;
         break;
       }
@@ -187,7 +158,7 @@ export default function UpdateProfileVLC() {
         touched: true,
         valid,
         error,
-        formValid,
+        formValid: formValid,
       },
     });
   };
@@ -219,13 +190,13 @@ export default function UpdateProfileVLC() {
         }
         break;
 
-        case "adhaar":
-          pattern = /^\d{12}$/;
-          if (!pattern.test(value)) {
-            valid = false;
-            error = "Invalid Adhaar Number";
-          }
-          break;
+      case "adhaar":
+        pattern = /^\d{12}$/;
+        if (!pattern.test(value)) {
+          valid = false;
+          error = "Invalid Adhaar Number";
+        }
+        break;
       case "accountNumber":
         pattern = /^\d{10}$/;
         if (!pattern.test(value)) {
@@ -245,15 +216,16 @@ export default function UpdateProfileVLC() {
 
     if (vlc.formValid === false) {
       setAlertType("alert-danger");
+      showErrorMessage("Form is not valid. Please check the fields.", 5000);
       return;
     }
 
     var reqbody = JSON.stringify({
       userId: data.id,
-      userName: obj1.uid.value,
-      password: obj1.pwd.value,
+      userName: obj1.uid,
+      password: obj1.pwd,
       phoneNumber: vlc.phone.value,
-      gender: vlc.gender.value,
+      gender: vlc.gender,
       role: {
         roleId: 3,
       },
@@ -261,14 +233,14 @@ export default function UpdateProfileVLC() {
       adhaar: vlc.adhaar.value,
       accountNumber: vlc.accountNumber.value,
       securityQuestion: {
-        securityQuestionId: vlc.question.securityQuestionId,
+        securityQuestionId: vlc.question,
       },
       answer: obj1.answer.value,
-      id: vlc.vlcid.value,
+      id: vlc.vlcid,
       firstName: vlc.fname.value,
       middleName: vlc.mname.value,
       lastName: vlc.lname.value,
-      education: vlc.education.value,
+      education: vlc.education,
       address: {
         addressLine1: obj1.address1,
         addressLine2: obj1.address2,
@@ -288,20 +260,23 @@ export default function UpdateProfileVLC() {
       },
       body: reqbody,
     })
+      .then((response) => response.json())
       .then((data) => {
         if (data.msg === 1) {
           setAlertType("alert-success");
-          showErrorMessage("Updated successfully. Please log in.", 5000);
+          showErrorMessage("Updated successfully.", 5000);
           return;
         }
         if (data.msg === 0) {
           setAlertType("alert-danger");
+          showErrorMessage("Failed to update. Please try again.", 5000);
           return;
         }
         setAlertType("alert-danger");
       })
       .catch((error) => {
         console.error("Error:", error);
+        setAlertType("alert-danger");
         showErrorMessage("Error", 5000);
       });
     setCancelDisabled(!cancelDisabled);
@@ -313,13 +288,17 @@ export default function UpdateProfileVLC() {
   return (
     <div id="formContainer">
       <form id="vlcForm">
-        <table>
-          <tbody>
-            <tr>
-              <td>
+        <div className="container mt-5 mb-5 border border-dark rounded ">
+          <div className="mt-3 mb-5 display-5 text-center">VLC PROFILE</div>
+          {/* First row */}
+          <div className="row">
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
                 <label htmlFor="fname">First Name:</label>
-              </td>
-              <td>
+              </div>
+            </div>
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
                 <input
                   type="text"
                   id="fname"
@@ -333,18 +312,21 @@ export default function UpdateProfileVLC() {
                     handleChange("fname", e.target.value);
                   }}
                 />
-              </td>
-              <span className="error text-danger">
-                  {vlc.fname.touched &&
-                    !vlc.fname.valid &&
-                    vlc.fname.error}
-              </span>
-            </tr>
-            <tr>
-              <td>
+                <span className="error text-danger">
+                  {vlc.fname.touched && !vlc.fname.valid && vlc.fname.error}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
                 <label htmlFor="mname">Middle Name:</label>
-              </td>
-              <td>
+              </div>
+            </div>
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
                 <input
                   type="text"
                   id="mname"
@@ -358,18 +340,21 @@ export default function UpdateProfileVLC() {
                     handleChange("mname", e.target.value);
                   }}
                 />
-              </td>
-              <span className="error text-danger">
-                  {vlc.mname.touched &&
-                    !vlc.mname.valid &&
-                    vlc.mname.error}
-              </span>
-            </tr>
-            <tr>
-              <td>
+                <span className="error text-danger">
+                  {vlc.mname.touched && !vlc.mname.valid && vlc.mname.error}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
                 <label htmlFor="lname">Last Name:</label>
-              </td>
-              <td>
+              </div>
+            </div>
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
                 <input
                   type="text"
                   id="lname"
@@ -383,41 +368,49 @@ export default function UpdateProfileVLC() {
                     handleChange("lname", e.target.value);
                   }}
                 />
-              </td>
-              <span className="error text-danger">
-                  {vlc.lname.touched &&
-                    !vlc.lname.valid &&
-                    vlc.lname.error}
-              </span>
-            </tr>
-            {/* <tr>
-              <td>
-                <label htmlFor="gender">Gender:</label>
-              </td>
-              <td>
-                <input type="text" id="gender" name="gender" defaultValue={obj1.gender} disabled={submitDisabled}
-                onChange={(e)=>{handleChange("gender",e.target.value)}} onBlur={(e)=>{handleChange("gender",e.target.value)}}/>
-              </td>
-            </tr> */}
-            <tr>
-              <td>
+                <span className="error text-danger">
+                  {vlc.lname.touched && !vlc.lname.valid && vlc.lname.error}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
                 <label htmlFor="adhar">Adhar:</label>
-              </td>
-              <td>
-                <input type="text" id="adhaar" name="adhaar" defaultValue={obj1.adhaar} disabled={submitDisabled} 
-                onChange={(e)=>{handleChange("adhaar",e.target.value)}} onBlur={(e)=>{handleChange("adhaar",e.target.value)}}/>
-              </td>
-              <span className="error text-danger">
-                  {vlc.adhaar.touched &&
-                    !vlc.adhaar.valid &&
-                    vlc.adhaar.error}
-              </span>
-            </tr>
-            <tr>
-              <td>
+              </div>
+            </div>
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
+                <input
+                  type="text"
+                  id="adhaar"
+                  name="adhaar"
+                  defaultValue={obj1.adhaar}
+                  disabled={submitDisabled}
+                  onChange={(e) => {
+                    handleChange("adhaar", e.target.value);
+                  }}
+                  onBlur={(e) => {
+                    handleChange("adhaar", e.target.value);
+                  }}
+                />
+                <span className="error text-danger">
+                  {vlc.adhaar.touched && !vlc.adhaar.valid && vlc.adhaar.error}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
                 <label htmlFor="accno">Account Number:</label>
-              </td>
-              <td>
+              </div>
+            </div>
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
                 <input
                   type="text"
                   id="accountNumber"
@@ -431,18 +424,23 @@ export default function UpdateProfileVLC() {
                     handleChange("accountNumber", e.target.value);
                   }}
                 />
-              </td>
-              <span className="error text-danger">
+                <span className="error text-danger">
                   {vlc.accountNumber.touched &&
                     !vlc.accountNumber.valid &&
                     vlc.accountNumber.error}
-              </span>
-            </tr>
-            <tr>
-              <td>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
                 <label htmlFor="phone">Phone:</label>
-              </td>
-              <td>
+              </div>
+            </div>
+            <div className="col">
+              <div className="mb-3 border bg-light rounded p-2">
                 <input
                   type="text"
                   id="phone"
@@ -456,140 +454,53 @@ export default function UpdateProfileVLC() {
                     handleChange("phone", e.target.value);
                   }}
                 />
-              </td>
-              <span className="error text-danger">
-                  {vlc.phone.touched &&
-                    !vlc.phone.valid &&
-                    vlc.phone.error}
-              </span>
-            </tr>
-            {/* <tr>
-              <td>
-                <label htmlFor="active">Active:</label>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  id="active"
-                  name="active"
-                  defaultValue={obj1.active}
-                  disabled={submitDisabled}
-                  onChange={(e) => {
-                    handleChange("active", e.target.value);
-                  }}
-                  onBlur={(e) => {
-                    handleChange("active", e.target.value);
-                  }}
-                />
-              </td>
-            </tr> */}
-            {/* <tr>
-              <td>
-                <label htmlFor="education">Education:</label>
-              </td>
-              <td>
-                <input type="text" id="education" name="education" defaultValue={obj1.education} disabled={submitDisabled} 
-                onChange={(e)=>{handleChange("education",e.target.value)}} onBlur={(e)=>{handleChange("education",e.target.value)}} />
-              </td>
-            </tr> */}
-            {/* <tr>
-              <td>
-                <label htmlFor="relocation">Relocation:</label>
-              </td>
-              <td>
-                <input type="text" id="relocation" name="relocation" defaultValue={obj1.relocation} disabled={submitDisabled} 
-                onChange={(e)=>{handleChange("relocation",e.target.value)}} onBlur={(e)=>{handleChange("relocation",e.target.value)}} />
-              </td>
-            </tr> */}
-            {/* <tr>
-              <td>
-                <label htmlFor="state">State:</label>
-              </td>
-              <td>
-                <input type="text" id="state" name="state" defaultValue={obj1.address.city.state.stateName} disabled={submitDisabled}
-                onChange={(e)=>{handleChange("state",e.target.value)}} onBlur={(e)=>{handleChange("state",e.target.value)}} />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label htmlFor="city">City:</label>
-              </td>
-              <td>
-                <input type="text" id="city" name="city" defaultValue={obj1.address.city.cityName} disabled={submitDisabled} 
-                onChange={(e)=>{handleChange("city",e.target.value)}} onBlur={(e)=>{handleChange("city",e.target.value)}} />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label htmlFor="add1">Address Line1:</label>
-              </td>
-              <td>
-                <input type="text" id="address1" name="address1" defaultValue={obj1.address.addressLine1} disabled={submitDisabled} 
-                onChange={(e)=>{handleChange("address1",e.target.value)}} onBlur={(e)=>{handleChange("address1",e.target.value)}} />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label htmlFor="add2">Address Line2:</label>
-              </td>
-              <td>
-                <input type="text" id="address2" name="address2" defaultValue={obj1.address.addressLine2} disabled={submitDisabled} 
-                onChange={(e)=>{handleChange("address2",e.target.value)}} onBlur={(e)=>{handleChange("address2",e.target.value)}} />
-              </td>
-            </tr> */}
-            {/* <tr>
-              <td>
-                <label htmlFor="question">Question Id:</label>
-              </td>
-              <td>
-                <input type="text" id="question" name="question" defaultValue={obj1.securityQuestion.securityQuestionId} disabled={submitDisabled} 
-                onChange={(e)=>{handleChange("question",e.target.value)}} onBlur={(e)=>{handleChange("question",e.target.value)}} />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label htmlFor="answer">Answer:</label>
-              </td>
-              <td>
-                <input type="text" id="answer" name="answer" defaultValue={obj1.answer} disabled={submitDisabled}
-                onChange={(e)=>{handleChange("answer",e.target.value)}} onBlur={(e)=>{handleChange("answer",e.target.value)}} />
-              </td>
-            </tr> */}
-          </tbody>
-        </table>
-
-        <div className="row text-center m-3">
-          
-          <div
-            className={`col alert text-center d-flex justify-content-center ${alertType} p-2 w-75 ${
-              displayAlert ? "d-block" : "d-none"
-            }`}
-            role="alert"
-          >
-            {errorMsg}
+                <span className="error text-danger">
+                  {vlc.phone.touched && !vlc.phone.valid && vlc.phone.error}
+                </span>
+              </div>
+            </div>
           </div>
-        </div>
 
-        <button type="button" id="editBtn" onClick={toggleDisable}>
-          Edit
-        </button>
-        <button
-          type="button"
-          id="submitBtn"
-          onClick={submitData}
-          disabled={submitDisabled}
-        >
-          Submit
-        </button>
-        <button
-          type="button"
-          id="cancelBtn"
-          onClick={handleReset}
-          disabled={cancelDisabled}
-        >
-          Cancel
-        </button>
+          <div className="row text-center m-3">
+            <div
+              className={`col alert text-center d-flex justify-content-center ${alertType} p-2 w-75 ${
+                displayAlert ? "d-block" : "d-none"
+              }`}
+              role="alert"
+            >
+              {errorMsg}
+            </div>
+          </div>
+          
+          <div className="row text-center m-3">
+            <div className="col"></div>
+            <div className="col">
+              <button type="button" id="editBtn" onClick={toggleDisable}>
+                Edit
+              </button>
+              <button
+                type="button"
+                id="submitBtn"
+                onClick={submitData}
+                disabled={submitDisabled}
+              >
+                Submit
+              </button>
+              <button
+                type="button"
+                id="cancelBtn"
+                onClick={handleReset}
+                disabled={cancelDisabled}
+              >
+                Cancel
+              </button>
+            </div>
+            <div className="col"></div>
+          </div>
+
+        </div>
       </form>
+      {JSON.stringify(vlc)}
     </div>
   );
 }

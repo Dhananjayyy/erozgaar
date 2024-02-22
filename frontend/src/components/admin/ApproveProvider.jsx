@@ -16,8 +16,7 @@ export default function ApproveProvider() {
     fetch(`http://localhost:8080/approve?id=${user_id}`, {
       method: "GET",
       headers: {
-        "Content-Type": "application/text",
-        "Authorization": `Bearer ${userinfo.accessToken}`,},
+        "Content-Type": "application/text",},
     })
       .then((response) => response.text())
       .then((data) => {
@@ -34,13 +33,13 @@ export default function ApproveProvider() {
       });
   };
   
-  const rejectProvider = (provider_id) => {
+  const deleteProvider = (provider_id) => {
     console.log(`provider deleted ${provider_id}`);
     setObj((prevObj) =>
       prevObj.filter((provider) => provider.provider_id !== provider_id)
     );
   
-    setdeleteMsg(`Provider ${provider_id} has been rejected.`);
+    setdeleteMsg(`Provider ${provider_id} has been deleted.`);
     setTimeout(() => {
       setdeleteMsg("");
     }, 3000);
@@ -60,7 +59,6 @@ export default function ApproveProvider() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${userinfo.accessToken}`,
       },
     })
       .then((response) => response.json())
@@ -94,7 +92,7 @@ export default function ApproveProvider() {
               <th scope="col">Last Name</th>
               <th scope="col">Organization Name</th>
               <th scope="col">Approve</th>
-              {/* <th scope="col">Delete</th> */}
+              <th scope="col">Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -116,7 +114,7 @@ export default function ApproveProvider() {
                       Approve
                     </button>
                   </td>
-                  {/* <td>
+                  <td>
                     <button
                       className="btn btn-danger"
                       onClick={() => {
@@ -125,7 +123,7 @@ export default function ApproveProvider() {
                     >
                       Delete
                     </button>
-                  </td> */}
+                  </td>
                 </tr>
               </>
             ))}

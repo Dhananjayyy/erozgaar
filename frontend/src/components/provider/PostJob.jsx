@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from "react";
+import { useReducer, useState } from "react";
 
 export default function PostJob() {
   var userinfo;
@@ -65,16 +65,13 @@ export default function PostJob() {
     if (key === "startdate" || key === "enddate") {
       const currentDate = new Date();
       const selectedDate = new Date(value);
-
+  
       if (selectedDate < currentDate) {
         valid = false;
         error = "Selected date cannot be in the past.";
       }
-
-      if (
-        key === "enddate" &&
-        selectedDate <= new Date(postjob.startdate.value)
-      ) {
+  
+      if (key === "enddate" && selectedDate <= new Date(postjob.startdate.value)) {
         valid = false;
         error = "End date must be greater than the start date.";
       }
@@ -83,7 +80,7 @@ export default function PostJob() {
       valid = fieldValid;
       error = fieldError;
     }
-
+  
     let formValid = true;
     for (let k in postjob) {
       if (postjob[k].valid === false) {
@@ -91,7 +88,7 @@ export default function PostJob() {
         break;
       }
     }
-
+  
     dispatch({
       type: "update",
       data: {
@@ -104,6 +101,7 @@ export default function PostJob() {
       },
     });
   };
+  
 
   //   useEffect(() => {
   //     fetch(`http://localhost:8080/getProviderByUserId?id=${userinfo.id}`, {
@@ -149,36 +147,7 @@ export default function PostJob() {
     });
   };
 
-  const [states, setStates] = useState([]);
-  const [cities, setCities] = useState([]);
-  const [selectedState, setSelectedState] = useState(0);
-
-  useEffect(() => {
-    fetchStates();
-  }, []);
-
-  const handleStateChange = (stateId) => {
-    setSelectedState(stateId);
-    fetchCities(stateId);
-  };
-
-  const fetchStates = () => {
-    fetch("http://localhost:8080/getstates")
-      .then((response) => response.json())
-      .then((data) => {
-        setStates(data);
-      })
-      .catch((error) => console.error("Error fetching states:", error));
-  };
-
-  const fetchCities = (stateId) => {
-    fetch(`http://localhost:8080/getcities?id=${stateId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setCities(data);
-      })
-      .catch((error) => console.error("Error fetching cities:", error));
-  };
+  
 
   const handleReset = () => {
     dispatch({
@@ -202,7 +171,7 @@ export default function PostJob() {
         break;
 
       case "category":
-      case "city":
+        case "city":
       case "state":
         if (value === "0") {
           valid = false;
@@ -259,12 +228,10 @@ export default function PostJob() {
         addressLine1: postjob.address1.value,
         addressLine2: postjob.address2.value,
         city: {
-          id: postjob.city.value,
+          id : postjob.city.value
         },
       },
     });
-
-    console.log(reqbody)
 
     // Perform the POST request
     fetch(`http://localhost:8080/addJob?userId=${userinfo.id}`, {
@@ -289,6 +256,8 @@ export default function PostJob() {
         console.error("Error:", error);
       });
   };
+
+  
 
   return (
     <form>
@@ -397,22 +366,26 @@ export default function PostJob() {
         <div className="row">
           <div className="col">
             <div className="mb-3 border bg-light rounded p-2">
-              <label htmlFor="state" className="form-label">
+              <label htmlFor="education" className="form-label">
                 State
               </label>
               <select
-                id="state"
                 className="form-select"
-                value={selectedState}
                 onChange={(e) => handleChange("state", e.target.value)}
                 onBlur={(e) => handleChange("state", e.target.value)}
               >
-                <option value={0}>Select State</option>
-                {states.map((state) => (
-                  <option key={state.id} value={state.id}>
-                    {state.stateName}
-                  </option>
-                ))}
+                <option id="state" className="form-option" value="0">
+                  Select State
+                </option>
+                <option id="state" className="form-option" value="14">
+                  Maharashtra
+                </option>
+                <option id="state" className="form-option" value="20">
+                  Punjab
+                </option>
+                <option id="state" className="form-option" value="7">
+                  Gujarat
+                </option>
               </select>
               <span className="error text-danger">
                 {postjob.state.touched &&
@@ -428,17 +401,22 @@ export default function PostJob() {
                 City
               </label>
               <select
-                id="city"
                 className="form-select"
                 onChange={(e) => handleChange("city", e.target.value)}
                 onBlur={(e) => handleChange("city", e.target.value)}
               >
-                <option value={0}>Select City</option>
-                {cities.map((city) => (
-                  <option key={city.id} value={city.id}>
-                    {city.cityName}
-                  </option>
-                ))}
+                <option id="0" className="form-option" value="0">
+                  Select City
+                </option>
+                <option id="city" className="form-option" value="8">
+                  Pune
+                </option>
+                <option id="city" className="form-option" value="5">
+                  Amritsar
+                </option>
+                {/* <option id="city" className="form-option" value="7">
+                  Surat
+                </option> */}
               </select>
               <span className="error text-danger">
                 {postjob.city.touched &&
@@ -449,138 +427,139 @@ export default function PostJob() {
           </div>
         </div>
 
-        {/* 4th row */}
-        <div className="row">
-          <div className="col">
-            <div className="mb-3 border bg-light rounded p-2">
-              <label htmlFor="address1" className="form-label">
-                Address Line 1
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="city"
-                placeholder="Enter specific job location"
-                onChange={(e) => handleChange("address1", e.target.value)}
-                onBlur={(e) => handleChange("address1", e.target.value)}
-              />
-              <span className="error text-danger">
-                {postjob.address1.touched &&
-                  !postjob.address1.valid &&
-                  postjob.address1.error}
-              </span>
-            </div>
-          </div>
-
-          <div className="col">
-            <div className="mb-3 border bg-light rounded p-2">
-              <label htmlFor="address1" className="form-label">
-                Address Line 2
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="city"
-                placeholder="Enter area"
-                onChange={(e) => handleChange("address2", e.target.value)}
-                onBlur={(e) => handleChange("address2", e.target.value)}
-              />
-              <span className="error text-danger">
-                {postjob.address2.touched &&
-                  !postjob.address2.valid &&
-                  postjob.address2.error}
-              </span>
-            </div>
+      {/* 4th row */}
+      <div className="row">
+        <div className="col">
+          <div className="mb-3 border bg-light rounded p-2">
+            <label htmlFor="address1" className="form-label">
+              Address1
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="city"
+              placeholder="address 1"
+              onChange={(e) => handleChange("address1", e.target.value)}
+              onBlur={(e) => handleChange("address1", e.target.value)}
+            />
+            <span className="error text-danger">
+              {postjob.address1.touched &&
+                !postjob.address1.valid &&
+                postjob.address1.error}
+            </span>
           </div>
         </div>
 
-        {/* 5th row */}
-        <div className="row">
-          <div className="col">
-            <div className="mb-3 border bg-light rounded p-2">
-              <label htmlFor="startdate" className="form-label">
-                Start Date
-              </label>
-              <input
-                type="date"
-                className="form-control"
-                id="startdate"
-                onChange={(e) => handleDate("startdate", e.target.value)}
-                onBlur={(e) => handleDate("startdate", e.target.value)}
-              />
-              <span className="error text-danger">
-                {postjob.startdate.touched &&
-                  !postjob.startdate.valid &&
-                  postjob.startdate.error}
-              </span>
-            </div>
+        <div className="col">
+          <div className="mb-3 border bg-light rounded p-2">
+            <label htmlFor="address1" className="form-label">
+              Address1
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="city"
+              placeholder="address 2"
+              onChange={(e) => handleChange("address2", e.target.value)}
+              onBlur={(e) => handleChange("address2", e.target.value)}
+            />
+            <span className="error text-danger">
+              {postjob.address2.touched &&
+                !postjob.address2.valid &&
+                postjob.address2.error}
+            </span>
           </div>
+        </div>
+      </div>
 
-          <div className="col">
-            <div className="mb-3 border bg-light rounded p-2">
-              <label htmlFor="enddate" className="form-label">
-                End Date
-              </label>
-              <input
-                type="date"
-                className="form-control"
-                id="enddate"
-                onChange={(e) => handleDate("enddate", e.target.value)}
-                onBlur={(e) => handleDate("enddate", e.target.value)}
-              />
-              <span className="error text-danger">
-                {postjob.enddate.touched &&
-                  !postjob.enddate.valid &&
-                  postjob.enddate.error}
-              </span>
-            </div>
+      {/* 5th row */}
+      <div className="row">
+        <div className="col">
+          <div className="mb-3 border bg-light rounded p-2">
+            <label htmlFor="startdate" className="form-label">
+              Start Date
+            </label>
+            <input
+              type="date"
+              className="form-control"
+              id="startdate"
+              onChange={(e) => handleDate("startdate", e.target.value)}
+              onBlur={(e) => handleDate("startdate", e.target.value)}
+            />
+            <span className="error text-danger">
+              {postjob.startdate.touched &&
+                !postjob.startdate.valid &&
+                postjob.startdate.error}
+            </span>
           </div>
         </div>
 
-        {/* 6th row */}
-        <div className="row text-center m-3">
-          <div
-            className={`col alert text-center d-flex justify-content-center ${alertType} p-2 w-75 ${
-              displayAlert ? "d-block" : "d-none"
-            }`}
-            role="alert"
+        <div className="col">
+          <div className="mb-3 border bg-light rounded p-2">
+            <label htmlFor="enddate" className="form-label">
+              End Date
+            </label>
+            <input
+              type="date"
+              className="form-control"
+              id="enddate"
+              onChange={(e) => handleDate("enddate", e.target.value)}
+              onBlur={(e) => handleDate("enddate", e.target.value)}
+            />
+            <span className="error text-danger">
+              {postjob.enddate.touched &&
+                !postjob.enddate.valid &&
+                postjob.enddate.error}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* 6th row */}
+      <div className="row text-center m-3">
+        <div
+          className={`col alert text-center d-flex justify-content-center ${alertType} p-2 w-75 ${
+            displayAlert ? "d-block" : "d-none"
+          }`}
+          role="alert"
+        >
+          {errorMsg}
+        </div>
+      </div>
+
+      <div className="row text-center m-3">
+        <div className="col"></div>
+        <div className="col">
+          <button
+            className="btn btn-primary col-6"
+            type="submit"
+            onClick={(e) => {
+              submitData(e);
+            }}
           >
-            {errorMsg}
-          </div>
+            Post Job
+          </button>
         </div>
-
-        <div className="row text-center m-3">
-          <div className="col"></div>
-          <div className="col">
-            <button
-              className="btn btn-primary col-6"
-              type="submit"
-              onClick={(e) => {
-                submitData(e);
-              }}
-            >
-              Post Job
-            </button>
-          </div>
-          <div className="col">
-            <button
-              className="btn btn-outline-danger col-6"
-              type="reset"
-              onClick={() => {
-                handleReset();
-              }}
-            >
-              Clear
-            </button>
-          </div>
-          <div className="col"></div>
+        <div className="col">
+          <button
+            className="btn btn-outline-danger col-6"
+            type="reset"
+            onClick={() => {
+              handleReset();
+            }}
+          >
+            Clear
+          </button>
         </div>
+        <div className="col"></div>
+      </div>
       </div>
       <div className="row">
         <div className="col">
           {/* <pre>{JSON.stringify(postjob, null, 2)}</pre> */}
         </div>
       </div>
+      
     </form>
   );
 }

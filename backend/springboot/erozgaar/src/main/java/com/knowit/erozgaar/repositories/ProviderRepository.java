@@ -20,7 +20,7 @@ public interface ProviderRepository extends JpaRepository<Provider, Integer>{
     @Query("SELECT p FROM Provider p WHERE p.user.userName = :userName")
     Provider findByUsername(@Param("userName") String userName);
     
-    @Query("SELECT p from Provider p where p.id in (SELECT u.id FROM User u where u.active = false)")
+    @Query("SELECT p from Provider p where p.user.id in (SELECT u.id FROM User u where u.active = false and u.role.role_id=2)")
 	public List<Provider> getListForApproval();
     
     @Query("SELECT p FROM Provider p WHERE p.user.id = :userId")
@@ -32,10 +32,12 @@ public interface ProviderRepository extends JpaRepository<Provider, Integer>{
     @Query("SELECT p FROM Provider p WHERE p.user.id = :uid")
    	public Provider getProviderById(@Param("uid") int uid);
   
-    
     @Transactional
     @Modifying
     @Query("UPDATE Provider SET firstName=:fname, middleName=:mname, lastName=:lname WHERE user.id=:uid")
     public int updateProvider(@Param("fname") String fname, @Param("mname") String mname, @Param("lname") String lname, @Param("uid") int uid);
+    
+    @Query("SELECT p FROM Provider p WHERE p.user.id IN (SELECT u.id FROM User u, Provider p WHERE u.active = false AND p.address.city.id = :cityId)")
+    public List<Provider> getListForApprovalByCity(@Param("cityId") int cityId);
     
 }

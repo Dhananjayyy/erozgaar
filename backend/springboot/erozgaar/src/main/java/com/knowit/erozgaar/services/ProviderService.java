@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.knowit.erozgaar.entities.Provider;
+import com.knowit.erozgaar.entities.Worker;
 import com.knowit.erozgaar.repositories.ProviderRepository;
 
 @Service
@@ -27,6 +28,13 @@ public class ProviderService {
     public List<Provider> getProviders()
 	{
 		return prepo.getListForApproval();
+		
+	}
+    
+    public List<Provider> getProvidersByCity(int uid)
+	{
+		
+		return prepo.getListForApprovalByCity(uid);
 		
 	}
     
