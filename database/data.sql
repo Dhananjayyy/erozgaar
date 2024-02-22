@@ -98,7 +98,7 @@ VALUES
 INSERT INTO users (user_name, password, phone_number,gender, role_id, active,adhaar,account_number, security_question_id, answer)
 VALUES
     ('Akash.Sharma', '$2a$12$D/e/OHU5SYUOH9VV9jEuceNNGcfBpunWZVPBbQhhFAQWzP3vY2ih.',9876543210,'Male', 1, TRUE,"123456781234","1234567890", 1, 'Don'),
-    ('Sanket.Patel', '$2a$12$zCy9kFY053oMSHLc5d8IBudiVyIFFnkeWns4Q4r.2Z60vfK8jdCuK',9856543210,'Other', 1, FALSE,"223456781234","2234567890", 2, 'Patil Vasti'),
+    ('Sanket.Patel', '$2a$12$zCy9kFY053oMSHLc5d8IBudiVyIFFnkeWns4Q4r.2Z60vfK8jdCuK',9856543210,'Other', 1, TRUE,"223456781234","2234567890", 2, 'Patil Vasti'),
     ('Shreyash.Patel', 'Shreyash@123',9876547710,'Female', 1, TRUE,"323456781234","3234567890", 3, 'Fish'),
 
 

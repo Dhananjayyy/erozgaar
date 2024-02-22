@@ -1,5 +1,7 @@
 package com.knowit.erozgaar.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,4 +30,16 @@ public class JobAllocationService {
 	public boolean isAllocated(int jobId, int workerId) {
 		return jarepo.isAllocated(jobId, workerId) != null;
 	}
+	
+	public List<JobAllocation> getAllottedWorkersByProviderUserId(int uid) {
+		return jarepo.getAllottedWorkersByProviderUserId(uid);
+	}
+	
+	public int pick(int jaid) {
+		return jarepo.pick(jaid);
+	}
+	
+	public void updateJobStatus(int jobId) {
+        jarepo.updateRejectionJobStatus(jobId);
+    }
 }

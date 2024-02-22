@@ -43,6 +43,11 @@ public class JobController {
 		return jservice.getAllJobsByVlc(id);
 	}
 	
+	@GetMapping("/getJobsByProvider")
+	public List<Job> getAllJobsByProvider(@RequestParam int id) {
+		return jservice.getByUserId(id);
+	}
+	
 	@PostMapping("/addJob")
 	public boolean addJob(@RequestParam("userId") int userId, @RequestBody Job job) {
 		Provider provider = pservice.getProviderByUserId(userId);
@@ -56,6 +61,23 @@ public class JobController {
 	@PostMapping("/addJobAllocation")
 	public JobAllocation addJobAllocation(@RequestBody JobAllocation job) {
 		return jaservice.save(job);
+	}
+	
+	@GetMapping("/getAllJobsForWorker")
+	public List<Job> getAllJobsForWorker(@RequestParam int id)
+	{
+		return jservice.getAllJobsForWorker(id);
+	}
+	
+	@GetMapping("/updateCompletionJobStatus")
+	public boolean updateCompletionJobStatus(@RequestParam int id)
+	{
+		try {
+			jservice.updateCompletionJobStatus(id);
+			return true;
+		}catch(Exception e) {
+			return false;
+		}
 	}
 
 }

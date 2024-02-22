@@ -1,4 +1,6 @@
 import { useReducer, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 export default function WorkerRegistrationForm() {
   const init = {
@@ -51,6 +53,8 @@ export default function WorkerRegistrationForm() {
   const [displayAlert, setDisplayAlert] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [alertType, setAlertType] = useState("danger");
+
+  const navigate = useNavigate();
 
   function showErrorMessage(msg, time) {
     setDisplayAlert(true);
@@ -297,7 +301,8 @@ export default function WorkerRegistrationForm() {
         console.log("return data: " + JSON.stringify(data));
         if (data.msg === "success") {
           setAlertType("alert-success");
-          showErrorMessage("Registration successful. Please log in.", 5000);
+          showErrorMessage("Registration successful. Your account will be activated after verification.", 5000);
+          //navigate("/login");
           return;
         } 
         if(data.msg === "duplicate"){
@@ -661,7 +666,7 @@ export default function WorkerRegistrationForm() {
                 Account Number
               </label>
               <input
-                type="number"
+                type="tel"
                 className="form-control"
                 id="accountNumber"
                 placeholder="Enter your Answer"

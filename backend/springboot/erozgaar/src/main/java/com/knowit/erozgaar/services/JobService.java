@@ -30,5 +30,18 @@ public class JobService {
 	public Job getById(int id) {
 		return jrepo.getJobById(id);
 	}
+	
+	public List<Job> getByUserId(int uid){
+		return jrepo.getJobByUserId(uid);
+	}
+	
+	public List<Job> getAllJobsForWorker(int id)
+	{
+		return jrepo.getAllJobsForWorker(id);
+	}
+	
+	public void updateCompletionJobStatus(int jobId) {
+        jrepo.UpdateCompletionJobStatus(jobId);
+    }
 
 }

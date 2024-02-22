@@ -17,6 +17,7 @@ export default function ApproveWorker() {
       method: "GET",
       headers: {
         "Content-Type": "application/text",},
+      headers: {Authorization: `Bearer ${userinfo.accessToken}`},
     })
       .then((response) => response.text())
       .then((data) => {

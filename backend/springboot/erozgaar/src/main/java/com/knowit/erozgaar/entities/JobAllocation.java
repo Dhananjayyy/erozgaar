@@ -26,6 +26,9 @@ public class JobAllocation {
 	@JoinColumn(name="worker_id")
 	private Worker worker;
 	
+	@Column(name = "status")
+	private int status;
+	
 	public JobAllocation() {
 		super();
 	}
@@ -60,9 +63,17 @@ public class JobAllocation {
 		this.worker = worker;
 	}
 
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
 	@Override
 	public String toString() {
-		return "JobAllocation [id=" + id + ", job=" + job + ", worker=" + worker + "]";
+		return "JobAllocation [id=" + id + ", job=" + job + ", worker=" + worker + ", status=" + status + "]";
 	}
 
 }
