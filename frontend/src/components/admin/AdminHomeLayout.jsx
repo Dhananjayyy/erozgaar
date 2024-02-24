@@ -4,6 +4,8 @@ import AdminHome from "./AdminHome";
 import Profile from "./Profile";
 import VlcRegistrationForm from "../forms/VlcRegistrationForm";
 import ApproveProvider from "./ApproveProvider";
+import ShowAllJobs from "./ShowAllJobs";
+import Dashboard from "./Dashboard";
 
 
 export default function AdminHomeLayout() {
@@ -28,6 +30,10 @@ export default function AdminHomeLayout() {
         return <Profile />;
       case "addvlc":
         return <VlcRegistrationForm/>;
+      case "showAllJobs":
+        return <ShowAllJobs/>;
+        case "dashboard":
+        return <Dashboard/>;
       // default:
       //   return <AdminHome />;
     }
@@ -57,6 +63,18 @@ export default function AdminHomeLayout() {
             <div className="col text-center">
               <li className="nav-item ">
                 <Link
+                  className={`nav-link ${selectedLink === "dashboard" ? 'active text-white bg-dark' : ''}`}
+                  onClick={() => handleLinkClick('dashboard')}
+                  //to="/showrequest"
+                >
+                    Dashboard
+                </Link>
+              </li>
+            </div> 
+
+            <div className="col text-center">
+              <li className="nav-item ">
+                <Link
                   className={`nav-link ${selectedLink === "showrequest" ? 'active text-white bg-dark' : ''}`}
                   onClick={() => handleLinkClick('showrequest')}
                   //to="/showrequest"
@@ -76,7 +94,7 @@ export default function AdminHomeLayout() {
                   VLC
                 </Link>
               </li>
-            </div>
+            </div> 
 
             <div className="col text-center">
               <li className="nav-item ">
@@ -88,7 +106,8 @@ export default function AdminHomeLayout() {
                  Profile
                 </Link>
               </li>
-            </div>     
+            </div> 
+              
             <div className="col text-center">
               <li className="nav-item">
               <button className="btn btn-outline-danger" onClick={handleLogout}>

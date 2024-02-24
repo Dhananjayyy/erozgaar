@@ -1,5 +1,5 @@
-﻿using eRozgaarDotNet.Models;
-using Microsoft.AspNetCore.Http;
+﻿using System.Collections.Generic;
+using eRozgaarDotNet.Models;  // Assuming Worker class is in this namespace
 using Microsoft.AspNetCore.Mvc;
 
 namespace eRozgaarDotNet.Controllers
@@ -9,7 +9,7 @@ namespace eRozgaarDotNet.Controllers
     public class WorkerController : ControllerBase
     {
         [HttpGet]
-        public List<Worker> showAllWorkerToAdmin()
+        public List<Worker> ShowAllWorkerToAdmin()
         {
             List<Worker> workers = new List<Worker>();
             using (var db = new erozgaarContext())
@@ -17,6 +17,17 @@ namespace eRozgaarDotNet.Controllers
                 workers = db.Workers.ToList();
             }
             return workers;
+        }
+
+        [HttpPut]
+        public ActionResult UpdateWorker(Worker worker)
+        {
+            using (var db = new erozgaarContext())
+            {
+                db.Workers.Update(worker);
+                db.SaveChanges();
+            }
+            return Ok();
         }
     }
 }

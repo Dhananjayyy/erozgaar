@@ -1,4 +1,4 @@
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 
 export default function VlcRegistrationForm() {
   const init = {
@@ -87,6 +87,54 @@ export default function VlcRegistrationForm() {
     });
   };
 
+  const checkUsername = (username) => {
+    dispatch({
+      type: "update",
+      data: {
+        key: "uid",
+        val: username,
+        touched: true,
+        valid: true,
+        error: "",
+        formValid: true,
+      },
+    });
+
+    if (!username) {
+      setAlertType("alert-danger");
+      showErrorMessage("Please enter a username.", 5000);
+      return;
+    }
+
+    fetch(`http://localhost:8080/checkusername?userName=${username}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data === false) {
+          setAlertType("alert-success");
+          showErrorMessage("Username available. You can proceed.", 5000);
+        } else {
+          setAlertType("alert-danger");
+          showErrorMessage(
+            "Username already exists. Please choose a different one.",
+            5000
+          );
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        setAlertType("alert-danger");
+        showErrorMessage(
+          "Error in checking username. Please try again later.",
+          5000
+        );
+      });
+  };
+
   function checkPasswordsMatch() {
     const password = vlc.pwd.value;
     const confirmPassword = vlc.repwd.value;
@@ -99,6 +147,37 @@ export default function VlcRegistrationForm() {
     console.log("pw matched: " + ispwvalid);
     return ispwvalid;
   }
+
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [selectedState, setSelectedState] = useState(0);
+
+  useEffect(() => {
+    fetchStates();
+  }, []);
+
+  const handleStateChange = (stateId) => {
+    setSelectedState(stateId);
+    fetchCities(stateId);
+  };
+
+  const fetchStates = () => {
+    fetch("http://localhost:8080/getstates")
+      .then((response) => response.json())
+      .then((data) => {
+        setStates(data);
+      })
+      .catch((error) => console.error("Error fetching states:", error));
+  };
+
+  const fetchCities = (stateId) => {
+    fetch(`http://localhost:8080/getcities?id=${stateId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setCities(data);
+      })
+      .catch((error) => console.error("Error fetching cities:", error));
+  };
 
   const validateData = (key, value) => {
     console.log(key, value);
@@ -119,7 +198,7 @@ export default function VlcRegistrationForm() {
         pattern = /^\d{10}$/;
         if (!pattern.test(value)) {
           valid = false;
-          error = "Invalid Phone Number";
+          error = "Phone number should be 10 digit";
         }
         break;
 
@@ -127,7 +206,7 @@ export default function VlcRegistrationForm() {
         pattern = new RegExp(`^${vlc.fname.value}.${vlc.lname.value}$`);
         if (!pattern.test(value)) {
           valid = false;
-          error = "Invalid username";
+          error = "Enter username as firstname.lastname";
         }
         break;
 
@@ -139,7 +218,8 @@ export default function VlcRegistrationForm() {
 
         if (!pattern.test(value)) {
           valid = false;
-          error = "Invalid Password";
+          error =
+            "Password should contain alphabets,number,special characters.minimum length-8";
         }
         break;
 
@@ -157,11 +237,11 @@ export default function VlcRegistrationForm() {
         pattern = /^\d{12}$/;
         if (!pattern.test(value)) {
           valid = false;
-          error = "Invalid Adhaar Number";
+          error = "Adhaar number should be 12 digit";
         }
         break;
       case "accountNumber":
-        pattern = /^\d{10}$/;
+        pattern = /^\d{12}$/;
         if (!pattern.test(value)) {
           valid = false;
           error = "Invalid Account Number";
@@ -208,7 +288,6 @@ export default function VlcRegistrationForm() {
       role: {
         roleId: 3,
       },
-      active: true,
       adhaar: vlc.adhaar.value,
       accountNumber: vlc.accountNumber.value,
       securityQuestion: {
@@ -227,8 +306,6 @@ export default function VlcRegistrationForm() {
         },
       },
     });
-
-    
 
     fetch("http://localhost:8080/regVlc", {
       method: "POST",
@@ -410,22 +487,18 @@ export default function VlcRegistrationForm() {
                 State
               </label>
               <select
+                id="state"
                 className="form-select"
+                value={selectedState}
                 onChange={(e) => handleChange("state", e.target.value)}
                 onBlur={(e) => handleChange("state", e.target.value)}
               >
-                <option id="state" className="form-option" value="0">
-                  Select State
-                </option>
-                <option id="state" className="form-option" value="14">
-                  Maharashtra
-                </option>
-                <option id="state" className="form-option" value="20">
-                  Punjab
-                </option>
-                <option id="state" className="form-option" value="7">
-                  Gujarat
-                </option>
+                <option value={0}>Select State</option>
+                {states.map((state) => (
+                  <option key={state.id} value={state.id}>
+                    {state.stateName}
+                  </option>
+                ))}
               </select>
               <span className="error text-danger">
                 {vlc.state.touched && !vlc.state.valid && vlc.state.error}
@@ -439,22 +512,17 @@ export default function VlcRegistrationForm() {
                 City
               </label>
               <select
+                id="city"
                 className="form-select"
                 onChange={(e) => handleChange("city", e.target.value)}
                 onBlur={(e) => handleChange("city", e.target.value)}
               >
-                <option id="0" className="form-option" value="0">
-                  Select City
-                </option>
-                <option id="city" className="form-option" value="8">
-                  Pune
-                </option>
-                <option id="city" className="form-option" value="5">
-                  Amritsar
-                </option>
-                {/* <option id="city" className="form-option" value="7">
-                  Surat
-                </option> */}
+                <option value={0}>Select City</option>
+                {cities.map((city) => (
+                  <option key={city.id} value={city.id}>
+                    {city.cityName}
+                  </option>
+                ))}
               </select>
               <span className="error text-danger">
                 {vlc.city.touched && !vlc.city.valid && vlc.city.error}
@@ -548,7 +616,7 @@ export default function VlcRegistrationForm() {
                 placeholder="Enter your Answer"
                 onChange={(e) => handleChange("accountNumber", e.target.value)}
                 onBlur={(e) => handleChange("accountNumber", e.target.value)}
-                maxLength={10}
+                maxLength={12}
               />
               <span className="error text-danger">
                 <span className="error text-danger">
@@ -576,8 +644,8 @@ export default function VlcRegistrationForm() {
                 className="form-control"
                 id="uid"
                 placeholder="Enter your username"
-                onChange={(e) => handleChange("uid", e.target.value)}
-                onBlur={(e) => handleChange("uid", e.target.value)}
+                onChange={(e) => checkUsername(e.target.value)}
+                onBlur={(e) => checkUsername(e.target.value)}
               />
               <span className="error text-danger">
                 <span className="error text-danger">

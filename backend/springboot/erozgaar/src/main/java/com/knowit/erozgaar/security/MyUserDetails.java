@@ -35,7 +35,7 @@ public class MyUserDetails implements UserDetails {
 
 	  private List<? extends GrantedAuthority> authorities;
 	  
-	  private boolean active;
+	  private int active;
 	  
 	  public static MyUserDetails build(com.knowit.erozgaar.entities.User user) {
 		  	Role r = user.getRole();
@@ -49,7 +49,7 @@ public class MyUserDetails implements UserDetails {
 			
 			System.out.println(authority);
 		   System.out.println(user);
-			return new MyUserDetails( user.getId(),user.getUserName(), user.getPassword(), authority, user.isActive());
+			return new MyUserDetails( user.getId(),user.getUserName(), user.getPassword(), authority, user.getActive());
 		  }
 
 	@Override
@@ -81,7 +81,7 @@ public class MyUserDetails implements UserDetails {
 		 return role;
 	 }
 	 
-	 public MyUserDetails(int id, String uid, String pwd, List<? extends GrantedAuthority> authorities, boolean active)
+	 public MyUserDetails(int id, String uid, String pwd, List<? extends GrantedAuthority> authorities, int active)
 		{
 			this.id = id;
 			this.username  = uid;

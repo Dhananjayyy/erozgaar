@@ -10,7 +10,7 @@ public class UserWorkerRequest{
     private String phoneNumber;
     private String gender;
     private Role role;
-    private boolean active;
+    private int active;
     private String adhaar;
     private String accountNumber;
     private SecurityQuestion securityQuestion;
@@ -36,7 +36,7 @@ public class UserWorkerRequest{
     
 
     public UserWorkerRequest(int userId, String userName, String password, String phoneNumber, String gender, Role role,
-			boolean active, String adhaar, String accountNumber, SecurityQuestion securityQuestion, String answer,
+			int active, String adhaar, String accountNumber, SecurityQuestion securityQuestion, String answer,
 			int workerId, String firstName, String middleName, String lastName, String education, Address address,
 			JobCategory jobCategory, Date dateOfBirth, boolean relocation) {
 		super();
@@ -112,11 +112,11 @@ public class UserWorkerRequest{
         this.role = role;
     }
 
-    public boolean isActive() {
+    public int getActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(int active) {
         this.active = active;
     }
 

@@ -18,6 +18,8 @@ import com.knowit.erozgaar.services.JobService;
 import com.knowit.erozgaar.services.ProviderService;
 import com.knowit.erozgaar.services.UserService;
 
+import jakarta.transaction.Transactional;
+
 @RestController
 public class JobController {
 	
@@ -66,13 +68,16 @@ public class JobController {
 	@GetMapping("/getAllJobsForWorker")
 	public List<Job> getAllJobsForWorker(@RequestParam int id)
 	{
+		System.out.println("in job cotroller get all jobs for worker");
 		return jservice.getAllJobsForWorker(id);
 	}
 	
+	@Transactional
 	@GetMapping("/updateCompletionJobStatus")
 	public boolean updateCompletionJobStatus(@RequestParam int id)
 	{
 		try {
+			System.out.println("Job id: " + id);
 			jservice.updateCompletionJobStatus(id);
 			return true;
 		}catch(Exception e) {

@@ -12,7 +12,6 @@ import LoginForm from "./components/forms/LoginForm";
 import AddVLC from "./components/forms/VlcRegistrationForm";
 import ProviderHomeLayout from "./components/provider/ProviderHomeLayout";
 import JobDetails from "./components/provider/JobDetails";
-import LoginFormNew from "./components/forms/LoginFormNew";
 
 
 function App() {
@@ -31,7 +30,7 @@ function App() {
         <Route path="/vlclayout" element={<VLCHomeLayout/>} />
         <Route path="/jobdetails" element={<JobDetails/>} />
         {/* Login */}
-        <Route path="/login" element={<LoginFormNew/>} />
+        <Route path="/login" element={<LoginForm/>} />
 
         {/* Registration Form */}
         {/* <Route path="/registerworker" element={<WorkerRegistrationForm/>} />

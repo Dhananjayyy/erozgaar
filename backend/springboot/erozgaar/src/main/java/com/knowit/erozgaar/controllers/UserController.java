@@ -12,19 +12,31 @@ import jakarta.transaction.Transactional;
 
 @RestController
 public class UserController {
-	
+
 	@Autowired
 	UserService uservice;
-	
+
 	@Transactional
-	 @GetMapping("/approve")
-	 public boolean approve(@RequestParam("id") int id)
-	 {
-	 	return uservice.approve(id);
-	 }
-	 
-	 @GetMapping("getUser")
-	 public User getUser(@RequestParam("id") int id) {
-		 return uservice.getUser(id);
-	 }
+	@GetMapping("/approve")
+	public boolean approve(@RequestParam("id") int id)
+	{
+		return uservice.approve(id);
+	}
+
+	@Transactional
+	@GetMapping("/reject")
+	public boolean reject(@RequestParam("id") int id)
+	{
+		return uservice.reject(id);
+	}
+
+	@GetMapping("getUser")
+	public User getUser(@RequestParam("id") int id) {
+		return uservice.getUser(id);
+	}
+
+	@GetMapping("checkusername")
+	public boolean getUser(@RequestParam("userName") String userName) {
+		return uservice.getUserByUserName(userName);
+	}
 }

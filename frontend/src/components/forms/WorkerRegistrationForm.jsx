@@ -1,6 +1,4 @@
-import { useReducer, useState } from "react";
-import { useNavigate } from "react-router-dom";
-
+import { useEffect, useReducer, useState } from "react";
 
 export default function WorkerRegistrationForm() {
   const init = {
@@ -54,7 +52,9 @@ export default function WorkerRegistrationForm() {
   const [errorMsg, setErrorMsg] = useState("");
   const [alertType, setAlertType] = useState("danger");
 
-  const navigate = useNavigate();
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [selectedState, setSelectedState] = useState(0);
 
   function showErrorMessage(msg, time) {
     setDisplayAlert(true);
@@ -69,13 +69,23 @@ export default function WorkerRegistrationForm() {
   const handleDate = (key, value) => {
     let valid = true;
     let error = "";
+  
     if (key === "dob") {
       const currentDate = new Date();
       const selectedDate = new Date(value);
-      const yearsDiff = currentDate.getFullYear() - selectedDate.getFullYear();
-      if (yearsDiff < 18 || (yearsDiff === 18 && currentDate.getMonth() < selectedDate.getMonth()) || (yearsDiff === 18 && currentDate.getMonth() === selectedDate.getMonth() && currentDate.getDate() < selectedDate.getDate())) {
+      
+      if (selectedDate > currentDate) {
         valid = false;
-        error = "You must be at least 18 years old to register.";
+        error = "Date of birth cannot be in the future.";
+      } else {
+        const yearsDiff = currentDate.getFullYear() - selectedDate.getFullYear();
+        if (yearsDiff < 18 || 
+            (yearsDiff === 18 && currentDate.getMonth() < selectedDate.getMonth()) || 
+            (yearsDiff === 18 && currentDate.getMonth() === selectedDate.getMonth() && currentDate.getDate() < selectedDate.getDate())) 
+        {
+          valid = false;
+          error = "You must be at least 18 years old to register.";
+        }
       }
     } else {
       const { valid: fieldValid, error: fieldError } = validateData(key, value);
@@ -103,6 +113,7 @@ export default function WorkerRegistrationForm() {
       },
     });
   };
+  
 
   const handleChange = (key, value) => {
     const { valid, error } = validateData(key, value);
@@ -145,6 +156,52 @@ export default function WorkerRegistrationForm() {
     return ispwvalid;
   }
 
+  const checkUsername = (username) => {
+    dispatch({
+      type: "update",
+      data: {
+        key: "uid",
+        val: username,
+        touched: true,
+        valid: true,
+        error: "",
+        formValid: true,
+      },
+    });
+    
+    if (!username) {
+      setAlertType("alert-danger");
+      showErrorMessage("Please enter a username.", 5000);
+      return;
+    }
+  
+    fetch(`http://localhost:8080/checkusername?userName=${username}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data === false) {
+          setAlertType("alert-success");
+          showErrorMessage("Username available. You can proceed.", 5000);
+        } else {
+          setAlertType("alert-danger");
+          showErrorMessage("Username already exists. Please choose a different one.", 5000);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        setAlertType("alert-danger");
+        showErrorMessage("Error in checking username. Please try again later.", 5000);
+      });
+  };
+  
+
+  
+  
+
   const validateData = (key, value) => {
     console.log(key, value);
     let valid = true;
@@ -170,7 +227,7 @@ export default function WorkerRegistrationForm() {
         pattern = /^\d{10}$/;
         if (!pattern.test(value)) {
           valid = false;
-          error = "Invalid Phone Number";
+          error = "Phone number should be 10 digit";
         }
         break;
 
@@ -178,7 +235,7 @@ export default function WorkerRegistrationForm() {
         pattern = new RegExp(`^${worker.fname.value}.${worker.lname.value}$`);
         if (!pattern.test(value)) {
           valid = false;
-          error = "Invalid username";
+          error = "Enter username as firstname.lastname";
         }
         break;
 
@@ -190,7 +247,7 @@ export default function WorkerRegistrationForm() {
 
         if (!pattern.test(value)) {
           valid = false;
-          error = "Invalid Password";
+          error = "Password should contain alphabets,number,special characters.minimum length-8";
         }
         break;
 
@@ -210,14 +267,14 @@ export default function WorkerRegistrationForm() {
         pattern = /^\d{12}$/;
         if (!pattern.test(value)) {
           valid = false;
-          error = "Invalid Adhaar Number";
+          error = "Adhaar number should be 12 digit";
         }
         break;
       case "accountNumber":
-        pattern = /^\d{10}$/;
+        pattern = /^\d{12}$/;
         if (!pattern.test(value)) {
           valid = false;
-          error = "Invalid Account Number";
+          error = "Account number should be 12 digit";
         }
         break;
 
@@ -235,6 +292,35 @@ export default function WorkerRegistrationForm() {
     }
     return { valid: valid, error: error };
   };
+
+  useEffect(() => {
+    fetchStates();
+  }, []);
+
+  const handleStateChange = (stateId) => {
+    handleChange("state",stateId)
+    setSelectedState(stateId); 
+    fetchCities(stateId);
+  };
+
+  const fetchStates = () => {
+    fetch("http://localhost:8080/getstates")
+      .then((response) => response.json())
+      .then((data) => {
+        setStates(data); 
+      })
+      .catch((error) => console.error("Error fetching states:", error));
+  };
+
+  const fetchCities = (stateId) => {
+    fetch(`http://localhost:8080/getcities?id=${stateId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setCities(data); 
+      })
+      .catch((error) => console.error("Error fetching cities:", error));
+  };
+
 
   const submitData = (e) => {
     e.preventDefault();
@@ -261,7 +347,6 @@ export default function WorkerRegistrationForm() {
       role: {
         roleId: 1,
       },
-      active: false,
       adhaar: worker.adhaar.value,
       accountNumber: worker.accountNumber.value,
       securityQuestion: {
@@ -301,8 +386,7 @@ export default function WorkerRegistrationForm() {
         console.log("return data: " + JSON.stringify(data));
         if (data.msg === "success") {
           setAlertType("alert-success");
-          showErrorMessage("Registration successful. Your account will be activated after verification.", 5000);
-          //navigate("/login");
+          showErrorMessage("Registration successful. Your account will be activated soon.", 5000);
           return;
         } 
         if(data.msg === "duplicate"){
@@ -310,8 +394,8 @@ export default function WorkerRegistrationForm() {
           showErrorMessage("User already exists.", 5000);
           return
         }
-        setAlertType("alert-danger");
-        showErrorMessage("Error in registration", 5000);
+        // setAlertType("alert-danger");
+        // showErrorMessage("Error in registration", 5000);
 
 
       })
@@ -437,7 +521,7 @@ export default function WorkerRegistrationForm() {
                 className="form-control"
                 id="dob"
                 onChange={(e) => handleDate("dob", e.target.value)}
-                onBlur={(e) => handleChange("dob", e.target.value)}
+                onBlur={(e) => handleDate("dob", e.target.value)}
               />
               <span className="error text-danger">
                 <span className="error text-danger">
@@ -480,6 +564,7 @@ export default function WorkerRegistrationForm() {
                 className="form-select"
                 onChange={(e) => handleChange("education", e.target.value)}
                 onBlur={(e) => handleChange("education", e.target.value)}
+                
               >
                 <option value="0">Choose</option>
                 <option value="X">X</option>
@@ -532,22 +617,17 @@ export default function WorkerRegistrationForm() {
                 State
               </label>
               <select
+                id="state"
                 className="form-select"
-                onChange={(e) => handleChange("state", e.target.value)}
-                onBlur={(e) => handleChange("state", e.target.value)}
+                value={selectedState}
+                onChange={(e) => handleStateChange(e.target.value)}
               >
-                <option id="state" className="form-option" value="0">
-                  Select State
+                <option value={0}>Select State</option>
+                {states.map((state) => (
+                <option key={state.id} value={state.id}>
+                {state.stateName}
                 </option>
-                <option id="state" className="form-option" value="14">
-                  Maharashtra
-                </option>
-                <option id="state" className="form-option" value="20">
-                  Punjab
-                </option>
-                <option id="state" className="form-option" value="7">
-                  Gujarat
-                </option>
+                ))}
               </select>
               <span className="error text-danger">
                 {worker.state.touched && !worker.state.valid && worker.state.error}
@@ -560,23 +640,15 @@ export default function WorkerRegistrationForm() {
               <label htmlFor="city" className="form-label">
                 City
               </label>
-              <select
-                className="form-select"
+              <select id="city" className="form-select"
                 onChange={(e) => handleChange("city", e.target.value)}
-                onBlur={(e) => handleChange("city", e.target.value)}
-              >
-                <option id="0" className="form-option" value="0">
-                  Select City
+                >
+                <option value={0}>Select City</option>
+                {cities.map((city) => (
+                <option key={city.id} value={city.id}>
+                {city.cityName}
                 </option>
-                <option id="city" className="form-option" value="8">
-                  Pune
-                </option>
-                <option id="city" className="form-option" value="5">
-                  Amritsar
-                </option>
-                {/* <option id="city" className="form-option" value="7">
-                  Surat
-                </option> */}
+                ))}
               </select>
               <span className="error text-danger">
                 {worker.city.touched && !worker.city.valid && worker.city.error}
@@ -645,7 +717,7 @@ export default function WorkerRegistrationForm() {
                 type="text"
                 className="form-control"
                 id="adhaar"
-                placeholder="Enter your username"
+                placeholder="Enter 12 digit adhaar number"
                 onChange={(e) => handleChange("adhaar", e.target.value)}
                 onBlur={(e) => handleChange("adhaar", e.target.value)}
                 maxLength={12}
@@ -669,10 +741,10 @@ export default function WorkerRegistrationForm() {
                 type="tel"
                 className="form-control"
                 id="accountNumber"
-                placeholder="Enter your Answer"
+                placeholder="Enter 12 digit account number"
+                maxLength={12}
                 onChange={(e) => handleChange("accountNumber", e.target.value)}
                 onBlur={(e) => handleChange("accountNumber", e.target.value)}
-                maxLength={10}
               />
               <span className="error text-danger">
                 <span className="error text-danger">
@@ -735,8 +807,8 @@ export default function WorkerRegistrationForm() {
                 className="form-control"
                 id="uid"
                 placeholder="Enter your username"
-                onChange={(e) => handleChange("uid", e.target.value)}
-                onBlur={(e) => handleChange("uid", e.target.value)}
+                onChange={(e) => checkUsername( e.target.value)}
+                onBlur={(e) => checkUsername(e.target.value)}
               />
               <span className="error text-danger">
                 <span className="error text-danger">

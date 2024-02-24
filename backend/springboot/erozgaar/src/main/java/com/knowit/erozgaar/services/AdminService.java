@@ -20,5 +20,9 @@ public class AdminService {
 	public Admin getByUsername(String username) {
 		return arepo.findByUsername(username);
 	}
+	
+	public int updateAdmin(String phone, int uid) {
+		return arepo.updateAdmin(phone,uid);
+	}
     
 }

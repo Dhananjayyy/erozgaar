@@ -20,6 +20,7 @@ export default function VlcShowJobs() {
   const[disableWorkerButton, setDisableWorkerButton] = useState(false);
   const[disableCheckbox, setDisableCheckbox] = useState(false);
   const[workerLimit, setWorkerLimit] = useState(0);
+  const[jobStatus, setJobStatus] = useState(0);
   
 
   
@@ -44,7 +45,7 @@ export default function VlcShowJobs() {
   const fetchJobsData = () => {
     fetch(`http://localhost:8080/getAllJobsByVlc?id=${userinfo.id}`, {
       method: "GET",
-      headers: {Authorization: `Bearer ${userinfo.accessToken}`},
+      headers: {"Authorization": `Bearer ${userinfo.accessToken}`},
     })
       .then((response) => {
         if (!response.ok) {
@@ -61,7 +62,6 @@ export default function VlcShowJobs() {
       });
   };
 
-  // useEffect to fetch jobs data on mount and when userinfo.id changes
   useEffect(() => {
     fetchJobsData();
   }, []);
@@ -128,7 +128,7 @@ export default function VlcShowJobs() {
       `http://localhost:8080/getAvailableWorkers?userId=${userinfo.id}&jobId=${selectedJobId}`,
       {
         method: "GET",
-        headers: {Authorization: `Bearer ${userinfo.accessToken}`},
+        headers: {"Authorization": `Bearer ${userinfo.accessToken}`},
       }
     )
       .then((response) => {
@@ -187,7 +187,7 @@ export default function VlcShowJobs() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${userinfo.accessToken}`,
+        "Authorization": `Bearer ${userinfo.accessToken}`,
       },
       body: JSON.stringify({
         jobId: selectedJobId,
@@ -381,6 +381,7 @@ export default function VlcShowJobs() {
                 <button
                   type="button"
                   className="btn btn-success"
+                  hidden={jobStatus === 2 || jobStatus === 4 || jobStatus === 5}
                   onClick={() => {
                     provideWorkers();
                   }}
@@ -450,7 +451,7 @@ export default function VlcShowJobs() {
                   name="selectedJob"
                   value={v.id}
                   // checked={selectedJobId === v.id}
-                  onChange={() => { setSelectedJobId(v.id); setWorkerLimit(v.noOfWorkers);}}
+                  onChange={() => {setJobStatus(v.jobStatus), setSelectedJobId(v.id); setWorkerLimit(v.noOfWorkers);}}
                   style={{ width: "30px", height: "30px" }}
                   //disabled={selectedRole >= 3 && selectedRole <= 6}
                 />
@@ -473,7 +474,7 @@ export default function VlcShowJobs() {
             data-toggle="buttons"
           >
             <label
-              className={`btn ${selectedRole === 0 ? "btn-dark" : "btn-light"}`}
+              className={`btn ${selectedRole === 0 ? "btn-primary" : "btn-light"}`}
             >
               <input
                 className="form-check-input"
@@ -489,7 +490,7 @@ export default function VlcShowJobs() {
             </label>
 
             <label
-              className={`btn ${selectedRole === 1 ? "btn-dark" : "btn-light"}`}
+              className={`btn ${selectedRole === 1 ? "btn-primary" : "btn-light"}`}
             >
               <input
                 className="form-check-input"
@@ -505,7 +506,7 @@ export default function VlcShowJobs() {
             </label>
 
             <label
-              className={`btn ${selectedRole === 2 ? "btn-dark" : "btn-light"}`}
+              className={`btn ${selectedRole === 2 ? "btn-primary" : "btn-light"}`}
             >
               <input
                 className="form-check-input"
@@ -520,7 +521,7 @@ export default function VlcShowJobs() {
               In-selection
             </label>
             <label
-              className={`btn ${selectedRole === 3 ? "btn-dark" : "btn-light"}`}
+              className={`btn ${selectedRole === 3 ? "btn-primary" : "btn-light"}`}
             >
               <input
                 className="form-check-input"
@@ -536,7 +537,7 @@ export default function VlcShowJobs() {
               Ongoing
             </label>
             <label
-              className={`btn ${selectedRole === 4 ? "btn-dark" : "btn-light"}`}
+              className={`btn ${selectedRole === 4 ? "btn-primary" : "btn-light"}`}
             >
               <input
                 className="form-check-input"
@@ -552,7 +553,7 @@ export default function VlcShowJobs() {
               Completed
             </label>
             <label
-              className={`btn ${selectedRole === 5 ? "btn-dark" : "btn-light"}`}
+              className={`btn ${selectedRole === 5 ? "btn-primary" : "btn-light"}`}
             >
               <input
                 className="form-check-input"

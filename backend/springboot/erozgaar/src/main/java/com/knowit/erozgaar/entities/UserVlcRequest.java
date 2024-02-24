@@ -7,7 +7,7 @@ public class UserVlcRequest {
     private String phoneNumber;
     private String gender;
     private Role role;
-    private boolean active;
+    private int active;
     private String adhaar;
     private String accountNumber;
     private SecurityQuestion securityQuestion;
@@ -25,7 +25,7 @@ public class UserVlcRequest {
     }
 
     public UserVlcRequest(int userId, String userName, String password, String phoneNumber, String gender, Role role,
-            boolean active, String adhaar, String accountNumber, SecurityQuestion securityQuestion, String answer,
+            int active, String adhaar, String accountNumber, SecurityQuestion securityQuestion, String answer,
             int vlcId, String firstName, String middleName, String lastName, String education, Address address) {
         this.userId = userId;
         this.userName = userName;
@@ -94,11 +94,11 @@ public class UserVlcRequest {
         this.role = role;
     }
 
-    public boolean isActive() {
+    public int getActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void getActive(int active) {
         this.active = active;
     }
 

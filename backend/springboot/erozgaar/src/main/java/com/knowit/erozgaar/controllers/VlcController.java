@@ -11,22 +11,26 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.knowit.erozgaar.entities.Doctor;
-import com.knowit.erozgaar.entities.DoctorReg;
+
 import com.knowit.erozgaar.entities.Role;
 import com.knowit.erozgaar.entities.User;
+import com.knowit.erozgaar.entities.UserVlcRequest;
+import com.knowit.erozgaar.entities.VillageLevelConnector;
 import com.knowit.erozgaar.entities.Worker;
-import com.knowit.erozgaar.services.DoctorService;
+
 import com.knowit.erozgaar.services.RoleService;
 import com.knowit.erozgaar.services.UserService;
 import com.knowit.erozgaar.services.VillageLevelConnectorService;
 import com.knowit.erozgaar.services.WorkerService;
+
+import jakarta.transaction.Transactional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173",exposedHeaders = "**")
@@ -36,7 +40,7 @@ public class VlcController {
 	UserService uservice;
 	
 	@Autowired
-	VillageLevelConnectorService dservice;
+	VillageLevelConnectorService vlcservice;
 
 	@Autowired
 	WorkerService wservice;
@@ -44,79 +48,34 @@ public class VlcController {
 	@Autowired
 	RoleService rserevice;
 	
-	/*@Transactional
-	@PostMapping(value="/regDoctor",consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Doctor regDoctor(@RequestBody  DoctorReg dr)
-	{
-		System.out.println(dr.getPicture());
-		Login l = new Login(dr.getUid(), dr.getPwd(),  "doctor",false);
-		Login saved = lservice.save(l);
-		System.out.println(saved.getLogin_id());
-		System.out.println(dr.getExperience());
+	@GetMapping("/getuservlcbyid")
+	 public UserVlcRequest getUserVlcById(@RequestParam("uid") int uid) {
+		User u= uservice.getUserById(uid);
+		VillageLevelConnector v= vlcservice.getVlcById(uid);
 		
-		Doctor d = new Doctor(dr.getFname(), dr.getMname(), dr.getLname(), dr.getEmail(), dr.getContact(), dr.getSpecialization(), dr.getExperience(),dr.getPicture(), saved);
-		System.out.println(d.getExperience());
-		return dservice.saveDoctor(d);
-	} */
-	
-	
-	/*@PostMapping("/regDoctor")
-	public Doctor regDoctor(@RequestBody DoctorReg dr)
-	{
-			Role r = rserevice.getById(2);		
-			Login l = new Login(dr.getUid(), dr.getPwd(), r ,false);
-			Login saved = lservice.save(l);
+		UserVlcRequest vlc = new UserVlcRequest(u.getId(),u.getUserName(),u.getPassword(),u.getPhoneNumber(),
+				u.getGender(),u.getRole(),u.getActive(),u.getAdhaar(),u.getAccountNumber(),u.getSecurityQuestion(),u.getAnswer(),
+				v.getId(),v.getFirstName(),v.getMiddleName(),v.getLastName(),v.getEducation(),v.getAddress());
 		
-			
-			System.out.println(saved.getLogin_id());
-			System.out.println(dr.getExperience());
-			
-			Doctor d = new Doctor(dr.getFname(), dr.getMname(), dr.getLname(), dr.getEmail(), dr.getContact(), dr.getSpecialization(), dr.getExperience(), saved);
-			System.out.println(d.getExperience());
-			return dservice.saveDoctor(d);	
+		return vlc;
+	 }
+	
+	@Transactional
+	@PutMapping("/updateVlc")
+   public  int updateVlc( @RequestBody UserVlcRequest uw) {
+      
+		String fname=uw.getFirstName();
+		String mname=uw.getMiddleName();
+		String lname=uw.getLastName();
+		Integer uid=uw.getUserId();
 		
-	}*/
-	
-	
-	// @GetMapping("/approve")
-	// public boolean approve(@RequestParam("id") int id)
-	// {
-	// 	return uservice.approve(id);
-	// }
-	
-	
-	
-	
-	// @PostMapping(value="/uploadimg/{id}", consumes = "multipart/form-data")
-	// public boolean updateImg(@PathVariable("id") int id,@RequestBody MultipartFile file)
-	// {
-	// 	System.out.println("hi");
-	// 	boolean flag = false;
-	// 	try
-	// 	{
-	// 		flag = dservice.upload(id,file.getBytes());
-	// 	}
-	// 	catch(Exception e)
-	// 	{
-	// 		e.printStackTrace();
-	// 	}
-	// 	return flag;
-	// }
-	
-	
-	
-	
-	// @GetMapping("/getWorker")
-	// public Worker getWorker(@RequestParam int loginid)
-	// {
-	// 	User l = uservice.getUser(loginid);
-	// 	return dservice.getWorker(l);		
-	// }
-	
-	// @GetMapping("/getRegRequests")
-	// public List<Doctor> getListForApproval()
-	// {
-	// 	System.out.println("sending pending approvals");
-	// 	return dservice.getWorkers();		
-	// }
+		String phone=uw.getPhoneNumber();
+		String accno =uw.getAccountNumber();
+		int active=uw.getActive();
+
+		int u=uservice.updateUser(phone,accno,active,uid);
+		
+		return vlcservice.updateVlc(fname,mname,lname,uid);
+		
+	}
 }

@@ -97,21 +97,21 @@ VALUES
 
 INSERT INTO users (user_name, password, phone_number,gender, role_id, active,adhaar,account_number, security_question_id, answer)
 VALUES
-    ('Akash.Sharma', '$2a$12$D/e/OHU5SYUOH9VV9jEuceNNGcfBpunWZVPBbQhhFAQWzP3vY2ih.',9876543210,'Male', 1, TRUE,"123456781234","1234567890", 1, 'Don'),
-    ('Sanket.Patel', '$2a$12$zCy9kFY053oMSHLc5d8IBudiVyIFFnkeWns4Q4r.2Z60vfK8jdCuK',9856543210,'Other', 1, TRUE,"223456781234","2234567890", 2, 'Patil Vasti'),
-    ('Shreyash.Patel', 'Shreyash@123',9876547710,'Female', 1, TRUE,"323456781234","3234567890", 3, 'Fish'),
+    ('Akash.Sharma', '$2a$12$D/e/OHU5SYUOH9VV9jEuceNNGcfBpunWZVPBbQhhFAQWzP3vY2ih.',9876543210,'Male', 1, 1,"123456781234","1234567890", 1, 'Don'),
+    ('Sanket.Patel', '$2a$12$zCy9kFY053oMSHLc5d8IBudiVyIFFnkeWns4Q4r.2Z60vfK8jdCuK',9856543210,'Other', 1, 1,"223456781234","2234567890", 2, 'Patil Vasti'),
+    ('Shreyash.Patel', 'Shreyash@123',9876547710,'Female', 1, 1,"323456781234","3234567890", 3, 'Fish'),
 
 
-    ('Ramesh.Sharma', '$2a$12$2LkldBuU7eueXxbwVVC93OEJcyC80ajMbMXnw./XMcS7UlXYQNcNu',8876543210,'Male', 2, TRUE,"523456781234","5234567890", 1, 'TZP'),
-    ('jw.marriott', '$2a$12$/Y5GctG0/Zv6g/aWNt2KQuge4P.s5cyluw1Bt2pPNZQEtmXNAuOOu',6986543210,'Female', 2, TRUE,"623456781234","6234567890", 2, 'Pratap Nagar'),
+    ('Ramesh.Sharma', '$2a$12$2LkldBuU7eueXxbwVVC93OEJcyC80ajMbMXnw./XMcS7UlXYQNcNu',8876543210,'Male', 2, 1,"523456781234","5234567890", 1, 'TZP'),
+    ('jw.marriott', '$2a$12$/Y5GctG0/Zv6g/aWNt2KQuge4P.s5cyluw1Bt2pPNZQEtmXNAuOOu',6986543210,'Female', 2, 1,"623456781234","6234567890", 2, 'Pratap Nagar'),
     ('yash.constructions', 'Yash@123',9126587410,'Other', 2, TRUE,"723456781234","7234567890", 3, 'Dosa'),
-    ('Aditi.Yadav', '$2a$12$whJbBnvcFR5s3AOBO8zVUOpnyI.Ea2t68qTZecM5OAvT2inmkWbUq',9876549875,'Female', 2, FALSE,"923456781234","8234567890", 4,'Simba'),
+    ('Aditi.Yadav', '$2a$12$whJbBnvcFR5s3AOBO8zVUOpnyI.Ea2t68qTZecM5OAvT2inmkWbUq',9876549875,'Female', 2, 1,"923456781234","8234567890", 4,'Simba'),
 
-    ('Akshay.Patil', '$2a$12$3pSzrP0YwoxDaJaaiKy2HOXHqf/oHal0cntBpdRW0UUicX2/nElm6',7654543210,'Male', 3, TRUE,"823456781234","9234567890", 5, 'SVM'),
+    ('Akshay.Patil', '$2a$12$3pSzrP0YwoxDaJaaiKy2HOXHqf/oHal0cntBpdRW0UUicX2/nElm6',7654543210,'Male', 3, 1,"823456781234","9234567890", 5, 'SVM'),
     ('Priya.Sharma', 'Priya@123',6845312458,'Female', 3, TRUE,"103456781234","1034567890", 1, 'Salaar'),
-    ('Sneha.Mane', '$2a$12$x7Q8zKTECSYNevJlrHU/he5s7zAe1fOKZ1iXTnIamyRxubb//wiJi',5647895210,'Female', 3, TRUE,"113456731234","1134567890", 1, 'Yes Boss'),
+    ('Sneha.Mane', '$2a$12$x7Q8zKTECSYNevJlrHU/he5s7zAe1fOKZ1iXTnIamyRxubb//wiJi',5647895210,'Female', 3, 1,"113456731234","1134567890", 1, 'Yes Boss'),
 
-    ('Pratiksha.Pawar', '$2a$12$zIWuhxUqfgHR981H5biV4eYFvaY.LZfmol5ia7mG9K/vL.sjjV2li',1176543210,'Female', 4, TRUE,'','', 4, 'Monu');
+    ('Pratiksha.Pawar', '$2a$12$zIWuhxUqfgHR981H5biV4eYFvaY.LZfmol5ia7mG9K/vL.sjjV2li',1176543210,'Female', 4, 1,'','', 4, 'Monu');
 
 INSERT INTO job_category (category_name) VALUES 
 ('Housekeeping'),

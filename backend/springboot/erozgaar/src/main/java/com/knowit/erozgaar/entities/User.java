@@ -37,7 +37,7 @@ public class User {
 	private Role role;
 	
 	@Column(name="active")
-	private boolean active;
+	private int active;
 
 	@Column(name = "adhaar")
 	private String adhaar;
@@ -56,7 +56,7 @@ public class User {
 		super();
 	}
 
-	public User(String userName, String password, String phoneNumber, String gender, Role role, boolean active,
+	public User(String userName, String password, String phoneNumber, String gender, Role role, int active,
 			String adhaar, String accountNumber, SecurityQuestion securityQuestion, String answer) {
 		this.userName = userName;
 		this.password = password;
@@ -118,11 +118,11 @@ public class User {
 		this.role = role;
 	}
 
-	public boolean isActive() {
+	public int getActive() {
 		return active;
 	}
 
-	public void setActive(boolean active) {
+	public void setActive(int active) {
 		this.active = active;
 	}
 

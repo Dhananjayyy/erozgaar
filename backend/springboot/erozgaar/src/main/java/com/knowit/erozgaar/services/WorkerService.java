@@ -1,5 +1,6 @@
 package com.knowit.erozgaar.services;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,13 @@ public class WorkerService {
 	
 	public boolean isAvailable(int wid) {
 		return wrepo.isAvailable(wid) != null;
+	}
+	
+	public Worker getWorkerById(int uid) {
+		return wrepo.getWorker(uid);
+	}
+	
+	public int updateWorker(String fname, String mname, String lname,boolean relocation,Date dob, int uid) {
+	    return wrepo.updateWorker(fname, mname, lname,relocation,dob, uid);
 	}
 }

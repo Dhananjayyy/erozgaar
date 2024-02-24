@@ -57,7 +57,7 @@ public class JobAllocationController {
 	}
 	
 	@GetMapping("/getAllocatedWorkers")
-	public List<JobAllocation> getWorkers(@RequestParam("userId") int userId){
+	public List<JobAllocation> getAllocatedWorkers(@RequestParam("userId") int userId){
 		List<JobAllocation> list = null;
 		try {
 			list = jaservice.getAllottedWorkersByProviderUserId(userId);
@@ -65,6 +65,17 @@ public class JobAllocationController {
 			e.printStackTrace();
 		}
 		return list;
+	}
+	
+	@GetMapping("/getAssignedWorkers")
+	public List<Worker> getAssignedWorkers(@RequestParam("jobId") int jobId){
+		List<Worker> w = null;
+		try {
+			w = jaservice.getWorkerByJob(jobId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return w;
 	}
 	
 	@Transactional

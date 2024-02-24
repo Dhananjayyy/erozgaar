@@ -29,6 +29,13 @@ public class ProviderService {
 		
 	}
     
+    public List<Provider> getProvidersByCity(int uid)
+	{
+		
+		return prepo.getListForApprovalByCity(uid);
+		
+	}
+    
     public Provider getProviderByUserId(int id){
     	return prepo.getProviderByUserId(id);
     }
@@ -36,4 +43,13 @@ public class ProviderService {
     public int getProviderIdByUserId(int uid) {
     	return prepo.getProviderIdByUserId(uid);
     }
+    
+    public Provider getProviderById(int uid) {
+    	return prepo.getProviderById(uid);
+    }
+    
+    public int updateProvider(String fname, String mname, String lname, String org,int uid) {
+    	return prepo.updateProvider(fname,mname,lname,org,uid);
+    }
+    
 }

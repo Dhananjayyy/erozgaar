@@ -45,7 +45,7 @@ CREATE TABLE users (
     phone_number VARCHAR(15) NOT NULL UNIQUE,
     gender VARCHAR(10) NOT NULL,
     role_id INT NOT NULL,
-    active BOOLEAN NOT NULL,
+    active INT NOT NULL,
     adhaar VARCHAR(12) NOT NULL UNIQUE,
     account_number VARCHAR(20) NOT NULL UNIQUE,
     security_question_id INT NOT NULL,
@@ -133,9 +133,8 @@ CREATE TABLE job_allocation (
 CREATE TABLE payments (
     payment_id INT AUTO_INCREMENT,
     amount DECIMAL(10, 2) NOT NULL,
+    payment_mode VARCHAR(50) NOT NULL,
     payment_date DATE NOT NULL,
-    job_allocation_id INT NOT NULL,
-    CONSTRAINT fk_payment_joballocation FOREIGN KEY(job_allocation_id) REFERENCES job_allocation(job_allocation_id) ON DELETE CASCADE,
     CONSTRAINT pk_payment PRIMARY KEY(payment_id)
 );
 

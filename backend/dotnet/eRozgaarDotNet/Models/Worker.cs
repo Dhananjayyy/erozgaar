@@ -8,6 +8,7 @@ namespace eRozgaarDotNet.Models
         public Worker()
         {
             JobAllocations = new HashSet<JobAllocation>();
+            Address = new Address();
         }
 
         public int WorkerId { get; set; }
@@ -22,7 +23,7 @@ namespace eRozgaarDotNet.Models
         public int JobCategoryId { get; set; }
         public int UserId { get; set; }
 
-        public virtual Address Address { get; set; } = null!;
+        public virtual Address Address { get; set; }
         public virtual JobCategory JobCategory { get; set; } = null!;
         public virtual User User { get; set; } = null!;
         public virtual ICollection<JobAllocation> JobAllocations { get; set; }

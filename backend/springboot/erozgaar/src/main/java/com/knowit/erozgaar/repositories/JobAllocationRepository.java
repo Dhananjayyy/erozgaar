@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.knowit.erozgaar.entities.Job;
 import com.knowit.erozgaar.entities.JobAllocation;
+import com.knowit.erozgaar.entities.Worker;
 
 import jakarta.transaction.Transactional;
 
@@ -29,7 +30,7 @@ public interface JobAllocationRepository extends JpaRepository<JobAllocation, In
 //	@Query("SELECT ja FROM JobAllocation ja WHERE ja.job.id = :jobAllocationId AND ja.worker.id = :workerId")
 //	JobAllocation isAllocated(@Param("jobAllocationId") int jobAllocationId);
 	
-	@Query("SELECT ja FROM JobAllocation ja WHERE ja.job.provider.user.id = :userId AND ja.status = 0")
+	@Query("SELECT ja FROM JobAllocation ja WHERE ja.job.provider.user.id = :userId AND ja.status = 0 AND ja.worker.user.active = 1")
 	List<JobAllocation> getAllottedWorkersByProviderUserId(@Param("userId") int userId);
 	//WHERE ja.job.provider.user.id = :ud AND ja.status = 0
 	
@@ -41,4 +42,7 @@ public interface JobAllocationRepository extends JpaRepository<JobAllocation, In
 	@Modifying
     @Procedure(name = "UpdateRejectionJobStatus")
     public void updateRejectionJobStatus(@Param("jobId") int jobId);
+	
+	@Query("SELECT ja.worker FROM JobAllocation ja WHERE ja.job.id = :jobid AND ja.status = 1")
+    public List<Worker> getWorkerByJob(@Param("jobid") int jobid);
 }

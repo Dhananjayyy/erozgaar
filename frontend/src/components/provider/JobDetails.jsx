@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 export default function JobDetails() {
   const [jobs, setJobs] = useState([]);
   const [allocatedWorkers, setAllocatedWorkers] = useState([]);
+  const [ongoingWorkers, setOngoingWorkers] = useState([]);
   const [toggle, setToggle] = useState(0);
   const [displayAlert, setDisplayAlert] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -10,8 +11,8 @@ export default function JobDetails() {
   const [selectedJobId, setSelectedJobId] = useState(null);
   const [selectedWorkerIds, setSelectedWorkerIds] = useState([]);
   const [vacancyCount, setVacancyCount] = useState(null);
-  const[workerLimit, setWorkerLimit] = useState(0);
-  const[jobStatus, setJobStatus] = useState(0);
+  const [workerLimit, setWorkerLimit] = useState(0);
+  const [jobStatus, setJobStatus] = useState(0);
 
   var userinfo;
   if (localStorage.getItem("loggedUser") != null) {
@@ -34,6 +35,7 @@ export default function JobDetails() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${userinfo.accessToken}`,
       },
     })
       .then((response) => {
@@ -52,9 +54,10 @@ export default function JobDetails() {
   };
 
   useEffect(() => {
+    //fetchOngoingWorkers();
     fetchJobsData();
     fetchAllocatedWorkers();
-  }, []);
+  }, [toggle]);
 
   var jobs_arr = [];
   for (var i = 0; i < jobs.length; i++) {
@@ -66,6 +69,7 @@ export default function JobDetails() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${userinfo.accessToken}`,
       },
     })
       .then((response) => {
@@ -83,12 +87,12 @@ export default function JobDetails() {
       });
   };
 
-  function workerArray(){
+  function workerArray() {
     var arr_workers = [];
     for (var j = 0; j < allocatedWorkers.length; j++) {
       arr_workers.push(allocatedWorkers[j]);
-  }
-  return arr_workers;
+    }
+    return arr_workers;
   }
 
   console.log("arr job:  " + jobs_arr);
@@ -132,7 +136,7 @@ export default function JobDetails() {
   };
 
   function pickWorkers() {
-    if(selectedWorkerIds.length != workerLimit){
+    if (selectedWorkerIds.length != workerLimit) {
       showErrorMessage("Please select " + workerLimit + " workers", 5000);
       return;
     }
@@ -159,10 +163,13 @@ export default function JobDetails() {
       })
     );
 
+    console.log("selected job id" + selectedJobId);
+
     fetch(`http://localhost:8080/pickWorkers?jobId=${selectedJobId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${userinfo.accessToken}`,
       },
       body: JSON.stringify({
         allocationIds: selectedWorkerIds,
@@ -189,16 +196,47 @@ export default function JobDetails() {
     workerArray();
   }
 
-  function jobCompleted() {
-    fetch(`http://localhost:8080/updateCompletionJobStatus?id=${selectedJobId}`, {
-      method: "POST",
+  function fetchOngoingWorkers() {
+    fetch(`http://localhost:8080/getAssignedWorkers?jobId=${selectedJobId}`, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${userinfo.accessToken}`,
       },
-      body: JSON.stringify({
-        jobId: selectedJobId,
-      }),
     })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(JSON.stringify(data));
+        setOngoingWorkers(data);
+
+        setToggle(3);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }
+  var arr_ongoing_workers = [];
+  for (var j = 0; j < ongoingWorkers.length; j++) {
+    arr_ongoing_workers.push(ongoingWorkers[j]);
+  }
+  console.log("arr_ongoing_workers: " + JSON.stringify(arr_ongoing_workers));
+
+  function jobCompleted() {
+    fetch(
+      `http://localhost:8080/updateCompletionJobStatus?id=${selectedJobId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${userinfo.accessToken}`,
+        },
+      }
+    )
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -208,12 +246,13 @@ export default function JobDetails() {
       .then((data) => {
         console.log("job completed: " + JSON.stringify(data));
         showErrorMessage("Job Completed", 5000);
-        
+
         setToggle(0);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
+    setJobStatus(0);
     setSelectedJobId(null);
     setSelectedWorkerIds([]);
     fetchJobsData();
@@ -223,20 +262,23 @@ export default function JobDetails() {
 
   var jobTable = (
     <table className="table table-bordered ">
+      {/* console.log({jobStatus}) */}
       <thead className="thead-dark">
         <tr>
           <th scope="col" colSpan="8">
             <div className="d-flex justify-content-between align-items-center">
-              <button
-                type="button"
-                className="btn btn-outline-dark"
-                disabled
-                onClick={() => {
-                  //showJobDetails();
-                }}
-              >
-                <i className="fa fa-suitcase"></i> View Job Details
-              </button>
+              <div>
+                <button
+                  type="button"
+                  className="btn btn-outline-dark"
+                  disabled={jobStatus === 1 || jobStatus === 2}
+                  onClick={() => {
+                    fetchOngoingWorkers();
+                  }}
+                >
+                  <i className="fa fa-suitcase"></i> View Workers
+                </button>
+              </div>
 
               <div
                 className={`alert alert-${alertType} p-1 ${
@@ -248,37 +290,50 @@ export default function JobDetails() {
                 {errorMsg}
               </div>
 
-              
-              <div>
-              {jobStatus > 3 && (
-                <button
-                  type="button"
-                  className="btn btn-danger"
-                  onClick={() => {
-                    jobCompleted();
-                  }}
-                >
-                  <i className="fa fa-check"></i> Job Completed
-                </button>
-              )}
-              </div>
-              
-
-              
+              {jobStatus === 3 ? (
                 <div>
-                {jobStatus <= 3 && (
                   <button
                     type="button"
-                    className="btn btn-success"
+                    className={`btn btn-danger`}
+                    onClick={() => {
+                      jobCompleted();
+                    }}
+                  >
+                    <i className="fa fa-check"></i> Job Completed
+                  </button>
+                </div>
+              ) : null}
+
+              {jobStatus < 3 ? (
+                <div>
+                  {" "}
+                  <button
+                    type="button"
+                    className={`btn btn-success`}
+                    hidden={jobStatus === 1 || jobStatus === 3 || jobStatus === 4 }
                     onClick={() => {
                       provideWorkers();
                     }}
                   >
                     <i className="fa fa-plus"></i> Choose Workers
-                  </button>
-                  )}
+                  </button>{" "}
                 </div>
-              
+              ) : null}
+
+{jobStatus === 4 ? (
+                <div>
+                  {" "}
+                  <button
+                    type="button"
+                    className={`btn btn-warning`}
+                    onClick={() => {
+                      //provideWorkers();
+                    }}
+                  >
+                    <i className="fa fa-print"></i> Download Report
+                  </button>{" "}
+                </div>
+              ) : null}
             </div>
           </th>
         </tr>
@@ -334,7 +389,27 @@ export default function JobDetails() {
                 {"Requirement: " + v.noOfWorkers}
               </span>
               {"  "}
-              
+              {v.jobStatus === 1 ? (
+                <span className="badge rounded-pill bg-primary">{"Open"}</span>
+              ) : null}
+              {"  "}
+              {v.jobStatus === 2 ? (
+                <span className="badge rounded-pill bg-success">
+                  {"Provided: " + getAllocatedWorkersCount(v.id)}
+                </span>
+              ) : null}
+              {"  "}
+              {v.jobStatus === 3 ? (
+                <span className="badge rounded-pill bg-primary">
+                  {"Ongoing"}
+                </span>
+              ) : null}
+
+              {v.jobStatus === 4 ? (
+                <span className="badge rounded-pill bg-danger">
+                  {"Completed"}
+                </span>
+              ) : null}
             </td>
             <td>{v.postDate}</td>
             <td>{v.startDate}</td>
@@ -346,7 +421,11 @@ export default function JobDetails() {
                   name="selectedJob"
                   value={v.id}
                   checked={selectedJobId === v.id}
-                  onChange={() => {setJobStatus(v.jobStatus);setSelectedJobId(v.id); setWorkerLimit(v.noOfWorkers)}}
+                  onChange={() => {
+                    setJobStatus(v.jobStatus);
+                    setSelectedJobId(v.id);
+                    setWorkerLimit(v.noOfWorkers);
+                  }}
                   style={{ width: "30px", height: "30px" }}
                 />
               </label>
@@ -387,11 +466,12 @@ export default function JobDetails() {
               <button
                 type="button"
                 className="btn btn-success"
+                
                 onClick={() => {
                   pickWorkers();
                 }}
               >
-                Onboard <i className="fa fa-user"></i>
+                <i className="fa fa-user"></i> Onboard
               </button>
             </div>
           </th>
@@ -469,15 +549,106 @@ export default function JobDetails() {
     </table>
   );
 
+  var assignedWorkerTable = (
+    <table className="table table-bordered ">
+      {/* {selectedWorkerIds} */}
+      <thead className="thead-dark">
+        <tr>
+          <th scope="col" colSpan="8">
+            <div className="d-flex justify-content-between align-items-center">
+              <button
+                type="button"
+                className="btn btn-outline-dark"
+                onClick={() => {
+                  setToggle(0);
+                }}
+              >
+                <i className="fa fa-arrow-left"></i> Back to Jobs
+              </button>
+
+              <div
+                className={`alert alert-${alertType} p-1 ${
+                  displayAlert ? "d-block" : "d-none"
+                }`}
+                role="alert"
+                style={{ margin: "auto" }}
+              >
+                {errorMsg}
+              </div>
+
+            
+            </div>
+          </th>
+        </tr>
+        <tr>
+          <th scope="col" colSpan="8" className="text-center  bg-light">
+            <div className="display-6">Onboarded Workers</div>
+          </th>
+        </tr>
+
+        <tr>
+          <th scope="col" className="text-center">
+            Worker Name
+          </th>
+          {/* <th scope="col">City</th> */}
+          <th scope="col" className="text-center">
+            Location
+          </th>
+          <th scope="col" className="text-center">
+            Relocation
+          </th>
+          <th scope="col" className="text-center">
+            Education
+          </th>
+          <th scope="col" className="text-center">
+            Phone
+          </th>
+          <th scope="col" className="text-center">
+            Age
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {arr_ongoing_workers.map((v) => (
+          <tr
+            key={v.id}
+            //className={selectedWorkerIds.includes(v.id) ? "table-active" : ""}
+          >
+            <td>{v.firstName + " " + v.middleName + " " + v.lastName}</td>
+            <td>
+              {v.address.addressLine1 +
+                ", " +
+                v.address.addressLine2 +
+                ", " +
+                v.address.city.cityName}
+            </td>
+            <td>{v.relocation ? "Yes" : "No"}</td>
+            <td>{v.education}</td>
+            <td>{v.user.phoneNumber}</td>
+            <td>{calculateAge(v.dateOfBirth)}</td>
+            
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+
   return (
     <div className="container rounded mt-5 mb-5 ">
       <div className="mt-3 mb-5 display-5 text-center">Jobs List</div>
       <div>
         {/* {selectedJobId} */}
         <div className="table-responsive"></div>
-        {toggle === 0 ? jobTable : workerTable}
-        {/* {jobTable} */}
-        {/* {JSON.stringify(allocatedWorkers)} */}
+        {toggle === 0 ? (
+          jobTable
+        ) : toggle === 3 ? (
+          <>
+            {/* {jobTable} */}
+            {assignedWorkerTable}
+          </>
+        ) : (
+          workerTable
+        )}
       </div>
     </div>
   );

@@ -38,10 +38,21 @@ export default function VLCHomeLayout() {
         //   return <VlcHome/>;
       }
     };
-  
-    function handleLogout() {
+
+    if (localStorage.getItem("loggedUser")) {
+      localStorage.removeItem("loggedUser");
       navigate("/");
     }
+  
+    const handleLogout = () => {
+      if (localStorage.getItem("loggedUser")) {
+        localStorage.removeItem("loggedUser");
+        navigate("/");
+      } else {
+        console.log("User data does not exist.");
+        navigate("/");
+      }
+    };
 
   return (
     <>

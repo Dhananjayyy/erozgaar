@@ -42,4 +42,8 @@ public class JobAllocationService {
 	public void updateJobStatus(int jobId) {
         jarepo.updateRejectionJobStatus(jobId);
     }
+	
+	public List<Worker> getWorkerByJob(int jobid) {
+		return jarepo.getWorkerByJob(jobid);
+	}
 }

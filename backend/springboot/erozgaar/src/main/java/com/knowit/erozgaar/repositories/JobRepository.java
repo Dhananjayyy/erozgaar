@@ -27,8 +27,11 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
 	@Query("SELECT j FROM Job j WHERE j.provider.user.id = :userId")
 	List<Job> getJobByUserId(@Param("userId") int userId);
 	
-	@Query("SELECT j FROM Job j WHERE j.id IN (SELECT ja.job.id FROM JobAllocation ja WHERE ja.worker.id = :workerId) AND j.id IN (SELECT wa.job.id FROM JobAllocation wa WHERE wa.job.id = j.id)")
-    List<Job> getAllJobsForWorker(@Param("workerId") int workerId);
+//	@Query("SELECT j FROM Job j WHERE j.id IN (SELECT ja.job.id FROM JobAllocation ja WHERE ja.worker.id = :workerId) AND j.id IN (SELECT wa.job.id FROM JobAllocation wa WHERE wa.job.id = j.id)")
+//    List<Job> getAllJobsForWorker(@Param("workerId") int workerId);
+	
+	@Query(value="select * from jobs j where j.job_id in (select ja.job_id from job_allocation ja where ja.worker_id=(select w.worker_id from workers w where w.user_id=:id))", nativeQuery = true)
+	List<Job> getAllJobsForWorker(@Param("id") int id);
 	
 	@Modifying
     @Procedure(name = "UpdateCompletionJobStatus")

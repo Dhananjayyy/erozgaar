@@ -15,7 +15,9 @@ export default function ApproveWorker() {
     console.log(user_id);
     fetch(`http://localhost:8080/approve?id=${user_id}`, {
       method: "GET",
-      headers: {Authorization: `Bearer ${userinfo.accessToken}`},
+      headers: {
+        "Content-Type": "application/text",
+        "Authorization": `Bearer ${userinfo.accessToken}`,},
     })
       .then((response) => response.text())
       .then((data) => {
@@ -24,7 +26,7 @@ export default function ApproveWorker() {
           prevObj.filter((worker) => worker.id !== user_id)
         );
   
-        setApprovalMessage(`Worker ${user_id} has been approved.`);
+        setApprovalMessage(`User ${user_id} has been approved.`);
   
         setTimeout(() => {
           setApprovalMessage("");
@@ -32,16 +34,27 @@ export default function ApproveWorker() {
       });
   };
   
-  const deleteWorker = (worker_id) => {
-    console.log(`worker deleted ${worker_id}`);
-    setObj((prevObj) =>
-      prevObj.filter((worker) => worker.worker_id !== worker_id)
-    );
+  const rejectWorker = (user_id) => {
+    console.log(`worker rejected ${user_id}`);
+    fetch(`http://localhost:8080/reject?id=${user_id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/text",
+        "Authorization": `Bearer ${userinfo.accessToken}`,},
+    })
+      .then((response) => response.text())
+      .then((data) => {
+        console.log("Worker rejected successfully:", data);
+        setObj((prevObj) =>
+          prevObj.filter((worker) => worker.id !== user_id)
+        );
   
-    setdeleteMsg(`Worker ${worker_id} has been deleted.`);
-    setTimeout(() => {
-      setdeleteMsg("");
-    }, 3000);
+        setdeleteMsg(`User ${user_id} has been rejected`);
+  
+        setTimeout(() => {
+          setApprovalMessage("");
+        }, 3000);
+      });
   };
   
 
@@ -58,6 +71,7 @@ export default function ApproveWorker() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${userinfo.accessToken}`,
       },
     })
       .then((response) => response.json())
@@ -86,11 +100,9 @@ export default function ApproveWorker() {
           <thead className="thead-dark">
             <tr>
               <th scope="col">Worker ID</th>
-              <th scope="col">First Name</th>
-              <th scope="col">Middle Name</th>
-              <th scope="col">Last Name</th>
+              <th scope="col">Name</th>
               <th scope="col">Approve</th>
-              <th scope="col">Delete</th>
+              <th scope="col">Reject</th>
             </tr>
           </thead>
           <tbody>
@@ -98,9 +110,7 @@ export default function ApproveWorker() {
               <>
                 <tr key={v.worker_id}>
                   <td>{v.id}</td>
-                  <td>{v.firstName}</td>
-                  <td>{v.middleName}</td>
-                  <td>{v.lastName}</td>
+                  <td>{v.firstName + " " + v.middleName + " " + v.lastName}</td>
                   <td>
                     <button
                       className="btn btn-primary"
@@ -115,10 +125,10 @@ export default function ApproveWorker() {
                     <button
                       className="btn btn-danger"
                       onClick={() => {
-                        deleteWorker(v.worker_id);
+                        rejectWorker(v.user.id);
                       }}
                     >
-                      Delete
+                      Reject
                     </button>
                   </td>
                 </tr>

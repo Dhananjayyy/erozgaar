@@ -7,7 +7,7 @@ public class UserProviderRequest{
     private String phoneNumber;
     private String gender;
     private Role role;
-    private boolean active;
+    private int active;
     private String adhaar;
     private String accountNumber;
     private SecurityQuestion securityQuestion;
@@ -27,7 +27,7 @@ public class UserProviderRequest{
 
 
     public UserProviderRequest(int userId, String userName, String password, String phoneNumber, String gender,
-            Role role, boolean active, String adhaar, String accountNumber, SecurityQuestion securityQuestion,
+            Role role, int active, String adhaar, String accountNumber, SecurityQuestion securityQuestion,
             String answer, int providerId, String firstName, String middleName, String lastName, String organization,
             String education, Address address) {
         this.userId = userId;
@@ -99,11 +99,11 @@ public class UserProviderRequest{
         this.role = role;
     }
 
-    public boolean isActive() {
+    public int getActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(int active) {
         this.active = active;
     }
 

@@ -12,11 +12,13 @@ export default function WorkerHomeLayout() {
   if (localStorage.getItem("loggedUser") != null) {
     userinfo = JSON.parse(localStorage.getItem("loggedUser"));
     console.log(userinfo);
+  } else {
+    navigate("/");
   }
 
   const handleLogout = () => {
-    if (localStorage.getItem("user")) {
-      localStorage.removeItem("user");
+    if (localStorage.getItem("loggedUser")) {
+      localStorage.removeItem("loggedUser");
       navigate("/");
     } else {
       console.log("User data does not exist.");
