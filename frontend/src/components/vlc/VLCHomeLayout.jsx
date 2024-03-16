@@ -20,10 +20,6 @@ export default function VLCHomeLayout() {
   };
   
   useEffect(() => {
-    if (!loggedIn) {
-      console.log("User logged in status : " + loggedIn);
-      navigate("/");
-    }
     setSelectedLink("vlchome");
   }, []);
 

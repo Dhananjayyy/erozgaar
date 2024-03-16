@@ -1,15 +1,24 @@
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../slice";
 
-export default function LoginForm() {
+export default function LoginForm(props) {
+  const { message } = props;
+  console.log("passed message is ", message);
+
   const [displayAlert, setDisplayAlert] = useState(false);
   const [dispMsg, setDispMsg] = useState("");
 
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const reduxAction = useDispatch();
+
+  useEffect(() => {
+    if (message === "loginfirst") {
+      showErrorMessage("Please login first",0);
+    }
+  }, [message]);
 
   function showErrorMessage(msg, time) {
     setDisplayAlert(true);
@@ -79,63 +88,8 @@ export default function LoginForm() {
         password: info.pwd.value,
       }),
     };
-    //axios.post("http://localhost:8080/login",)
 
     fetch("http://localhost:8080/login", reqOptions)
-      /*.then(resp => {
-            
-            return resp.json()}) 
-        .then(data => console.log(data)) */
-      /*.then(resp =>  {if(resp.ok)
-                        {
-                            console.log(resp.status)
-                            console.log(JSON.stringify(resp))
-                            return resp.text();
-                        }    
-                         else
-                         {
-                            console.log(resp.statusText)
-                             throw new Error("Server error"); 
-                         }
-                        })
-        .then(text => text.length ? JSON.parse(text) : {})
-        .then(obj =>  {
-                       if(Object.keys(obj).length === 0)
-                       {
-                            setMsg("Wrong UID/PWD");
-                       } 
-                       else
-                       {
-                           
-                           reduxAction(login())
-                           localStorage.setItem("loggedUser",JSON.stringify(obj));
-                           if(obj.status === false) 
-                           {
-                               alert("Request has not been approved");
-                           }
-                           else
-                           {
-
-                               if(obj.role_id.role_id === 1)
-                               {
-                                    navigate("/admin_home");
-                               }
-                               else if(obj.role_id.role_id === 2)
-                               {
-                                    navigate("/doctor_home");
-                               }
-                               else if(obj.role_id.role_id === 3)
-                               {
-
-                               }
-                               else if(obj.role_id.role_id === 4)
-                               {
-
-                               }
-                           }
-                       }    
-                }) 
-         .catch((error) => alert("Server error. Try after some time")); */
       .then((resp) => {
         if (resp.ok) {
           console.log(resp.status);
@@ -168,33 +122,7 @@ export default function LoginForm() {
   };
 
   return (
-    // <div>
-    //     <h1> Login Page </h1>
-    //     <form>
-    //         <div className="mb-3">
-    //             <label htmlFor="uid" className="form-label">Enter uid : </label>
-    //             <input type="text" className="form-control" id="uid" name="uid" value={info.uid.value}
-    //             onChange={(e)=>{validate("uid", e.target.value)}}   />
-    //             <div id="emailHelp" className="form-text" style={{display: (!info.uid.valid&&info.uid.touched)?"block":"none"}}>
-    //                 {info.uid.error}
-    //             </div>
-    //         </div>
-    //         <div className="mb-3">
-    //             <label htmlFor="pwd" className="form-label">Enter uid : </label>
-    //             <input type="password" className="form-control" id="pwd" name="pwd"  value={info.pwd.value}
-    //             onChange={(e)=>{validate("pwd", e.target.value)}} />
-    //             <div id="emailHelp" className="form-text" style={{display: !info.pwd.valid&&info.pwd.touched?"block":"none"}}>
-    //                 {info.pwd.error}
-    //             </div>
-    //         </div>
-    //         <button type="submit" className="btn btn-primary mb-3" onClick={(e)=> {sendData(e)}}>Submit</button>
-    //         <button type="reset" className="btn btn-primary mb-3" onClick={()=> {dispatch({type:'reset'})}} > Clear </button>
 
-    //     </form>
-
-    //     <p> {JSON.stringify(info)}</p>
-    //     <p> {msg}</p>
-    // </div>
     <div className="container mt-5 border border-dark rounded p-3 w-50">
       <div className=" mb-3 display-5 text-center">LOGIN</div>
 

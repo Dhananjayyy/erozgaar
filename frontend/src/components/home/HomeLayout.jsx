@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Home from "./Home";
 import WorkerRegistrationForm from "../forms/WorkerRegistrationForm";
@@ -9,6 +9,22 @@ import "../../styles/nav.css";
 import LoginForm from "../forms/LoginForm";
 
 export default function HomeLayout() {
+  const location = useLocation();
+  const [displayAlert, setDisplayAlert] = useState(false);
+  const [dispMsg, setDispMsg] = useState("");
+
+  const [pMsg, setPMsg] = useState(null)
+
+  function showErrorMessage(msg, time) {
+    setDisplayAlert(true);
+    setDispMsg(msg);
+    if (time !== 0) {
+      setTimeout(() => {
+        setDisplayAlert(false);
+      }, time);
+    }
+  }
+
   const [selectedLink, setSelectedLink] = useState(null);
 
   const handleLinkClick = (link) => {
@@ -16,15 +32,24 @@ export default function HomeLayout() {
   };
 
   useEffect(() => {
-    setSelectedLink("home");
+    const { state } = location;
+    var defaultcomponent;
+    if(state){
+      defaultcomponent = state.component;
+      setPMsg(state.passedMessage);
+    } else {
+      defaultcomponent = "home";
+    }
+    handleLinkClick(defaultcomponent || "home");
   }, []);
 
-  const renderComponent = () => {
+  const renderComponent = (msg) => {
+    console.log("mmmmmmmmmmmsg", msg)
     switch (selectedLink) {
       case "workerregistration":
         return <WorkerRegistrationForm />;
       case "login":
-        return <LoginForm/>;
+        return <LoginForm message={pMsg} />;
       case "providerregistration":
         return <ProviderRegistrationForm />;
       case "home":
@@ -103,6 +128,7 @@ export default function HomeLayout() {
               </div>
             </div>
           </div>
+          
           <button
             className="navbar-toggler"
             type="button"
@@ -116,8 +142,10 @@ export default function HomeLayout() {
           </button>
         </nav>
       </div>
-      <div>{renderComponent()}</div>
-      {/* {<WorkerHome/>} */}
+
+      
+
+      <div>{renderComponent({pMsg})}</div>
     </div>
   );
 }
