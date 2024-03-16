@@ -1246,11 +1246,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/dhananjay/Desktop/Final/backend/dotnet/eRozgaarDotNet/eRozgaarDotNet.csproj",
+      "projectUniqueName": "/home/dhananjay/Desktop/eRozgaar/backend/dotnet/eRozgaarDotNet/eRozgaarDotNet.csproj",
       "projectName": "eRozgaarDotNet",
-      "projectPath": "/home/dhananjay/Desktop/Final/backend/dotnet/eRozgaarDotNet/eRozgaarDotNet.csproj",
+      "projectPath": "/home/dhananjay/Desktop/eRozgaar/backend/dotnet/eRozgaarDotNet/eRozgaarDotNet.csproj",
       "packagesPath": "/home/dhananjay/.nuget/packages/",
-      "outputPath": "/home/dhananjay/Desktop/Final/backend/dotnet/eRozgaarDotNet/obj/",
+      "outputPath": "/home/dhananjay/Desktop/eRozgaar/backend/dotnet/eRozgaarDotNet/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/dhananjay/.nuget/NuGet/NuGet.Config"
@@ -1271,6 +1271,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -1321,7 +1326,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.101/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.202/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

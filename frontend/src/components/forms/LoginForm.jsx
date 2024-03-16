@@ -155,7 +155,7 @@ export default function LoginForm() {
             showErrorMessage("Account inactive", 5000);
             return;
           }
-          reduxAction(login);
+          reduxAction(login());
           localStorage.setItem("loggedUser", JSON.stringify(data));
           const role = data.roles[0];
           if (role === "Worker") navigate("/workerlayout");

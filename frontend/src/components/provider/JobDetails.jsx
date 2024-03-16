@@ -57,7 +57,7 @@ export default function JobDetails() {
     //fetchOngoingWorkers();
     fetchJobsData();
     fetchAllocatedWorkers();
-  }, [toggle]);
+  }, [toggle, jobStatus]);
 
   var jobs_arr = [];
   for (var i = 0; i < jobs.length; i++) {
