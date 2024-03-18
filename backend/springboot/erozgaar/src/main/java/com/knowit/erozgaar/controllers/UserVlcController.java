@@ -25,30 +25,30 @@ public class UserVlcController {
 	VillageLevelConnectorService vlcservice;
 	
 
-	@GetMapping("/getuservlcbyid")
-	 public UserVlcRequest getUserVlcById(@RequestParam("uid") int uid) {
-		User u= uservice.getUserById(uid);
-		VillageLevelConnector v= vlcservice.getVlcById(uid);
-		
-		UserVlcRequest vlc = new UserVlcRequest(u.getId(),u.getUserName(),u.getPassword(),u.getPhoneNumber(),
-				u.getGender(),u.getRole(),u.isActive(),u.getAdhaar(),u.getAccountNumber(),u.getSecurityQuestion(),u.getAnswer(),
-				v.getId(),v.getFirstName(),v.getMiddleName(),v.getLastName(),v.getEducation(),v.getAddress());
-		
-		return vlc;
-	 }
-	
-	
-	@PutMapping("/updateVlc")
-    public  int updateVlc( @RequestBody UserVlcRequest uw) {
-       
-		String fname=uw.getFirstName();
-		String mname=uw.getMiddleName();
-		String lname=uw.getLastName();
-		Integer uid=uw.getUserId();
-		
-		
-		return vlcservice.updateVlc(fname,mname,lname,uid);
-	}
+//	@GetMapping("/getuservlcbyid")
+//	 public UserVlcRequest getUserVlcById(@RequestParam("uid") int uid) {
+//		User u= uservice.getUserById(uid);
+//		VillageLevelConnector v= vlcservice.getVlcById(uid);
+//		
+//		UserVlcRequest vlc = new UserVlcRequest(u.getId(),u.getUserName(),u.getPassword(),u.getPhoneNumber(),
+//				u.getGender(),u.getRole(),u.getActive(),u.getAdhaar(),u.getAccountNumber(),u.getSecurityQuestion(),u.getAnswer(),
+//				v.getId(),v.getFirstName(),v.getMiddleName(),v.getLastName(),v.getEducation(),v.getAddress());
+//		
+//		return vlc;
+//	 }
+//	
+//	
+//	@PutMapping("/updateVlc")
+//    public  int updateVlc( @RequestBody UserVlcRequest uw) {
+//       
+//		String fname=uw.getFirstName();
+//		String mname=uw.getMiddleName();
+//		String lname=uw.getLastName();
+//		Integer uid=uw.getUserId();
+//		
+//		
+//		return vlcservice.updateVlc(fname,mname,lname,uid);
+//	}
     
 
 }

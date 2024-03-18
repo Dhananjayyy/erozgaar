@@ -29,32 +29,32 @@ public class UserWorkerController {
 	@Autowired
 	WorkerService wservice;
 	
-	@GetMapping("/getuserworkerbyid")
-	 public UserWorkerRequest getUserWorkerById(@RequestParam("uid") int uid) {
-		User u= uservice.getUserById(uid);
-		Worker w= wservice.getWorkerById(uid);
-		
-		UserWorkerRequest workerdetails = new UserWorkerRequest(u.getId(),u.getUserName(),u.getPassword(),u.getPhoneNumber(),
-				u.getGender(),u.getRole(),u.isActive(),u.getAdhaar(),u.getAccountNumber(),u.getSecurityQuestion(),u.getAnswer(),
-				w.getId(),w.getFirstName(),w.getMiddleName(),w.getLastName(),w.getEducation(),w.getAddress(),w.getJobCategory(),w.getDateOfBirth(),w.isRelocation());
-		return workerdetails;
-	 }
-	
-	
-	@PutMapping("/updateWorker")
-    public  int updateWorker( @RequestBody UserWorkerRequest uw) {
-		System.out.println(uw);
-       
-		String fname=uw.getFirstName();
-		String mname=uw.getMiddleName();
-		String lname=uw.getLastName();
-		Integer uid=uw.getUserId();
-		
-		boolean relocation=uw.isRelocation();
-		Date dob=uw.getDateOfBirth();
-		
-		
-		return wservice.updateWorker(fname,mname,lname,relocation,dob,uid);  
-    }
+//	@GetMapping("/getuserworkerbyid")
+//	 public UserWorkerRequest getUserWorkerById(@RequestParam("uid") int uid) {
+//		User u= uservice.getUserById(uid);
+//		Worker w= wservice.getWorkerById(uid);
+//		
+//		UserWorkerRequest workerdetails = new UserWorkerRequest(u.getId(),u.getUserName(),u.getPassword(),u.getPhoneNumber(),
+//				u.getGender(),u.getRole(),u.getActive(),u.getAdhaar(),u.getAccountNumber(),u.getSecurityQuestion(),u.getAnswer(),
+//				w.getId(),w.getFirstName(),w.getMiddleName(),w.getLastName(),w.getEducation(),w.getAddress(),w.getJobCategory(),w.getDateOfBirth(),w.isRelocation());
+//		return workerdetails;
+//	 }
+//	
+//	
+//	@PutMapping("/updateWorker")
+//    public  int updateWorker( @RequestBody UserWorkerRequest uw) {
+//		System.out.println(uw);
+//       
+//		String fname=uw.getFirstName();
+//		String mname=uw.getMiddleName();
+//		String lname=uw.getLastName();
+//		Integer uid=uw.getUserId();
+//		
+//		boolean relocation=uw.isRelocation();
+//		Date dob=uw.getDateOfBirth();
+//		
+//		
+//		return wservice.updateWorker(fname,mname,lname,relocation,dob,uid);  
+//    }
 
 }

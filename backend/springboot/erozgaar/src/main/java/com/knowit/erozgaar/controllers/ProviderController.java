@@ -46,15 +46,15 @@ public class ProviderController {
     	return pservice.getProviderByUserId(id);
     }
     
-    @GetMapping("/getProviderRegRequests")
-	public List<Provider> getListForApproval()
-	{
-		System.out.println("sending pending approvals");
-		return pservice.getProviders();
-	}
+//    @GetMapping("/getProviderRegRequests")
+//	public List<Provider> getListForApproval()
+//	{
+//		System.out.println("sending pending approvals");
+//		return pservice.getProviders();
+//	}
     
     @GetMapping("/getuserproviderbyid")
-	 public UserProviderRequest getUserWorkerById(@RequestParam("uid") int uid) {
+	 public UserProviderRequest getUserProviderById(@RequestParam("uid") int uid) {
 		
 		User u= uservice.getUserById(uid);
 		Provider p= pservice.getProviderById(uid);		
@@ -79,7 +79,7 @@ public class ProviderController {
 		String accno =up.getAccountNumber();
 		int active=up.getActive();
 		
-		uservice.updateUser(phone,accno,active,uid);
+		uservice.updateUser(phone,accno,uid);
 		
 		
 		return pservice.updateProvider(fname,mname,lname,org,uid);  

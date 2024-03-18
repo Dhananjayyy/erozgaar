@@ -50,7 +50,7 @@ public class ProviderService {
     	return prepo.getProviderById(uid);
     }
     
-    public int updateProvider(String fname, String mname, String lname, int uid) {
-    	return prepo.updateProvider(fname,mname,lname,uid);
+    public int updateProvider(String fname, String mname, String lname, String org, int uid) {
+    	return prepo.updateProvider(fname,mname,lname,org,uid);
     }
 }

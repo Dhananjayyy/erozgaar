@@ -73,7 +73,7 @@ public class VlcController {
 		String accno =uw.getAccountNumber();
 		int active=uw.getActive();
 
-		int u=uservice.updateUser(phone,accno,active,uid);
+		int u=uservice.updateUser(phone,accno,uid);
 		
 		return vlcservice.updateVlc(fname,mname,lname,uid);
 		

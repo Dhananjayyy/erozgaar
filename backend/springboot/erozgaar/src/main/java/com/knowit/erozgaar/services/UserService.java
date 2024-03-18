@@ -25,6 +25,14 @@ public class UserService {
 			return false;
 	}
 	
+	public boolean reject(int id)
+	{
+		if (urepo.reject(id) == 1)
+			return true;
+		else
+			return false;
+	}
+	
 	public User getUser(int id)
 	{
 		return urepo.findById(id).get();
@@ -33,5 +41,13 @@ public class UserService {
 	public User getUserById(int id)
 	{
 		return urepo.findById(id).get();
+	}
+	
+	public boolean getUserByUserName(String uname) {
+		return urepo.getUserByUserName(uname) != null;
+	}
+	
+	public int updateUser(String phone,String accno, Integer uid) {
+		return urepo.updateUser(phone, accno, uid);
 	}
 }

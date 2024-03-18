@@ -61,7 +61,8 @@ export default function ApproveWorker() {
     fetch(`http://localhost:8080/getWorkerRegRequests?userId=${userData.id}`, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/text",
+        Authorization: `Bearer ${userinfo.accessToken}`,
       },
     })
       .then((response) => response.json())
