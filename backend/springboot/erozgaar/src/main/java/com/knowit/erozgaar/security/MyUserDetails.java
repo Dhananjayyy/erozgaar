@@ -18,10 +18,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
 
 public class MyUserDetails implements UserDetails {
 	
@@ -35,7 +31,51 @@ public class MyUserDetails implements UserDetails {
 
 	  private List<? extends GrantedAuthority> authorities;
 	  
-	  private int active;
+	  public int getActive() {
+		return active;
+	}
+
+	public MyUserDetails() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public MyUserDetails(int id, String username, String password, Role role,
+			List<? extends GrantedAuthority> authorities, int active) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.role = role;
+		this.authorities = authorities;
+		this.active = active;
+	}
+
+	public void setActive(int active) {
+		this.active = active;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public void setAuthorities(List<? extends GrantedAuthority> authorities) {
+		this.authorities = authorities;
+	}
+
+	private int active;
 	  
 	  public static MyUserDetails build(com.knowit.erozgaar.entities.User user) {
 		  	Role r = user.getRole();
