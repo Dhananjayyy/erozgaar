@@ -95,7 +95,7 @@ export default function JobDetails() {
     return arr_workers;
   }
 
-  console.log("arr job:  " + jobs_arr);
+  //console.log("arr job:  " + jobs_arr);
   //console.log("arr workers:  " + JSON.stringify(arr_workers));
 
   const getAllocatedWorkersCount = (jobId) => {
