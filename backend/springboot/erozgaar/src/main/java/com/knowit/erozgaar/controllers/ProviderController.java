@@ -53,16 +53,16 @@ public class ProviderController {
 //		return pservice.getProviders();
 //	}
     
-    @GetMapping("/getuserproviderbyid")
-	 public UserProviderRequest getUserProviderById(@RequestParam("uid") int uid) {
-		
-		User u= uservice.getUserById(uid);
-		Provider p= pservice.getProviderById(uid);		
-		UserProviderRequest providerdetails = new UserProviderRequest(u.getId(),u.getUserName(),u.getPassword(),u.getPhoneNumber(),
-				u.getGender(),u.getRole(),u.getActive(),u.getAdhaar(),u.getAccountNumber(),u.getSecurityQuestion(),u.getAnswer(),
-				p.getId(),p.getFirstName(),p.getMiddleName(),p.getLastName(),p.getOrganization(),p.getEducation(),p.getAddress());
-		return providerdetails;
-	 }
+//    @GetMapping("/getuserproviderbyid")
+//	 public UserProviderRequest getUserProviderById(@RequestParam("uid") int uid) {
+//		
+//		User u= uservice.getUserById(uid);
+//		Provider p= pservice.getProviderById(uid);		
+//		UserProviderRequest providerdetails = new UserProviderRequest(u.getId(),u.getUserName(),u.getPassword(),u.getPhoneNumber(),
+//				u.getGender(),u.getRole(),u.getActive(),u.getAdhaar(),u.getAccountNumber(),u.getSecurityQuestion(),u.getAnswer(),
+//				p.getId(),p.getFirstName(),p.getMiddleName(),p.getLastName(),p.getOrganization(),p.getEducation(),p.getAddress());
+//		return providerdetails;
+//	 }
 	
 	@Transactional
 	@PutMapping("/updateProvider")

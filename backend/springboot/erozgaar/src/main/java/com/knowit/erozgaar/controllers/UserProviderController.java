@@ -26,30 +26,30 @@ public class UserProviderController {
 	@Autowired
 	ProviderService pservice;
 	
-//	@GetMapping("/getuserproviderbyid")
-//	 public UserProviderRequest getUserProviderById(@RequestParam("uid") int uid) {
-//		
-//		User u= uservice.getUserById(uid);
-//		Provider p= pservice.getProviderById(uid);		
-//		UserProviderRequest providerdetails = new UserProviderRequest(u.getId(),u.getUserName(),u.getPassword(),u.getPhoneNumber(),
-//				u.getGender(),u.getRole(),u.getActive(),u.getAdhaar(),u.getAccountNumber(),u.getSecurityQuestion(),u.getAnswer(),
-//				p.getId(),p.getFirstName(),p.getMiddleName(),p.getLastName(),p.getOrganization(),p.getEducation(),p.getAddress());
-//		return providerdetails;
-//	 }
+	@GetMapping("/getuserproviderbyid")
+	 public UserProviderRequest getUserProviderById(@RequestParam("uid") int uid) {
+		
+		User u= uservice.getUserById(uid);
+		Provider p= pservice.getProviderById(uid);		
+		UserProviderRequest providerdetails = new UserProviderRequest(u.getId(),u.getUserName(),u.getPassword(),u.getPhoneNumber(),
+				u.getGender(),u.getRole(),u.getActive(),u.getAdhaar(),u.getAccountNumber(),u.getSecurityQuestion(),u.getAnswer(),
+				p.getId(),p.getFirstName(),p.getMiddleName(),p.getLastName(),p.getOrganization(),p.getEducation(),p.getAddress());
+		return providerdetails;
+	 }
 	
 	
-//	@PutMapping("/updateProvider")
-//   public  int updateUserProvider( @RequestBody UserProviderRequest up) {
-//		System.out.println(up);
-//      
-//		String fname=up.getFirstName();
-//		String mname=up.getMiddleName();
-//		String lname=up.getLastName();
-//		String org = up.getOrganization();
-//		Integer uid=up.getUserId();
-//		
-//		
-//		return pservice.updateProvider(fname,mname,lname, org,uid);  
-//   }
+	@PutMapping("/updateUserProvider")
+   public  int updateUserProvider( @RequestBody UserProviderRequest up) {
+		System.out.println(up);
+      
+		String fname=up.getFirstName();
+		String mname=up.getMiddleName();
+		String lname=up.getLastName();
+		String org = up.getOrganization();
+		Integer uid=up.getUserId();
+		
+		
+		return pservice.updateProvider(fname,mname,lname, org,uid);  
+   }
 
 }

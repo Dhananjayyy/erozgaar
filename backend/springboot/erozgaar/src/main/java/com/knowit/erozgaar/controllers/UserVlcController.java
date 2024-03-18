@@ -36,19 +36,19 @@ public class UserVlcController {
 //		
 //		return vlc;
 //	 }
-//	
-//	
-//	@PutMapping("/updateVlc")
-//    public  int updateVlc( @RequestBody UserVlcRequest uw) {
-//       
-//		String fname=uw.getFirstName();
-//		String mname=uw.getMiddleName();
-//		String lname=uw.getLastName();
-//		Integer uid=uw.getUserId();
-//		
-//		
-//		return vlcservice.updateVlc(fname,mname,lname,uid);
-//	}
+	
+	
+	@PutMapping("/updateUserVlc")
+    public  int updateVlc( @RequestBody UserVlcRequest uw) {
+       
+		String fname=uw.getFirstName();
+		String mname=uw.getMiddleName();
+		String lname=uw.getLastName();
+		Integer uid=uw.getUserId();
+		
+		
+		return vlcservice.updateVlc(fname,mname,lname,uid);
+	}
     
 
 }

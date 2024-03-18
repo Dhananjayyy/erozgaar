@@ -393,7 +393,6 @@ const handleRelocation = (key, value) => {
       role: {
         roleId: 1,
       },
-      active: worker.active.value,
       adhaar: worker.adhaar.value,
       accountNumber: worker.accountNumber.value,
       securityQuestion: {
@@ -687,7 +686,7 @@ const handleRelocation = (key, value) => {
 
           </div>
       </form>
-      {JSON.stringify(worker)}
+      {/* {JSON.stringify(worker)} */}
     </div>
   );
     

@@ -229,7 +229,6 @@ export default function UpdateProfileVLC() {
       role: {
         roleId: 3,
       },
-      active: true,
       adhaar: vlc.adhaar.value,
       accountNumber: vlc.accountNumber.value,
       securityQuestion: {
@@ -500,7 +499,7 @@ export default function UpdateProfileVLC() {
 
         </div>
       </form>
-      {JSON.stringify(vlc)}
+      {/* {JSON.stringify(vlc)} */}
     </div>
   );
 }
