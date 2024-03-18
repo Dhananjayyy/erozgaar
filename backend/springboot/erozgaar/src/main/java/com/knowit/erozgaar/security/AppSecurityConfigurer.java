@@ -144,7 +144,6 @@ public class AppSecurityConfigurer {
 			authorize.requestMatchers("/dotnetapi").permitAll();
 			// authorize.requestMatchers("/getRegRequests").hasAuthority("ADMIN");
 			authorize.requestMatchers("/approve").hasAuthority("ADMIN");
-			authorize.requestMatchers("/getDoctor").hasAuthority("DOCTOR");
 			//authorize.requestMatchers("/c").hasAuthority("USER");
 			//authorize.requestMatchers("/admin").hasAnyAuthority("ADMIN","USER");
 			

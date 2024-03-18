@@ -176,7 +176,7 @@ export default function Profile() {
       }
 
       var reqbody = JSON.stringify({
-        userId: data.id,
+        id: data.id,
         userName: obj1.userName.value,
         password: obj1.password,
         phoneNumber: admin.phone.value,
@@ -220,6 +220,7 @@ export default function Profile() {
         });
       setCancelDisabled(!cancelDisabled);
       setSubmitDisabled(!submitDisabled);
+      console.log("user id for that admin is: " + data.id);
     };
 
     return (
@@ -298,7 +299,7 @@ export default function Profile() {
         
           </div>
       </form>
-      {JSON.stringify(admin)}
+      {/* {JSON.stringify(admin)} */}
     </div>
     );
   }
