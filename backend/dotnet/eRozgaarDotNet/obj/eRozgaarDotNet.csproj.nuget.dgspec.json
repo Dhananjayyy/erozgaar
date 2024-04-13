@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/dhananjay/Desktop/eRozgaar/backend/dotnet/eRozgaarDotNet/eRozgaarDotNet.csproj": {}
+    "/home/dhananjay/Desktop/erozgaar/backend/dotnet/eRozgaarDotNet/eRozgaarDotNet.csproj": {}
   },
   "projects": {
-    "/home/dhananjay/Desktop/eRozgaar/backend/dotnet/eRozgaarDotNet/eRozgaarDotNet.csproj": {
+    "/home/dhananjay/Desktop/erozgaar/backend/dotnet/eRozgaarDotNet/eRozgaarDotNet.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/dhananjay/Desktop/eRozgaar/backend/dotnet/eRozgaarDotNet/eRozgaarDotNet.csproj",
+        "projectUniqueName": "/home/dhananjay/Desktop/erozgaar/backend/dotnet/eRozgaarDotNet/eRozgaarDotNet.csproj",
         "projectName": "eRozgaarDotNet",
-        "projectPath": "/home/dhananjay/Desktop/eRozgaar/backend/dotnet/eRozgaarDotNet/eRozgaarDotNet.csproj",
+        "projectPath": "/home/dhananjay/Desktop/erozgaar/backend/dotnet/eRozgaarDotNet/eRozgaarDotNet.csproj",
         "packagesPath": "/home/dhananjay/.nuget/packages/",
-        "outputPath": "/home/dhananjay/Desktop/eRozgaar/backend/dotnet/eRozgaarDotNet/obj/",
+        "outputPath": "/home/dhananjay/Desktop/erozgaar/backend/dotnet/eRozgaarDotNet/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/dhananjay/.nuget/NuGet/NuGet.Config"
@@ -87,7 +87,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.202/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.204/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
