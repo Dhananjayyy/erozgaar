@@ -42,7 +42,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: erozgaar-app
-          path: '${{ github.workspace }}/target/*.war'
+          path: '${{ github.workspace }}/backend/springboot/erozgaar/target/*.war'
 
   deploy:
     runs-on: ubuntu-latest
@@ -58,7 +58,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: erozgaar-app
-          path: '${{ github.workspace }}/target/*.war'
+          path: '${{ github.workspace }}/backend/springboot/erozgaar/target/erozgaar-app.war'
       
       - name: Login to Azure
         uses: azure/login@v1
