@@ -32,6 +32,11 @@ jobs:
           cd backend/springboot/erozgaar/
           pwd
           mvn clean install
+
+      - name: List contents of the target directory
+        run: |
+          cd backend/springboot/erozgaar/
+          ls -l target/
           
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
