@@ -22,7 +22,7 @@ jobs:
           java-version: '17'
 
       - name: Change directory
-        run: cd erozgaar/backend/springboot/erozgaar/
+        run: ls
 
       - name: Build with Maven
         run: mvn clean install
