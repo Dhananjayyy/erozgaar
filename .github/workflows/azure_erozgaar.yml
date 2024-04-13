@@ -67,6 +67,8 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_C4F0BCA8684C4CCE884707F585C3546B }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_12DCB7F1A0BC4B5F8FD09B46B48A9110 }}
 
+      - name: print war
+        run: ls -l /home/runner/work/erozgaar/erozgaar/backend/springboot/erozgaar/target
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -74,4 +76,4 @@ jobs:
         with:
           app-name: 'erozgaar'
           slot-name: 'Production'
-          package: '/home/runner/work/erozgaar/erozgaar/backend/springboot/erozgaar/target/erozgaar-app.war'
+          package: /home/runner/work/erozgaar/erozgaar/backend/springboot/erozgaar/target/erozgaar-app.war
