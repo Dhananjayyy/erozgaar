@@ -16,16 +16,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Java version
-        uses: actions/setup-java@v1
-        with:
-          java-version: '17'
+      - name: Print current directory
+        run: pwd
+
+      - name: List files and folders
+        run: ls -l
 
       - name: Change directory
         run: cd backend/springboot/erozgaar/
 
-      - name: Build with Maven
-        run: mvn clean install
+      - name: Print current directory after change
+        run: pwd
+
+      - name: Build with Maven (with full stack trace)
+        run: mvn clean install -e
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
