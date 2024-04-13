@@ -41,8 +41,8 @@ jobs:
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
-          name: java-app
-          path: '${{ github.workspace }}/target/*.war'
+          name: erozgaar-app
+          path: '${{ github.workspace }}/backend/springboot/erozgaar/target/*.war'
 
   deploy:
     runs-on: ubuntu-latest
@@ -57,8 +57,9 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
-          name: java-app
-          path: '${{ github.workspace }}/target/*.war'
+          name: erozgaar-app
+          path: '${{ github.workspace }}/backend/springboot/erozgaar/target/'
+
       
       - name: Login to Azure
         uses: azure/login@v1
@@ -67,10 +68,17 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_C4F0BCA8684C4CCE884707F585C3546B }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_12DCB7F1A0BC4B5F8FD09B46B48A9110 }}
 
+      - name: print war
+        run: ls -l /home/runner/work/erozgaar/erozgaar/backend/springboot/erozgaar/target
+      - name: give permission
+        run: sudo chmod 777 /home/runner/work/erozgaar/erozgaar/backend/springboot/erozgaar/target/erozgaar-app.war
+      
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'erozgaar'
           slot-name: 'Production'
-          package: '*.war'
+          package: '${{ github.workspace }}/backend/springboot/erozgaar/target/*.war'
+
