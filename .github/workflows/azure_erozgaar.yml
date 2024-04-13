@@ -53,6 +53,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: java-app
+          path: '${{ github.workspace }}/target/*.war'
       
       - name: Login to Azure
         uses: azure/login@v1
