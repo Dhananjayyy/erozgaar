@@ -67,9 +67,6 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_C4F0BCA8684C4CCE884707F585C3546B }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_12DCB7F1A0BC4B5F8FD09B46B48A9110 }}
 
-      - name: List all WAR files
-        run: ls -l path-to-your-war/*.war
-
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
