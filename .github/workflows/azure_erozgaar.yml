@@ -21,8 +21,8 @@ jobs:
         with:
           java-version: '17'
 
-      - name: Change directory
-        run: ls
+      - name: print directory
+        run: pwd
 
       - name: Build with Maven
         run: mvn clean install
