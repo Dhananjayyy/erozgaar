@@ -21,6 +21,9 @@ jobs:
         with:
           java-version: '17'
 
+      - name: Change directory
+        run: cd erozgaar/backend/springboot/erozgaar/
+
       - name: Build with Maven
         run: mvn clean install
 
@@ -59,4 +62,3 @@ jobs:
           app-name: 'erozgaar'
           slot-name: 'Production'
           package: '*.war'
-          
