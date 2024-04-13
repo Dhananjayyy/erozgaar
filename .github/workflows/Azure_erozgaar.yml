@@ -79,5 +79,4 @@ jobs:
         with:
           app-name: 'erozgaar'
           slot-name: 'Production'
-          path: '/home/runner/work/erozgaar/erozgaar/backend/springboot/erozgaar/target/'
-          package: 'erozgaar-app.war'
+          package: '*.war'
