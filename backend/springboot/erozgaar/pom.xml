@@ -8,10 +8,10 @@
 		<version>3.1.7</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
-	<artifactId>SpringSecurityPractice3</artifactId>
+	<groupId>com.knowit</groupId>
+	<artifactId>erozgaar</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>SpringSecurityPractice3</name>
+	<name>erozgaar</name>
 	<description>Demo project for Spring Boot</description>
 	<packaging>war</packaging>
 	<properties>
