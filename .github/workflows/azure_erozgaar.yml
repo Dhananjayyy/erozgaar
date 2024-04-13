@@ -22,15 +22,12 @@ jobs:
       - name: List files and folders
         run: ls -l
 
-      - name: Change directory
-        run: cd backend/springboot/erozgaar/
-
-      - name: Print current directory after change
-        run: pwd
-
       - name: Build with Maven (with full stack trace)
-        run: mvn clean install -e
-
+        run: |
+          cd backend/springboot/erozgaar/
+          pwd
+          mvn clean install -e
+          
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
