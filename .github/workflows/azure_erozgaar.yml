@@ -32,6 +32,11 @@ jobs:
           cd backend/springboot/erozgaar/
           pwd
           mvn clean install
+
+      - name: List contents of the target directory
+        run: |
+          cd backend/springboot/erozgaar/
+          ls -l target/
           
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
@@ -53,6 +58,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: java-app
+          path: '${{ github.workspace }}/target/*.war'
       
       - name: Login to Azure
         uses: azure/login@v1
