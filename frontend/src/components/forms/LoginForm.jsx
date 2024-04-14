@@ -86,10 +86,13 @@ export default function LoginForm(props) {
     console.log(info.uid.value + " : " + info.pwd.value);
     const reqOptions = {
       method: "POST",
-      headers: { "content-type": "application/json" },
+      headers: { 
+      "content-type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      },
       body: JSON.stringify({
-        username: info.uid.value,
-        password: info.pwd.value,
+      username: info.uid.value,
+      password: info.pwd.value,
       }),
     };
     console.log(`${URL}/login`);
