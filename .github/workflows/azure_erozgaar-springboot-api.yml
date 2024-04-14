@@ -1,7 +1,4 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
-name: Build and deploy WAR app to Azure Web App - erozgaar-springboot-api
+name: Build and deploy Spring Boot JAR app to Azure Web App - erozgaar
 
 on:
   push:
@@ -21,14 +18,28 @@ jobs:
         with:
           java-version: '17'
 
-      - name: Build with Maven
-        run: mvn clean install
+      - name: Print current directory
+        run: pwd
+
+      - name: List files and folders
+        run: ls -l
+
+      - name: Build with Maven (with full stack trace)
+        run: |
+          cd backend/springboot/erozgaar/
+          pwd
+          mvn clean package -DskipTests=true # Assuming you're skipping tests here
+
+      - name: List contents of the target directory
+        run: |
+          cd backend/springboot/erozgaar/
+          ls -l target/
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
-          name: java-app
-          path: '${{ github.workspace }}/target/*.war'
+          name: erozgaar-app
+          path: '${{ github.workspace }}/backend/springboot/erozgaar/target/*.jar'
 
   deploy:
     runs-on: ubuntu-latest
@@ -43,20 +54,20 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
-          name: java-app
-      
+          name: erozgaar-app
+          path: '${{ github.workspace }}/backend/springboot/erozgaar/target/'
+
       - name: Login to Azure
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_D22DF5BB1FAF4B7ABC893DEA95C7BB58 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_B82FE95AD2F74D809B27F3689708A749 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_A539BB71D5C94E2DB868C192F01B9027 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_8E5359A25F4E4F428DD3B174F366BC35 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_C4F0BCA8684C4CCE884707F585C3546B }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_12DCB7F1A0BC4B5F8FD09B46B48A9110 }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'erozgaar-springboot-api'
+          app-name: 'erozgaar'
           slot-name: 'Production'
-          package: '*.war'
-          
+          package: '${{ github.workspace }}/backend/springboot/erozgaar/target/*.jar'
