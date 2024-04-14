@@ -3,7 +3,7 @@ const production = {
 };
 
 const development = {
-  url: "http://localhost:5173",
+  url: "http://localhost:8080",
 };
 
 export const config =
