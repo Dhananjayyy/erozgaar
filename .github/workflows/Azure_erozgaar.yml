@@ -1,4 +1,4 @@
-name: Build and deploy Spring Boot JAR app to Azure Web App - erozgaar
+name: Build and deploy Spring Boot WAR app to Azure Web App - erozgaar
 
 on:
   push:
@@ -39,7 +39,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: erozgaar-app
-          path: '${{ github.workspace }}/backend/springboot/erozgaar/target/*.jar'
+          path: '${{ github.workspace }}/backend/springboot/erozgaar/target/*.war'
 
   deploy:
     runs-on: ubuntu-latest
@@ -70,4 +70,4 @@ jobs:
         with:
           app-name: 'erozgaar'
           slot-name: 'Production'
-          package: '${{ github.workspace }}/backend/springboot/erozgaar/target/*.jar'
+          package: '${{ github.workspace }}/backend/springboot/erozgaar/target/*.war'
