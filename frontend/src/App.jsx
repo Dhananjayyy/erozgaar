@@ -13,16 +13,17 @@ import AddVLC from "./components/forms/VlcRegistrationForm";
 import ProviderHomeLayout from "./components/provider/ProviderHomeLayout";
 import JobDetails from "./components/provider/JobDetails";
 
-
 function App() {
   return (
     <>
       <Routes>
+      console.log(Running in {import.meta.env.NODE_ENV});
         {/* Main */}
         {/* <Route path="/" element={<AddVLC/>} /> */}
         {/* <Route path="/" element={<ProviderRegistrationForm/>} /> */}
         {/* <Route path="/" element={<VLCHomeLayout/>} /> */}
         <Route path="/" element={<HomeLayout />} />
+        
         <Route path="/workerlayout" element={<WorkerHome/>} />
 
         <Route path="/providerlayout" element={<ProviderHomeLayout/>} />

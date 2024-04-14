@@ -25,6 +25,7 @@ export default function HomeLayout() {
     }
   }
 
+  
   const [selectedLink, setSelectedLink] = useState(null);
 
   const handleLinkClick = (link) => {
@@ -62,6 +63,7 @@ export default function HomeLayout() {
 
   return (
     <div className="container mt-3">
+      console.log(Running in {process.env.NODE_ENV});
       <div>
         <nav className="nav navbar navbar-expand-lg nav-pills container border justify-content-between rounded navbar-nav ">
           <div

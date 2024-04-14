@@ -2,8 +2,12 @@ import { useEffect, useReducer, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../slice";
+import { config } from "../../Env";
+
 
 export default function LoginForm(props) {
+  const URL = config.url;
+
   const { message } = props;
   console.log("passed message is ", message);
 
@@ -88,8 +92,9 @@ export default function LoginForm(props) {
         password: info.pwd.value,
       }),
     };
-
-    fetch("http://localhost:8080/login", reqOptions)
+    console.log(`${URL}/login`);
+    fetch(`${URL}/login`, reqOptions)
+    // fetch(`http://localhost:8080/login`, reqOptions)
       .then((resp) => {
         if (resp.ok) {
           console.log(resp.status);
