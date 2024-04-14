@@ -59,6 +59,7 @@ public class AppSecurityConfigurer {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
+		config.addAllowedOrigin("*");
         config.addAllowedOrigin("http://localhost:5173");
         config.addAllowedHeader("*");
         config.addExposedHeader("Authorization");
@@ -93,6 +94,7 @@ public class AppSecurityConfigurer {
 			authorize.requestMatchers("/regWorker").permitAll();
 			authorize.requestMatchers("/regProvider").permitAll();
 			authorize.requestMatchers("/regVlc").permitAll();
+			authorize.requestMatchers("/hello").permitAll();
 
 			authorize.requestMatchers("/getWorkerRegRequests").hasAuthority("VLC");
 			authorize.requestMatchers("/getProvRegRequests").hasAuthority("Admin");

@@ -13,7 +13,7 @@ public class ErozgaarApplication {
 	}
 
 	@GetMapping("/hello")
-	public String hello() {
+	public static String hello() {
 		return "Hello World";
 	}
 }
