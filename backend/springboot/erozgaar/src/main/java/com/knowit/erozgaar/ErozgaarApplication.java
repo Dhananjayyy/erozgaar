@@ -11,9 +11,4 @@ public class ErozgaarApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ErozgaarApplication.class, args);
 	}
-
-	@GetMapping("/hello")
-	public static String hello() {
-		return "Hello World";
-	}
 }

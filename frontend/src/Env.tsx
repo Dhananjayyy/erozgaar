@@ -7,4 +7,4 @@ const development = {
 };
 
 export const config =
-  process.env.NODE_ENV === "development" ? development : production;
+  process.env.NODE_ENV === "development" ? production : production;

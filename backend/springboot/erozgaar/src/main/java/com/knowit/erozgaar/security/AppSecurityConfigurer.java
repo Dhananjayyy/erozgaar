@@ -60,7 +60,7 @@ public class AppSecurityConfigurer {
         final CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.addAllowedOrigin("http://localhost:5173");
-		// config.addAllowedOrigin("https://erozgaar.azurewebsites.net");
+		config.addAllowedOrigin("https://erozgaar.vercel.app");
         config.addAllowedHeader("*");
         config.addExposedHeader("Authorization");
         config.addAllowedMethod("OPTIONS");
