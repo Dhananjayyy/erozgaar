@@ -93,7 +93,7 @@ export default function LoginForm(props) {
       }),
     };
     console.log(`${URL}/login`);
-    fetch(`${URL}/login`, reqOptions)
+    fetch("https://erozgaar.azurewebsites.net/login", reqOptions)
     // fetch(`http://localhost:8080/login`, reqOptions)
       .then((resp) => {
         if (resp.ok) {
