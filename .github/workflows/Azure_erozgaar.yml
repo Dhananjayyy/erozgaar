@@ -1,7 +1,4 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
-name: Build and deploy WAR app to Azure Web App - erozgaar
+name: Build and deploy Spring Boot JAR app to Azure Web App - erozgaar
 
 on:
   push:
@@ -31,18 +28,18 @@ jobs:
         run: |
           cd backend/springboot/erozgaar/
           pwd
-          mvn clean install
+          mvn clean package -DskipTests=true # Assuming you're skipping tests here
 
       - name: List contents of the target directory
         run: |
           cd backend/springboot/erozgaar/
           ls -l target/
-          
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: erozgaar-app
-          path: '${{ github.workspace }}/backend/springboot/erozgaar/target/*.war'
+          path: '${{ github.workspace }}/backend/springboot/erozgaar/target/*.jar'
 
   deploy:
     runs-on: ubuntu-latest
@@ -60,7 +57,6 @@ jobs:
           name: erozgaar-app
           path: '${{ github.workspace }}/backend/springboot/erozgaar/target/'
 
-      
       - name: Login to Azure
         uses: azure/login@v1
         with:
@@ -68,17 +64,10 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_C4F0BCA8684C4CCE884707F585C3546B }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_12DCB7F1A0BC4B5F8FD09B46B48A9110 }}
 
-      - name: print war
-        run: ls -l /home/runner/work/erozgaar/erozgaar/backend/springboot/erozgaar/target
-      - name: give permission
-        run: sudo chmod 777 /home/runner/work/erozgaar/erozgaar/backend/springboot/erozgaar/target/erozgaar-app.war
-      
-
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'erozgaar'
           slot-name: 'Production'
-          package: '${{ github.workspace }}/backend/springboot/erozgaar/target/*.war'
-
+          package: '${{ github.workspace }}/backend/springboot/erozgaar/target/*.jar'
