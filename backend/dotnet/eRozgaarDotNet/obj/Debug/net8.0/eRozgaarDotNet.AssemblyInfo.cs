@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("eRozgaarDotNet")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5800636230abeb62e1aa174194dadda9e4c1d54e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+19f30e5b0efa0ed5090b96ba2ecac2c1df3a6f5b")]
 [assembly: System.Reflection.AssemblyProductAttribute("eRozgaarDotNet")]
 [assembly: System.Reflection.AssemblyTitleAttribute("eRozgaarDotNet")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
