@@ -88,7 +88,7 @@ export default function LoginForm(props) {
       method: "POST",
       headers: { 
       "content-type": "application/json",
-      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Origin": " https://erozgaar.azurewebsites.net/login",
       },
       body: JSON.stringify({
       username: info.uid.value,
