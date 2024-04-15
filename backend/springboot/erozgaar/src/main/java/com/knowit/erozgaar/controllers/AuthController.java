@@ -51,7 +51,7 @@ import com.knowit.erozgaar.services.WorkerService;
 
 import jakarta.transaction.Transactional;
 
-//@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "https://erozgaar.vercel.app")
 @RestController
 public class AuthController {
 

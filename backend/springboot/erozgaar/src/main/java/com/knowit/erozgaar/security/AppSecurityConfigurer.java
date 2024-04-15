@@ -1,11 +1,13 @@
 package com.knowit.erozgaar.security;
 
+import java.net.http.HttpHeaders;
 import java.time.Duration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
@@ -59,6 +61,8 @@ public class AppSecurityConfigurer {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
+		config.addAllowedHeader("Content-Type");
+		config.addAllowedHeader("Authorization");
         config.addAllowedOrigin("http://localhost:5173");
 		config.addAllowedOrigin("https://erozgaar.vercel.app");
 		config.addAllowedOrigin("https://erozgaar.azurewebsites.net");
