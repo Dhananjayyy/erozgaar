@@ -58,7 +58,7 @@ public class AppSecurityConfigurer {
     CorsConfigurationSource corsConfigurationSource() {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
+        config.setAllowCredentials(false);
         config.addAllowedOrigin("http://localhost:5173");
 		config.addAllowedOrigin("https://erozgaar.vercel.app");
 		config.addAllowedOrigin("https://erozgaar.azurewebsites.net");
