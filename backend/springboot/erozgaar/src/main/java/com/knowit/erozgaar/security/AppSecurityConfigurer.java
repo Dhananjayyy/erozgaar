@@ -63,7 +63,10 @@ public class AppSecurityConfigurer {
         config.setAllowCredentials(true);
 		config.addAllowedHeader("Content-Type");
 		config.addAllowedHeader("Authorization");
+		//Access-Control-Allow-Origin
+
         config.addAllowedOrigin("http://localhost:5173");
+		config.addAllowedOrigin("*");
 		config.addAllowedOrigin("https://erozgaar.vercel.app");
 		config.addAllowedOrigin("https://erozgaar.azurewebsites.net");
         config.addAllowedHeader("*");
