@@ -84,6 +84,7 @@ export default function LoginForm(props) {
   const sendData = (e) => {
     e.preventDefault();
     console.log(info.uid.value + " : " + info.pwd.value);
+
     const reqOptions = {
       method: "POST",
       headers: { 
@@ -96,7 +97,7 @@ export default function LoginForm(props) {
       }),
     };
     console.log(`${URL}/login`);
-    fetch("https://erozgaar.azurewebsites.net/login", reqOptions)
+    fetch(`${URL}/login`, reqOptions)
     // fetch(`http://localhost:8080/login`, reqOptions)
       .then((resp) => {
         if (resp.ok) {

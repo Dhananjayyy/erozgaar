@@ -63,11 +63,9 @@ public class AppSecurityConfigurer {
         config.setAllowCredentials(true);
 		config.addAllowedHeader("Content-Type");
 		config.addAllowedHeader("Authorization");
-		//Access-Control-Allow-Origin
-
         config.addAllowedOrigin("http://localhost:5173");
 		config.addAllowedOrigin("*");
-		config.addAllowedOrigin("https://erozgaar.vercel.app");
+		config.addAllowedOrigin("https://erozgaar.vercel.app/");
 		config.addAllowedOrigin("https://erozgaar.azurewebsites.net");
         config.addAllowedHeader("*");
         config.addExposedHeader("Authorization");
@@ -157,7 +155,8 @@ public class AppSecurityConfigurer {
 			//authorize.requestMatchers("/c").hasAuthority("USER");
 			//authorize.requestMatchers("/admin").hasAnyAuthority("ADMIN","USER");
 			
-		});
+		}).authorizeRequests(authorize -> authorize
+            .antMatchers(HttpMethod.OPTIONS, "/**").permitAll());;
 		//.exceptionHandling(ex -> ex.authenticationEntryPoint(point))
         
 		//http.cors(cors -> cors.configurationSource());
