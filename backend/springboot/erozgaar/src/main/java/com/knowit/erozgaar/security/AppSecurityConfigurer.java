@@ -61,10 +61,14 @@ public class AppSecurityConfigurer {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
+		config.addAllowedHeader("Access-Control-Allow-Origin");
+		config.addAllowedHeader("Access-Control-Allow-Methods");
 		config.addAllowedHeader("Content-Type");
 		config.addAllowedHeader("Authorization");
         config.addAllowedOrigin("http://localhost:5173");
 		config.addAllowedOrigin("*");
+		config.addAllowedHeader("*");
+		config.addAllowedMethod("*");
 		config.addAllowedOrigin("https://erozgaar.vercel.app/");
 		config.addAllowedOrigin("https://erozgaar.azurewebsites.net");
         config.addAllowedHeader("*");
@@ -95,9 +99,10 @@ public class AppSecurityConfigurer {
 		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 		http.authorizeHttpRequests(authorize -> {
-			authorize.requestMatchers(HttpMethod.GET, "/**").permitAll();
-			authorize.requestMatchers(HttpMethod.POST, "/**").permitAll();
-			authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+			authorize.requestMatchers(HttpMethod.GET, "*").permitAll();
+			authorize.requestMatchers(HttpMethod.POST, "*").permitAll();
+			authorize.requestMatchers(HttpMethod.OPTIONS, "*").permitAll();
+			authorize.requestMatchers(HttpMethod.POST, "https://erozgaar.azurewebsites.net").permitAll();
 			authorize.requestMatchers("/").permitAll();
 			authorize.requestMatchers("/login").permitAll();
 			authorize.requestMatchers("/regWorker").permitAll();
