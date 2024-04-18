@@ -94,6 +94,7 @@ public class AppSecurityConfigurer {
 		.and()
 		.formLogin();*/
 		http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+		http.cors(Customizer.withDefaults());
 		http.csrf(csrf -> csrf.disable())
 		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
