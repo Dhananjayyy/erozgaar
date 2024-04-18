@@ -94,6 +94,7 @@ public class AppSecurityConfigurer {
 		http.csrf(csrf -> csrf.disable())
 		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+		http.authorizeHttpRequests().requestMatchers(HttpMethod.OPTIONS,"/**").permitAll();
 		http.authorizeHttpRequests(authorize -> {
 			authorize.requestMatchers("/").permitAll();
 			authorize.requestMatchers("/login").permitAll();
@@ -155,8 +156,7 @@ public class AppSecurityConfigurer {
 			//authorize.requestMatchers("/c").hasAuthority("USER");
 			//authorize.requestMatchers("/admin").hasAnyAuthority("ADMIN","USER");
 			
-		}).authorizeRequests(authorize -> authorize
-            .antMatchers(HttpMethod.OPTIONS, "/**").permitAll());;
+		});
 		//.exceptionHandling(ex -> ex.authenticationEntryPoint(point))
         
 		//http.cors(cors -> cors.configurationSource());
