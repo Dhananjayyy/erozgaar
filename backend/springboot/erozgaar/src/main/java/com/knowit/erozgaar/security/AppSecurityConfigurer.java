@@ -94,8 +94,10 @@ public class AppSecurityConfigurer {
 		http.csrf(csrf -> csrf.disable())
 		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-		http.authorizeHttpRequests().requestMatchers(HttpMethod.OPTIONS,"/**").permitAll();
 		http.authorizeHttpRequests(authorize -> {
+			authorize.requestMatchers(HttpMethod.GET, "/**").permitAll();
+			authorize.requestMatchers(HttpMethod.POST, "/**").permitAll();
+			authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
 			authorize.requestMatchers("/").permitAll();
 			authorize.requestMatchers("/login").permitAll();
 			authorize.requestMatchers("/regWorker").permitAll();
