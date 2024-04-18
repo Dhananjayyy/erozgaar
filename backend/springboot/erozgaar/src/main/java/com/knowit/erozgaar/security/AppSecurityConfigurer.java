@@ -65,12 +65,8 @@ public class AppSecurityConfigurer {
 		config.addAllowedHeader("Access-Control-Allow-Methods");
 		config.addAllowedHeader("Content-Type");
 		config.addAllowedHeader("Authorization");
-        config.addAllowedOrigin("http://localhost:5173");
-		config.addAllowedOrigin("*");
-		config.addAllowedHeader("*");
-		config.addAllowedMethod("*");
-		config.addAllowedOrigin("https://erozgaar.azurewebsites.net/login");
 		config.addAllowedOrigin("https://erozgaar.vercel.app");
+		config.addAllowedMethod("*");
         config.addAllowedHeader("*");
         config.addExposedHeader("Authorization");
         config.addAllowedMethod("OPTIONS");
