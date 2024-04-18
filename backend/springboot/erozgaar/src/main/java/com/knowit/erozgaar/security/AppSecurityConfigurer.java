@@ -69,6 +69,7 @@ public class AppSecurityConfigurer {
 		config.addAllowedOrigin("*");
 		config.addAllowedHeader("*");
 		config.addAllowedMethod("*");
+		config.addAllowedOrigin("https://erozgaar.azurewebsites.net/login");
 		config.addAllowedOrigin("https://erozgaar.vercel.app");
         config.addAllowedHeader("*");
         config.addExposedHeader("Authorization");
