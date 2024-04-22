@@ -23,8 +23,13 @@ Object.entries(routeMappings).forEach(([route, destination]) => {
         pathRewrite: {
             [`^${route}`]: '', // Remove route prefix from destination URL
         },
+        headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Request-Headers": "*"
+        }
     }));
 });
+
 
 // Catch-all route for unmatched routes
 app.use((req, res) => {
