@@ -65,7 +65,8 @@ public class AppSecurityConfigurer {
 		config.addAllowedHeader("Access-Control-Allow-Methods");
 		config.addAllowedHeader("Content-Type");
 		config.addAllowedHeader("Authorization");
-		config.addAllowedOrigin("https://erozgaar.vercel.app");
+		config.addAllowedOrigin("http://localhost:5173");
+		//config.addAllowedOrigin("https://erozgaar.vercel.app");
 		config.addAllowedMethod("*");
         config.addAllowedHeader("*");
         config.addExposedHeader("Authorization");
@@ -99,7 +100,8 @@ public class AppSecurityConfigurer {
 			authorize.requestMatchers(HttpMethod.GET, "*").permitAll();
 			authorize.requestMatchers(HttpMethod.POST, "*").permitAll();
 			authorize.requestMatchers(HttpMethod.OPTIONS, "*").permitAll();
-			authorize.requestMatchers(HttpMethod.POST, "https://erozgaar.vercel.app/").permitAll();
+			// authorize.requestMatchers(HttpMethod.POST, "https://erozgaar.vercel.app/").permitAll();
+			authorize.requestMatchers("/actuator/**").permitAll();
 			authorize.requestMatchers("/").permitAll();
 			authorize.requestMatchers("/login").permitAll();
 			authorize.requestMatchers("/regWorker").permitAll();
