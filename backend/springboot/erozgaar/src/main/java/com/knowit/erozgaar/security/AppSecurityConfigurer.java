@@ -2,6 +2,7 @@ package com.knowit.erozgaar.security;
 
 import java.net.http.HttpHeaders;
 import java.time.Duration;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -25,6 +26,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import com.knowit.erozgaar.security.MyUserDetailsService;
 
@@ -54,6 +56,20 @@ public class AppSecurityConfigurer {
 	@Bean
     BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+	@Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("http://localhost:5173");
+        config.addAllowedOrigin("https://erozgaar.vercel.app");
+        config.addAllowedOrigin("https://erozgaar.azurewebsites.net");
+        config.setAllowedMethods(Arrays.asList("OPTIONS", "HEAD", "GET", "PUT", "POST", "DELETE", "PATCH"));
+        config.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 	
 	@Bean
