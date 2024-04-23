@@ -24,7 +24,7 @@ export default async function reroute(req, res) {
         target: destination,
         changeOrigin: true,
         pathRewrite: {
-            [`^${route}`]: '', // Remove route prefix from destination URL
+            [`^${route}`]: '',
         },
         headers: {
             "Content-Type": "application/json",

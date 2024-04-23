@@ -7,7 +7,7 @@ import { config } from "../../Env";
 
 export default function LoginForm(props) {
   // const URL = config.url;
-  const URL = "/api/reroute/"
+  const URL = "/api/"
 
   const { message } = props;
   console.log("passed message is ", message);
