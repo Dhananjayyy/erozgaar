@@ -88,7 +88,11 @@ export default function LoginForm(props) {
     const reqOptions = {
       method: "POST",
       headers: { 
-      "content-type": "application/json"
+      "content-type": "application/json",
+      "Access-Control-Allow-Origin": "https://erozgaar.azurewebsites.net",
+      "Access-Control-Allow-Credentials": "true",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type",
       },
       body: JSON.stringify({
       username: info.uid.value,
