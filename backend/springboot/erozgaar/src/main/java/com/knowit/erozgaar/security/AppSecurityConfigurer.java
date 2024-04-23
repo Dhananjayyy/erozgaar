@@ -59,44 +59,50 @@ public class AppSecurityConfigurer {
     }
 
 	
-	// @Bean
-    // CorsConfigurationSource corsConfigurationSource() {
-    //     final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    //     final CorsConfiguration config = new CorsConfiguration();
-    //     config.setAllowCredentials(true);
-	// 	config.addAllowedHeader("Access-Control-Allow-Origin");
-	// 	config.addAllowedHeader("Access-Control-Allow-Methods");
-	// 	config.addAllowedHeader("Content-Type");
-	// 	config.addAllowedHeader("Authorization");
-	// 	config.addAllowedOrigin("http://localhost:5173");
-	// 	config.addAllowedOrigin("https://erozgaar.vercel.app");
-	// 	config.addAllowedOrigin("https://erozgaar.azurewebsites.net");
-	// 	config.addAllowedMethod("*");
-    //     config.addAllowedHeader("*");
-    //     config.addExposedHeader("Authorization");
-    //     config.addAllowedMethod("OPTIONS");
-    //     config.addAllowedMethod("HEAD");
-    //     config.addAllowedMethod("GET");
-    //     config.addAllowedMethod("PUT");
-    //     config.addAllowedMethod("POST");
-    //     config.addAllowedMethod("DELETE");
-    //     config.addAllowedMethod("PATCH");
-    //     source.registerCorsConfiguration("/**", config);
-    //     return source;
-    // }
+	@Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        final CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+		config.addAllowedHeader("Access-Control-Allow-Origin");
+		config.addAllowedHeader("Access-Control-Allow-Methods");
+		config.addAllowedHeader("Content-Type");
+		config.addAllowedHeader("Authorization");
+		config.addAllowedOrigin("http://localhost:5173");
+		config.addAllowedOrigin("https://erozgaar.vercel.app");
+		config.addAllowedOrigin("https://erozgaar.azurewebsites.net");
+		config.addAllowedMethod("*");
+        config.addAllowedHeader("*");
+        config.addExposedHeader("Authorization");
+        config.addAllowedMethod("OPTIONS");
+        config.addAllowedMethod("HEAD");
+        config.addAllowedMethod("GET");
+        config.addAllowedMethod("PUT");
+        config.addAllowedMethod("POST");
+        config.addAllowedMethod("DELETE");
+        config.addAllowedMethod("PATCH");
+		config.setAllowedHeaders(Arrays.asList("Origin", "Access-Control, Allow-Origin", "Content-Type",
+                "Accept", "Authorization", "Origin, Accept", "X-Requested-With", "Access-Control-Request-Method",
+                "Access-Control-Request-Header"));
+        config.setExposedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization",
+                "Access-Control-Request-Allow-Origin", "Access-Control-Allow-Credentials"));
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        source.registerCorsConfiguration("/**", config);
+        return source;
+    }
 	
 	@Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        /*http.csrf().disable()
-        .authorizeRequests()
-        .antMatchers("/").permitAll()
-        .antMatchers("/register").permitAll()
-        .antMatchers("/user").hasAuthority("USER")
-		.antMatchers("/admin").hasAuthority("ADMIN")
-		.and()
-		.formLogin();*/
-		// http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
-		// http.cors(Customizer.withDefaults());
+        // http.csrf().disable()
+        // .authorizeRequests()
+        // .antMatchers("/").permitAll()
+        // .antMatchers("/register").permitAll()
+        // .antMatchers("/user").hasAuthority("USER")
+		// .antMatchers("/admin").hasAuthority("ADMIN")
+		// .and()
+		// .formLogin();
+		http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+		http.cors(Customizer.withDefaults());
 		http.csrf(csrf -> csrf.disable())
 		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
