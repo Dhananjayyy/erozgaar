@@ -6,8 +6,7 @@ import { config } from "../../Env";
 
 
 export default function LoginForm(props) {
-  // const URL = config.url;
-  const URL = "/api/"
+  const URL = config.url;
 
   const { message } = props;
   console.log("passed message is ", message);
