@@ -88,16 +88,15 @@ export default function LoginForm(props) {
     const reqOptions = {
       method: "POST",
       headers: { 
-      "content-type": "application/json",
-      "Access-Control-Allow-Origin": "*",
+      "content-type": "application/json"
       },
       body: JSON.stringify({
       username: info.uid.value,
       password: info.pwd.value,
       }),
     };
-    console.log(`${URL}/login`);
-    fetch(`${URL}/login`, reqOptions)
+    // console.log(`${URL}/login`);
+    fetch(`https://erozgaar.azurewebsites.net/login`, reqOptions)
     // fetch(`http://localhost:8080/login`, reqOptions)
       .then((resp) => {
         if (resp.ok) {
