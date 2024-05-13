@@ -8,7 +8,9 @@ set "db=erozgaar"
     echo CREATE DATABASE %db%;
     echo USE %db%;
     echo SOURCE tables.sql;
-    echo SOURCE data.sql;
+    echo SOURCE data.sql;	
+    echo SOURCE triggers.sql;
+    echo SOURCE procedures.sql;
 ) | mysql --user=%username% --password=%password%
 
 echo Database setup complete
